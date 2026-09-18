@@ -1,0 +1,973 @@
+[
+  {
+    "id": "p001",
+    "name": "Golden Sparkler 10cm Box 1234",
+    "description": "Classic golden sparkler with 45-second burn time. Perfect for birthdays and celebrations.",
+    "images": [
+      "https://picsum.photos/seed/fw-sp1a/400/400",
+      "https://picsum.photos/seed/fw-sp1b/400/400"
+    ],
+    "category": ["Sparklers"],
+    "actualPrice": 120,
+    "discountedPrice": 89
+  },
+  {
+    "id": "p002",
+    "name": "Silver Sparkler 15cm",
+    "description": "Long-lasting silver sparkler ideal for weddings and Diwali.",
+    "images": ["https://picsum.photos/seed/fw-sp2/400/400"],
+    "category": ["Sparklers"],
+    "actualPrice": 180,
+    "discountedPrice": 140
+  },
+  {
+    "id": "p003",
+    "name": "Color Sparkler 12cm",
+    "description": "Multicolor sparkler that changes hue as it burns.",
+    "images": [
+      "https://picsum.photos/seed/fw-sp3a/400/400",
+      "https://picsum.photos/seed/fw-sp3b/400/400"
+    ],
+    "category": ["Sparklers"],
+    "actualPrice": 150,
+    "discountedPrice": 110
+  },
+  {
+    "id": "p004",
+    "name": "Fancy Star Sparkler",
+    "description": "Star-shaped sparkler that creates stunning visual effects.",
+    "images": ["https://picsum.photos/seed/fw-sp4/400/400"],
+    "category": ["Sparklers"],
+    "actualPrice": 220,
+    "discountedPrice": 175
+  },
+  {
+    "id": "p005",
+    "name": "Mega Sparkler 30cm",
+    "description": "Extra-long sparkler with 90-second burn time for grand celebrations.",
+    "images": [
+      "https://picsum.photos/seed/fw-sp5a/400/400",
+      "https://picsum.photos/seed/fw-sp5b/400/400"
+    ],
+    "category": ["Sparklers"],
+    "actualPrice": 350,
+    "discountedPrice": 269
+  },
+  {
+    "id": "p006",
+    "name": "Pen Sparkler Set",
+    "images": [],
+    "category": ["Sparklers"],
+    "actualPrice": 90,
+    "discountedPrice": 65
+  },
+  {
+    "id": "p007",
+    "name": "Crackle Sparkler",
+    "description": "Sparkler with crackling sound effects for extra excitement.",
+    "images": ["https://picsum.photos/seed/fw-sp7/400/400"],
+    "category": ["Sparklers"],
+    "actualPrice": 200,
+    "discountedPrice": 155
+  },
+  {
+    "id": "p008",
+    "name": "Rainbow Sparkler",
+    "description": "Seven-color sparkler that lights up the night with a rainbow of sparks.",
+    "images": [
+      "https://picsum.photos/seed/fw-sp8a/400/400",
+      "https://picsum.photos/seed/fw-sp8b/400/400"
+    ],
+    "category": ["Sparklers"],
+    "actualPrice": 250,
+    "discountedPrice": 195
+  },
+  {
+    "id": "p009",
+    "name": "Moon Light Sparkler",
+    "images": [],
+    "category": ["Sparklers"],
+    "actualPrice": 130,
+    "discountedPrice": 99
+  },
+  {
+    "id": "p010",
+    "name": "Diamond Sparkler",
+    "description": "Premium sparkler with dense, glittering silver sparks.",
+    "images": ["https://picsum.photos/seed/fw-sp10/400/400"],
+    "category": ["Sparklers"],
+    "actualPrice": 180,
+    "discountedPrice": 139
+  },
+  {
+    "id": "p011",
+    "name": "Mini Chakkar",
+    "description": "Fast-spinning ground chakkar with bright sparks.",
+    "images": ["https://picsum.photos/seed/fw-ch1/400/400"],
+    "category": ["Ground Chakkar"],
+    "actualPrice": 60,
+    "discountedPrice": 45
+  },
+  {
+    "id": "p012",
+    "name": "Super Chakkar",
+    "description": "High-speed chakkar that spins brilliantly on any flat surface.",
+    "images": ["https://picsum.photos/seed/fw-ch2/400/400"],
+    "category": ["Ground Chakkar"],
+    "actualPrice": 120,
+    "discountedPrice": 89
+  },
+  {
+    "id": "p013",
+    "name": "Color Chakkar",
+    "description": "Chakkar that emits multiple colours as it spins.",
+    "images": [
+      "https://picsum.photos/seed/fw-ch3a/400/400",
+      "https://picsum.photos/seed/fw-ch3b/400/400"
+    ],
+    "category": ["Ground Chakkar"],
+    "actualPrice": 150,
+    "discountedPrice": 115
+  },
+  {
+    "id": "p014",
+    "name": "Golden Chakkar",
+    "description": "Premium chakkar emitting golden shower of sparks.",
+    "images": ["https://picsum.photos/seed/fw-ch4/400/400"],
+    "category": ["Ground Chakkar"],
+    "actualPrice": 180,
+    "discountedPrice": 140
+  },
+  {
+    "id": "p015",
+    "name": "Electric Chakkar",
+    "images": [],
+    "category": ["Ground Chakkar"],
+    "actualPrice": 200,
+    "discountedPrice": 155
+  },
+  {
+    "id": "p016",
+    "name": "Jumbo Chakkar",
+    "description": "Extra-large chakkar for extended spinning fun.",
+    "images": ["https://picsum.photos/seed/fw-ch6/400/400"],
+    "category": ["Ground Chakkar"],
+    "actualPrice": 250,
+    "discountedPrice": 195
+  },
+  {
+    "id": "p017",
+    "name": "Peacock Chakkar",
+    "description": "Chakkar with peacock-blue and green colour effects.",
+    "images": [
+      "https://picsum.photos/seed/fw-ch7a/400/400",
+      "https://picsum.photos/seed/fw-ch7b/400/400"
+    ],
+    "category": ["Ground Chakkar"],
+    "actualPrice": 300,
+    "discountedPrice": 235
+  },
+  {
+    "id": "p018",
+    "name": "Dragon Chakkar",
+    "description": "Fierce spinning chakkar with red and orange sparks.",
+    "images": ["https://picsum.photos/seed/fw-ch8/400/400"],
+    "category": ["Ground Chakkar"],
+    "actualPrice": 180,
+    "discountedPrice": 140
+  },
+  {
+    "id": "p019",
+    "name": "Single Shot Sky Shell",
+    "description": "Single aerial shell that bursts into a brilliant star pattern.",
+    "images": [
+      "https://picsum.photos/seed/fw-ss1a/400/400",
+      "https://picsum.photos/seed/fw-ss1b/400/400"
+    ],
+    "category": ["Sky Shots"],
+    "actualPrice": 200,
+    "discountedPrice": 155
+  },
+  {
+    "id": "p020",
+    "name": "3 Shot Sky Shell",
+    "description": "Three-shot tube that launches three stunning aerial bursts.",
+    "images": ["https://picsum.photos/seed/fw-ss2/400/400"],
+    "category": ["Sky Shots"],
+    "actualPrice": 350,
+    "discountedPrice": 275
+  },
+  {
+    "id": "p021",
+    "name": "5 Shot Multicolor",
+    "description": "Five multicolour aerial shells in a single tube.",
+    "images": [
+      "https://picsum.photos/seed/fw-ss3a/400/400",
+      "https://picsum.photos/seed/fw-ss3b/400/400"
+    ],
+    "category": ["Sky Shots"],
+    "actualPrice": 500,
+    "discountedPrice": 395
+  },
+  {
+    "id": "p022",
+    "name": "10 Shot Sky Show",
+    "description": "A ten-shot tube that puts on a complete sky show.",
+    "images": ["https://picsum.photos/seed/fw-ss4/400/400"],
+    "category": ["Sky Shots"],
+    "actualPrice": 800,
+    "discountedPrice": 630
+  },
+  {
+    "id": "p023",
+    "name": "Golden Star Shell",
+    "description": "Aerial shell that opens into a cascading shower of golden stars.",
+    "images": [
+      "https://picsum.photos/seed/fw-ss5a/400/400",
+      "https://picsum.photos/seed/fw-ss5b/400/400"
+    ],
+    "category": ["Sky Shots"],
+    "actualPrice": 450,
+    "discountedPrice": 355
+  },
+  {
+    "id": "p024",
+    "name": "Silver Rain Shell",
+    "description": "Creates a silver rain effect across the sky.",
+    "images": ["https://picsum.photos/seed/fw-ss6/400/400"],
+    "category": ["Sky Shots"],
+    "actualPrice": 380,
+    "discountedPrice": 299
+  },
+  {
+    "id": "p025",
+    "name": "Color Burst Shell",
+    "images": [],
+    "category": ["Sky Shots"],
+    "actualPrice": 420,
+    "discountedPrice": 335
+  },
+  {
+    "id": "p026",
+    "name": "Glitter Shell",
+    "description": "Shell that explodes into a massive glitter cloud.",
+    "images": ["https://picsum.photos/seed/fw-ss8/400/400"],
+    "category": ["Sky Shots"],
+    "actualPrice": 350,
+    "discountedPrice": 275
+  },
+  {
+    "id": "p027",
+    "name": "Brocade Crown Shell",
+    "description": "Premium shell forming a brocade crown pattern in the sky.",
+    "images": [
+      "https://picsum.photos/seed/fw-ss9a/400/400",
+      "https://picsum.photos/seed/fw-ss9b/400/400"
+    ],
+    "category": ["Sky Shots"],
+    "actualPrice": 600,
+    "discountedPrice": 475
+  },
+  {
+    "id": "p028",
+    "name": "Thunder Shell",
+    "description": "Loud concussive aerial shell for maximum impact.",
+    "images": ["https://picsum.photos/seed/fw-ss10/400/400"],
+    "category": ["Sky Shots"],
+    "actualPrice": 480,
+    "discountedPrice": 379
+  },
+  {
+    "id": "p029",
+    "name": "Saturn Ring Shell",
+    "images": [],
+    "category": ["Sky Shots"],
+    "actualPrice": 550,
+    "discountedPrice": 435
+  },
+  {
+    "id": "p030",
+    "name": "Comet Shell",
+    "description": "Shell that trails a bright comet tail before bursting.",
+    "images": ["https://picsum.photos/seed/fw-ss12/400/400"],
+    "category": ["Sky Shots"],
+    "actualPrice": 320,
+    "discountedPrice": 255
+  },
+  {
+    "id": "p031",
+    "name": "Mini Rocket",
+    "description": "Small rocket ideal for beginners and children (adult supervision required).",
+    "images": ["https://picsum.photos/seed/fw-rk1/400/400"],
+    "category": ["Rockets"],
+    "actualPrice": 150,
+    "discountedPrice": 115
+  },
+  {
+    "id": "p032",
+    "name": "Standard Rocket",
+    "description": "Classic whistling rocket that soars high before bursting.",
+    "images": [
+      "https://picsum.photos/seed/fw-rk2a/400/400",
+      "https://picsum.photos/seed/fw-rk2b/400/400"
+    ],
+    "category": ["Rockets"],
+    "actualPrice": 220,
+    "discountedPrice": 172
+  },
+  {
+    "id": "p033",
+    "name": "Super Rocket",
+    "description": "Heavy-duty rocket reaching impressive heights.",
+    "images": ["https://picsum.photos/seed/fw-rk3/400/400"],
+    "category": ["Rockets"],
+    "actualPrice": 350,
+    "discountedPrice": 275
+  },
+  {
+    "id": "p034",
+    "name": "Color Rocket",
+    "images": [],
+    "category": ["Rockets"],
+    "actualPrice": 280,
+    "discountedPrice": 219
+  },
+  {
+    "id": "p035",
+    "name": "3 Stage Rocket",
+    "description": "Rocket with three distinct burst stages for a prolonged display.",
+    "images": ["https://picsum.photos/seed/fw-rk5/400/400"],
+    "category": ["Rockets"],
+    "actualPrice": 450,
+    "discountedPrice": 355
+  },
+  {
+    "id": "p036",
+    "name": "Whistling Rocket",
+    "description": "Produces a sharp whistle sound while ascending.",
+    "images": [
+      "https://picsum.photos/seed/fw-rk6a/400/400",
+      "https://picsum.photos/seed/fw-rk6b/400/400"
+    ],
+    "category": ["Rockets"],
+    "actualPrice": 180,
+    "discountedPrice": 140
+  },
+  {
+    "id": "p037",
+    "name": "Silver Tail Rocket",
+    "description": "Rocket with a long silver sparkling trail.",
+    "images": ["https://picsum.photos/seed/fw-rk7/400/400"],
+    "category": ["Rockets"],
+    "actualPrice": 320,
+    "discountedPrice": 250
+  },
+  {
+    "id": "p038",
+    "name": "Golden Tail Rocket",
+    "images": [],
+    "category": ["Rockets"],
+    "actualPrice": 380,
+    "discountedPrice": 299
+  },
+  {
+    "id": "p039",
+    "name": "Sky King Rocket",
+    "description": "The most powerful rocket in our range – sky-high performance.",
+    "images": [
+      "https://picsum.photos/seed/fw-rk9a/400/400",
+      "https://picsum.photos/seed/fw-rk9b/400/400"
+    ],
+    "category": ["Rockets"],
+    "actualPrice": 600,
+    "discountedPrice": 475
+  },
+  {
+    "id": "p040",
+    "name": "Thunder Rocket",
+    "description": "Combines a booming report with a dazzling aerial burst.",
+    "images": ["https://picsum.photos/seed/fw-rk10/400/400"],
+    "category": ["Rockets"],
+    "actualPrice": 500,
+    "discountedPrice": 395
+  },
+  {
+    "id": "p041",
+    "name": "Mini Flower Pot",
+    "description": "Small ground fountain emitting a colourful spray of sparks.",
+    "images": ["https://picsum.photos/seed/fw-fp1/400/400"],
+    "category": ["Flower Pots"],
+    "actualPrice": 100,
+    "discountedPrice": 76
+  },
+  {
+    "id": "p042",
+    "name": "Color Flower Pot",
+    "description": "Ground fountain with red, green, and gold colour effects.",
+    "images": [
+      "https://picsum.photos/seed/fw-fp2a/400/400",
+      "https://picsum.photos/seed/fw-fp2b/400/400"
+    ],
+    "category": ["Flower Pots"],
+    "actualPrice": 180,
+    "discountedPrice": 140
+  },
+  {
+    "id": "p043",
+    "name": "Mega Flower Pot",
+    "description": "Large fountain that erupts into a cascading waterfall of sparks.",
+    "images": ["https://picsum.photos/seed/fw-fp3/400/400"],
+    "category": ["Flower Pots"],
+    "actualPrice": 350,
+    "discountedPrice": 275
+  },
+  {
+    "id": "p044",
+    "name": "Golden Flower Pot",
+    "images": [],
+    "category": ["Flower Pots"],
+    "actualPrice": 250,
+    "discountedPrice": 195
+  },
+  {
+    "id": "p045",
+    "name": "Fountain Flower Pot",
+    "description": "Wide fountain spray covering a large area with sparks.",
+    "images": [
+      "https://picsum.photos/seed/fw-fp5a/400/400",
+      "https://picsum.photos/seed/fw-fp5b/400/400"
+    ],
+    "category": ["Flower Pots"],
+    "actualPrice": 400,
+    "discountedPrice": 315
+  },
+  {
+    "id": "p046",
+    "name": "Sparkle Flower Pot",
+    "description": "Fountain with intense glittering sparks for a magical look.",
+    "images": ["https://picsum.photos/seed/fw-fp6/400/400"],
+    "category": ["Flower Pots"],
+    "actualPrice": 200,
+    "discountedPrice": 155
+  },
+  {
+    "id": "p047",
+    "name": "Rainbow Fountain",
+    "description": "Ground fountain emitting seven rainbow colours simultaneously.",
+    "images": [
+      "https://picsum.photos/seed/fw-fp7a/400/400",
+      "https://picsum.photos/seed/fw-fp7b/400/400"
+    ],
+    "category": ["Flower Pots"],
+    "actualPrice": 450,
+    "discountedPrice": 355
+  },
+  {
+    "id": "p048",
+    "name": "Silver Fountain",
+    "description": "Classic silver spark fountain with long burn time.",
+    "images": ["https://picsum.photos/seed/fw-fp8/400/400"],
+    "category": ["Flower Pots"],
+    "actualPrice": 300,
+    "discountedPrice": 235
+  },
+  {
+    "id": "p049",
+    "name": "Jumbo Fountain",
+    "images": [],
+    "category": ["Flower Pots"],
+    "actualPrice": 500,
+    "discountedPrice": 390
+  },
+  {
+    "id": "p050",
+    "name": "Crystal Fountain",
+    "description": "Produces crystal-clear white sparks in a wide arc.",
+    "images": ["https://picsum.photos/seed/fw-fp10/400/400"],
+    "category": ["Flower Pots"],
+    "actualPrice": 350,
+    "discountedPrice": 275
+  },
+  {
+    "id": "p051",
+    "name": "Mini Bijili Box",
+    "images": [],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 60,
+    "discountedPrice": 44
+  },
+  {
+    "id": "p052",
+    "name": "Standard Bijili",
+    "description": "Reliable standard bijili cracker in a box of 10.",
+    "images": ["https://picsum.photos/seed/fw-bc2/400/400"],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 120,
+    "discountedPrice": 89
+  },
+  {
+    "id": "p053",
+    "name": "Ladi 100 Wala",
+    "description": "100-shot string cracker – classic festive favourite.",
+    "images": [
+      "https://picsum.photos/seed/fw-bc3a/400/400",
+      "https://picsum.photos/seed/fw-bc3b/400/400"
+    ],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 80,
+    "discountedPrice": 59
+  },
+  {
+    "id": "p054",
+    "name": "Ladi 500 Wala",
+    "description": "500-shot string cracker for a prolonged cracker show.",
+    "images": ["https://picsum.photos/seed/fw-bc4/400/400"],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 350,
+    "discountedPrice": 275
+  },
+  {
+    "id": "p055",
+    "name": "Ladi 1000 Wala",
+    "images": [],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 650,
+    "discountedPrice": 510
+  },
+  {
+    "id": "p056",
+    "name": "2 Sound Cracker",
+    "description": "Double-report cracker with two loud bangs.",
+    "images": ["https://picsum.photos/seed/fw-bc6/400/400"],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 90,
+    "discountedPrice": 69
+  },
+  {
+    "id": "p057",
+    "name": "Power Cracker",
+    "description": "Extra-loud cracker for maximum sound effect.",
+    "images": [
+      "https://picsum.photos/seed/fw-bc7a/400/400",
+      "https://picsum.photos/seed/fw-bc7b/400/400"
+    ],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 150,
+    "discountedPrice": 115
+  },
+  {
+    "id": "p058",
+    "name": "King Cracker",
+    "description": "The king of crackers – biggest bang in our range.",
+    "images": ["https://picsum.photos/seed/fw-bc8/400/400"],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 200,
+    "discountedPrice": 155
+  },
+  {
+    "id": "p059",
+    "name": "Thunder Clap",
+    "images": [],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 180,
+    "discountedPrice": 140
+  },
+  {
+    "id": "p060",
+    "name": "Super Bijili",
+    "description": "Heavy-duty bijili with superior sound quality.",
+    "images": ["https://picsum.photos/seed/fw-bc10/400/400"],
+    "category": ["Bijili Crackers"],
+    "actualPrice": 250,
+    "discountedPrice": 195
+  },
+  {
+    "id": "p061",
+    "name": "Fancy Box Small",
+    "description": "Assorted fancy items collection in a compact box – great value.",
+    "images": [
+      "https://picsum.photos/seed/fw-fi1a/400/400",
+      "https://picsum.photos/seed/fw-fi1b/400/400"
+    ],
+    "category": ["Fancy Items"],
+    "actualPrice": 350,
+    "discountedPrice": 275
+  },
+  {
+    "id": "p062",
+    "name": "Sparkle Wheel",
+    "description": "Wall-mounted spinning wheel that sprays multicolour sparks.",
+    "images": ["https://picsum.photos/seed/fw-fi2/400/400"],
+    "category": ["Fancy Items"],
+    "actualPrice": 200,
+    "discountedPrice": 155
+  },
+  {
+    "id": "p063",
+    "name": "Butterfly Effect",
+    "description": "Ground item that spins and flies like a butterfly.",
+    "images": [
+      "https://picsum.photos/seed/fw-fi3a/400/400",
+      "https://picsum.photos/seed/fw-fi3b/400/400"
+    ],
+    "category": ["Fancy Items"],
+    "actualPrice": 280,
+    "discountedPrice": 219
+  },
+  {
+    "id": "p064",
+    "name": "Electric Snake",
+    "images": [],
+    "category": ["Fancy Items"],
+    "actualPrice": 150,
+    "discountedPrice": 115
+  },
+  {
+    "id": "p065",
+    "name": "Color Volcano",
+    "description": "Ground-burst item that erupts like a colourful volcano.",
+    "images": ["https://picsum.photos/seed/fw-fi5/400/400"],
+    "category": ["Fancy Items"],
+    "actualPrice": 400,
+    "discountedPrice": 315
+  },
+  {
+    "id": "p066",
+    "name": "Dancing Flame",
+    "description": "Unique item that creates undulating flames with colour.",
+    "images": [
+      "https://picsum.photos/seed/fw-fi6a/400/400",
+      "https://picsum.photos/seed/fw-fi6b/400/400"
+    ],
+    "category": ["Fancy Items"],
+    "actualPrice": 350,
+    "discountedPrice": 275
+  },
+  {
+    "id": "p067",
+    "name": "Magic Spiral",
+    "description": "Spiral ground effect with mesmerising colour transitions.",
+    "images": ["https://picsum.photos/seed/fw-fi7/400/400"],
+    "category": ["Fancy Items"],
+    "actualPrice": 250,
+    "discountedPrice": 195
+  },
+  {
+    "id": "p068",
+    "name": "Sky Lantern",
+    "description": "Biodegradable sky lantern that floats gently into the night sky.",
+    "images": [
+      "https://picsum.photos/seed/fw-fi8a/400/400",
+      "https://picsum.photos/seed/fw-fi8b/400/400"
+    ],
+    "category": ["Fancy Items"],
+    "actualPrice": 180,
+    "discountedPrice": 140
+  },
+  {
+    "id": "p069",
+    "name": "Flying Saucer",
+    "description": "Disc-shaped aerial item that spins and rises with a whirring sound.",
+    "images": ["https://picsum.photos/seed/fw-fi9/400/400"],
+    "category": ["Fancy Items"],
+    "actualPrice": 500,
+    "discountedPrice": 390
+  },
+  {
+    "id": "p070",
+    "name": "Ground Spinner",
+    "images": [],
+    "category": ["Fancy Items"],
+    "actualPrice": 220,
+    "discountedPrice": 170
+  },
+  {
+    "id": "p071",
+    "name": "Roman Candle 5 Shot",
+    "description": "Classic roman candle that ejects five coloured stars sequentially.",
+    "images": [
+      "https://picsum.photos/seed/fw-fi11a/400/400",
+      "https://picsum.photos/seed/fw-fi11b/400/400"
+    ],
+    "category": ["Fancy Items"],
+    "actualPrice": 600,
+    "discountedPrice": 470
+  },
+  {
+    "id": "p072",
+    "name": "Peacock Tail",
+    "description": "Spreads like a peacock's tail with blue-green sparks.",
+    "images": ["https://picsum.photos/seed/fw-fi12/400/400"],
+    "category": ["Fancy Items"],
+    "actualPrice": 450,
+    "discountedPrice": 355
+  },
+  {
+    "id": "p073",
+    "name": "Dragon Fire",
+    "description": "Unleashes a dragon-like burst of red and orange sparks.",
+    "images": [
+      "https://picsum.photos/seed/fw-fi13a/400/400",
+      "https://picsum.photos/seed/fw-fi13b/400/400"
+    ],
+    "category": ["Fancy Items"],
+    "actualPrice": 380,
+    "discountedPrice": 299
+  },
+  {
+    "id": "p074",
+    "name": "Star Wheel",
+    "description": "Wall-mounted star wheel spinning with golden and silver sparks.",
+    "images": ["https://picsum.photos/seed/fw-fi14/400/400"],
+    "category": ["Fancy Items"],
+    "actualPrice": 320,
+    "discountedPrice": 250
+  },
+  {
+    "id": "p075",
+    "name": "Phoenix Fire",
+    "images": [],
+    "category": ["Fancy Items"],
+    "actualPrice": 700,
+    "discountedPrice": 549
+  },
+  {
+    "id": "p076",
+    "name": "Mini Atom Bomb",
+    "description": "Small but powerful single-shot bomb with a satisfying crack.",
+    "images": ["https://picsum.photos/seed/fw-bm1/400/400"],
+    "category": ["Bombs"],
+    "actualPrice": 100,
+    "discountedPrice": 75
+  },
+  {
+    "id": "p077",
+    "name": "Standard Bomb",
+    "images": [],
+    "category": ["Bombs"],
+    "actualPrice": 150,
+    "discountedPrice": 115
+  },
+  {
+    "id": "p078",
+    "name": "Hydrogen Bomb",
+    "description": "High-intensity bomb producing a sharp concussive sound.",
+    "images": [
+      "https://picsum.photos/seed/fw-bm3a/400/400",
+      "https://picsum.photos/seed/fw-bm3b/400/400"
+    ],
+    "category": ["Bombs"],
+    "actualPrice": 200,
+    "discountedPrice": 155
+  },
+  {
+    "id": "p079",
+    "name": "Color Bomb",
+    "description": "Bomb that releases a coloured flash upon detonation.",
+    "images": ["https://picsum.photos/seed/fw-bm4/400/400"],
+    "category": ["Bombs"],
+    "actualPrice": 180,
+    "discountedPrice": 140
+  },
+  {
+    "id": "p080",
+    "name": "Thunder Bomb",
+    "images": [],
+    "category": ["Bombs"],
+    "actualPrice": 250,
+    "discountedPrice": 195
+  },
+  {
+    "id": "p081",
+    "name": "King Bomb",
+    "description": "The loudest bomb in our collection – for professional displays only.",
+    "images": [
+      "https://picsum.photos/seed/fw-bm6a/400/400",
+      "https://picsum.photos/seed/fw-bm6b/400/400"
+    ],
+    "category": ["Bombs"],
+    "actualPrice": 350,
+    "discountedPrice": 275
+  },
+  {
+    "id": "p082",
+    "name": "Whistling Bomb",
+    "description": "Whistle bomb that sounds a shrill alarm before detonating.",
+    "images": ["https://picsum.photos/seed/fw-bm7/400/400"],
+    "category": ["Bombs"],
+    "actualPrice": 200,
+    "discountedPrice": 155
+  },
+  {
+    "id": "p083",
+    "name": "Mega Bomb",
+    "images": [],
+    "category": ["Bombs"],
+    "actualPrice": 400,
+    "discountedPrice": 315
+  },
+  {
+    "id": "p084",
+    "name": "Basic Snake Tablets",
+    "description": "Classic snake tablet that grows into a long ash snake when ignited.",
+    "images": ["https://picsum.photos/seed/fw-sn1/400/400"],
+    "category": ["Snake Tablets"],
+    "actualPrice": 50,
+    "discountedPrice": 38
+  },
+  {
+    "id": "p085",
+    "name": "Color Snake Tablets",
+    "description": "Snake tablets that produce a colourful ash snake.",
+    "images": [
+      "https://picsum.photos/seed/fw-sn2a/400/400",
+      "https://picsum.photos/seed/fw-sn2b/400/400"
+    ],
+    "category": ["Snake Tablets"],
+    "actualPrice": 80,
+    "discountedPrice": 59
+  },
+  {
+    "id": "p086",
+    "name": "Giant Snake Tablets",
+    "description": "Extra-large snake tablets that grow impressively long.",
+    "images": ["https://picsum.photos/seed/fw-sn3/400/400"],
+    "category": ["Snake Tablets"],
+    "actualPrice": 120,
+    "discountedPrice": 90
+  },
+  {
+    "id": "p087",
+    "name": "Silver Snake",
+    "images": [],
+    "category": ["Snake Tablets"],
+    "actualPrice": 100,
+    "discountedPrice": 75
+  },
+  {
+    "id": "p088",
+    "name": "Golden Snake",
+    "description": "Golden-toned snake tablets – a classic novelty item.",
+    "images": ["https://picsum.photos/seed/fw-sn5/400/400"],
+    "category": ["Snake Tablets"],
+    "actualPrice": 150,
+    "discountedPrice": 115
+  },
+  {
+    "id": "p089",
+    "name": "Toy Cap Gun",
+    "description": "Safe toy cap gun for children, comes with roll of caps.",
+    "images": [
+      "https://picsum.photos/seed/fw-nv1a/400/400",
+      "https://picsum.photos/seed/fw-nv1b/400/400"
+    ],
+    "category": ["Novelty Items"],
+    "actualPrice": 150,
+    "discountedPrice": 115
+  },
+  {
+    "id": "p090",
+    "name": "Smoke Bomb Red",
+    "description": "Red smoke bomb perfect for photography and events.",
+    "images": ["https://picsum.photos/seed/fw-nv2/400/400"],
+    "category": ["Novelty Items"],
+    "actualPrice": 120,
+    "discountedPrice": 89
+  },
+  {
+    "id": "p091",
+    "name": "Smoke Bomb Blue",
+    "images": [],
+    "category": ["Novelty Items"],
+    "actualPrice": 120,
+    "discountedPrice": 89
+  },
+  {
+    "id": "p092",
+    "name": "Color Smoke Bomb",
+    "description": "Dense, vibrant coloured smoke bomb available in multiple shades.",
+    "images": [
+      "https://picsum.photos/seed/fw-nv4a/400/400",
+      "https://picsum.photos/seed/fw-nv4b/400/400"
+    ],
+    "category": ["Novelty Items"],
+    "actualPrice": 150,
+    "discountedPrice": 115
+  },
+  {
+    "id": "p093",
+    "name": "Confetti Popper",
+    "description": "Pull-string popper that launches a burst of colourful confetti.",
+    "images": ["https://picsum.photos/seed/fw-nv5/400/400"],
+    "category": ["Novelty Items"],
+    "actualPrice": 80,
+    "discountedPrice": 59
+  },
+  {
+    "id": "p094",
+    "name": "Paper Cap 100s",
+    "images": [],
+    "category": ["Novelty Items"],
+    "actualPrice": 60,
+    "discountedPrice": 45
+  },
+  {
+    "id": "p095",
+    "name": "Fire Candle Set",
+    "description": "Decorative fire candles for cakes and celebrations – set of 6.",
+    "images": [
+      "https://picsum.photos/seed/fw-nv7a/400/400",
+      "https://picsum.photos/seed/fw-nv7b/400/400"
+    ],
+    "category": ["Novelty Items"],
+    "actualPrice": 250,
+    "discountedPrice": 195
+  },
+  {
+    "id": "p096",
+    "name": "Cake Candle Set",
+    "description": "Sparkle cake candles that shimmer beautifully on birthday cakes.",
+    "images": ["https://picsum.photos/seed/fw-nv8/400/400"],
+    "category": ["Novelty Items"],
+    "actualPrice": 180,
+    "discountedPrice": 140
+  },
+  {
+    "id": "p097",
+    "name": "Party Popper",
+    "images": [],
+    "category": ["Novelty Items"],
+    "actualPrice": 100,
+    "discountedPrice": 75
+  },
+  {
+    "id": "p098",
+    "name": "Thunder String",
+    "description": "String of tiny crackers that create a rapid-fire sound sequence.",
+    "images": ["https://picsum.photos/seed/fw-nv10/400/400"],
+    "category": ["Novelty Items"],
+    "actualPrice": 90,
+    "discountedPrice": 69
+  },
+  {
+    "id": "p099",
+    "name": "Magic Candle",
+    "description": "Re-lighting candle that playfully re-ignites after being blown out.",
+    "images": [
+      "https://picsum.photos/seed/fw-nv11a/400/400",
+      "https://picsum.photos/seed/fw-nv11b/400/400"
+    ],
+    "category": ["Novelty Items"],
+    "actualPrice": 120,
+    "discountedPrice": 89
+  },
+  {
+    "id": "p100",
+    "name": "Surprise Box",
+    "description": "Mystery assortment box with a curated selection of novelty items – no two boxes alike!",
+    "images": ["https://picsum.photos/seed/fw-nv12/400/400"],
+    "category": ["Novelty Items"],
+    "actualPrice": 500,
+    "discountedPrice": 390
+  }
+]

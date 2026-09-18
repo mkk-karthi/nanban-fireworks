@@ -1,26 +1,117 @@
 @import "tailwindcss";
+@import "aos/dist/aos.css";
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "swiper/css/autoplay";
+@import "swiper/css/effect-fade";
+
+/* Brand Design Tokens
+   Tailwind v4: --color-* tokens in @theme become bg-*, text-*, border-* classes.
+   --animate-* tokens become animate-* classes. */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --swiper-theme-color: #FFD700;
+  --swiper-navigation-color: #FFD700;
+  --swiper-pagination-color: #FFD700;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* Base Styles */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Warm festive light theme */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FFFBF0;
+  color: #1a1a1a;
+  font-family: var(--font-poppins), ui-sans-serif, sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: #FFF3D4; }
+::-webkit-scrollbar-thumb  { background: #C8102E; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #A00D25; }
+
+/* Hide scrollbar utility */
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.scrollbar-none,
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Swiper Theme-Colored Pagination */
+
+/* Base / Hero Banner Pagination (Dark background - Centered at bottom) */
+.swiper-pagination {
+  position: absolute !important;
+  bottom: 14px !important;
+  left: 0 !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 20 !important;
+  pointer-events: auto !important;
+}
+
+.swiper-pagination-bullet {
+  background: #FFFFFF !important;
+  opacity: 0.65 !important;
+  width: 9px !important;
+  height: 9px !important;
+  margin: 0 4px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #FFD700 !important;
+  opacity: 1 !important;
+  width: 24px !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.95) !important;
+}
+
+/* Gift Box Slider Pagination (Light Festive Background - Below cards) */
+.giftbox-swiper .swiper-pagination {
+  position: absolute !important;
+  bottom: 0px !important;
+  left: 0 !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.giftbox-swiper .swiper-pagination-bullet {
+  background: #C8102E !important;
+  opacity: 0.25 !important;
+  width: 8px !important;
+  height: 8px !important;
+  margin: 0 4px !important;
+  cursor: pointer !important;
+}
+
+.giftbox-swiper .swiper-pagination-bullet-active {
+  background: #C8102E !important;
+  opacity: 1 !important;
+  width: 24px !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 0 8px rgba(200, 16, 46, 0.4) !important;
+}
+
+/* Gift Box Slider Equal Height Slides */
+.giftbox-swiper .swiper-wrapper {
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+.giftbox-swiper .swiper-slide {
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+

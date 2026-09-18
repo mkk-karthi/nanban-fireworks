@@ -1,0 +1,106 @@
+[
+  {
+    "id": "gb001",
+    "name": "Budget Starter Pack",
+    "description": "Perfect beginner pack with sparklers, crackers, and ground items.",
+    "images": [
+      "https://picsum.photos/seed/gb1a/400/400",
+      "https://picsum.photos/seed/gb1b/400/400"
+    ],
+    "category": ["Gift Box", "Sparklers", "Bijili Crackers"],
+    "actualPrice": 120,
+    "discountedPrice": 99,
+    "isGiftBox": true
+  },
+  {
+    "id": "gb002",
+    "name": "Kids Delight Pack",
+    "description": "Safe & fun items for children – sparklers, confetti poppers, snake tablets, and toy cap guns.",
+    "images": [
+      "https://picsum.photos/seed/gb2a/400/400",
+      "https://picsum.photos/seed/gb2b/400/400"
+    ],
+    "category": ["Gift Box", "Novelty Items", "Sparklers"],
+    "actualPrice": 120,
+    "discountedPrice": 99,
+    "isGiftBox": true
+  },
+  {
+    "id": "gb003",
+    "name": "Family Fun Pack",
+    "description": "A well-rounded assortment for the whole family – ground items, sparklers, and sky shots.",
+    "images": [
+      "https://picsum.photos/seed/gb3a/400/400",
+      "https://picsum.photos/seed/gb3b/400/400"
+    ],
+    "category": ["Gift Box", "Sparklers", "Sky Shots", "Flower Pots"],
+    "actualPrice": 600,
+    "discountedPrice": 499,
+    "isGiftBox": true
+  },
+  {
+    "id": "gb004",
+    "name": "Diwali Celebration Box",
+    "description": "Everything you need for Diwali – rockets, sky shots, ladi, chakkar and sparklers.",
+    "images": [
+      "https://picsum.photos/seed/gb4a/400/400",
+      "https://picsum.photos/seed/gb4b/400/400"
+    ],
+    "category": ["Gift Box", "Rockets", "Sky Shots", "Bijili Crackers"],
+    "actualPrice": 600,
+    "discountedPrice": 499,
+    "isGiftBox": true
+  },
+  {
+    "id": "gb005",
+    "name": "Sky Show Special",
+    "description": "Sky-shot heavy pack – 5-shot shells, rockets, roman candles and more for aerial display.",
+    "images": [
+      "https://picsum.photos/seed/gb5a/400/400",
+      "https://picsum.photos/seed/gb5b/400/400"
+    ],
+    "category": ["Gift Box", "Sky Shots", "Rockets", "Fancy Items"],
+    "actualPrice": 600,
+    "discountedPrice": 499,
+    "isGiftBox": true
+  },
+  {
+    "id": "gb006",
+    "name": "Premium Diwali Pack",
+    "description": "Our most popular Diwali pack with 30+ items including premium sky shells, rockets, and fountains.",
+    "images": [
+      "https://picsum.photos/seed/gb6a/400/400",
+      "https://picsum.photos/seed/gb6b/400/400"
+    ],
+    "category": ["Gift Box", "Sky Shots", "Rockets", "Flower Pots", "Sparklers"],
+    "actualPrice": 2500,
+    "discountedPrice": 1999,
+    "isGiftBox": true
+  },
+  {
+    "id": "gb007",
+    "name": "Wedding Special Box",
+    "description": "Grand wedding crackers pack – fountains, sparklers, sky lanterns and brocade shells.",
+    "images": [
+      "https://picsum.photos/seed/gb7a/400/400",
+      "https://picsum.photos/seed/gb7b/400/400"
+    ],
+    "category": ["Gift Box", "Fancy Items", "Sky Shots", "Sparklers"],
+    "actualPrice": 2500,
+    "discountedPrice": 1999,
+    "isGiftBox": true
+  },
+  {
+    "id": "gb008",
+    "name": "Grand Celebration Mega Box",
+    "description": "Our ultimate all-in-one mega box with 60+ items for the grandest celebrations.",
+    "images": [
+      "https://picsum.photos/seed/gb8a/400/400",
+      "https://picsum.photos/seed/gb8b/400/400"
+    ],
+    "category": ["Gift Box", "Sky Shots", "Rockets", "Fancy Items", "Flower Pots", "Sparklers"],
+    "actualPrice": 2500,
+    "discountedPrice": 1999,
+    "isGiftBox": true
+  }
+]
