@@ -2,13 +2,15 @@ import type { Product, CartTotals } from "./types";
 
 // Price Formatting
 
+/** Shared formatter instance – created once at module load, not per call */
+const priceFormatter = new Intl.NumberFormat("en-IN", {
+  style: "currency",
+  currency: "INR",
+  maximumFractionDigits: 0,
+});
+
 /** Format a number as Indian Rupee (e.g. ₹1,250) */
-export const formatPrice = (price: number): string =>
-  new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(price);
+export const formatPrice = (price: number): string => priceFormatter.format(price);
 
 // Discount Helpers
 

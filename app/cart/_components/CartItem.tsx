@@ -1,12 +1,12 @@
 "use client";
 
 import { memo, useCallback } from "react";
-import Image from "next/image";
 import { Trash2, Package } from "lucide-react";
 import type { Product } from "../../_lib/types";
 import { formatPrice } from "../../_lib/utils";
 import { useCartStore } from "../../_store/cartStore";
 import { QuantitySelector } from "../../_components/common/QuantitySelector";
+import { ImageWithFallback } from "../../_components/common/ImageWithFallback";
 
 interface CartItemProps {
   product: Product;
@@ -49,16 +49,18 @@ export const CartItem = memo(function CartItem({ product, quantity }: CartItemPr
         {/* Product image */}
         <div className="relative size-16 sm:size-20 shrink-0 rounded-xl overflow-hidden bg-linear-to-br from-amber-50 to-orange-50 border border-amber-100">
           {images.length > 0 ? (
-            <Image
+            <ImageWithFallback
               src={images[0]}
               alt={product.name}
               fill
+              loading="lazy"
               className="object-cover"
               sizes="80px"
+              fallbackIconSize={26}
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Package size={26} className="text-red-300" />
+            <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+              <Package size={26} className="text-red-300" aria-hidden="true" />
             </div>
           )}
         </div>
@@ -131,7 +133,7 @@ export const CartItem = memo(function CartItem({ product, quantity }: CartItemPr
             className="size-8 rounded-xl flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all duration-200 cursor-pointer"
             title="Remove item"
           >
-            <Trash2 size={16} strokeWidth={2.2} />
+            <Trash2 size={16} strokeWidth={2.2} aria-hidden="true" />
           </button>
         </div>
 

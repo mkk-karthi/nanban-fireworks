@@ -1,15 +1,13 @@
 "use client";
 
 import { memo, useCallback, useState, useRef } from "react";
-import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay, Pagination, A11y } from "swiper/modules";
 import {
   Gift,
   ShoppingCart,
   CheckCircle2,
-  Package,
   ChevronLeft,
   ChevronRight,
   Minus,
@@ -19,13 +17,16 @@ import type { Product } from "../../_lib/types";
 import { formatPrice, getDiscountPercent } from "../../_lib/utils";
 import { useCartStore } from "../../_store/cartStore";
 import { Lightbox, LightboxTrigger } from "../common/Lightbox";
+import { ImageWithFallback } from "../common/ImageWithFallback";
+import { usePrefersReducedMotion } from "../../_hooks/usePrefersReducedMotion";
 
 interface GiftBoxCardProps {
   box: Product;
+  index: number;
 }
 
 /** Individual gift box card – equal height design with reactive quantity controls. */
-const GiftBoxCard = memo(function GiftBoxCard({ box }: GiftBoxCardProps) {
+const GiftBoxCard = memo(function GiftBoxCard({ box, index }: GiftBoxCardProps) {
   const hasHydrated = useCartStore((s) => s.hasHydrated);
   const rawCartQty = useCartStore((s) => {
     const item = s.items.find((i) => i.productId === box.id);
@@ -59,17 +60,24 @@ const GiftBoxCard = memo(function GiftBoxCard({ box }: GiftBoxCardProps) {
             ? "border-red-500 ring-4 ring-red-500/15 shadow-md shadow-red-500/15 bg-linear-to-b from-amber-50/60 via-white to-white"
             : "border-yellow-300 hover:border-yellow-400 bg-white shadow-xs hover:shadow-lg hover:shadow-amber-500/10"
         }`}
+        aria-label={box.name}
       >
         {/* Gift label */}
-        <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1 bg-linear-to-r from-yellow-400 to-amber-500 text-red-950 text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md">
-          <Gift size={11} strokeWidth={2.5} />
+        <div
+          className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1 bg-linear-to-r from-yellow-400 to-amber-500 text-red-950 text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md"
+          aria-label="Gift combo"
+        >
+          <Gift size={11} strokeWidth={2.5} aria-hidden="true" />
           <span>COMBO</span>
         </div>
 
-        {/* In-cart status badge for Gift Box */}
+        {/* In-cart status badge */}
         {isInCart && (
-          <span className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 bg-linear-to-r from-red-600 via-red-700 to-amber-600 text-white text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md border border-white/50 ring-2 ring-red-500/20">
-            <CheckCircle2 size={11} strokeWidth={2.5} className="text-yellow-300" />
+          <span
+            className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 bg-linear-to-r from-red-600 via-red-700 to-amber-600 text-white text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md border border-white/50 ring-2 ring-red-500/20"
+            aria-label={`${currentQty} in cart`}
+          >
+            <CheckCircle2 size={11} strokeWidth={2.5} className="text-yellow-300" aria-hidden="true" />
             <span>{currentQty} in Cart</span>
           </span>
         )}
@@ -82,39 +90,57 @@ const GiftBoxCard = memo(function GiftBoxCard({ box }: GiftBoxCardProps) {
             e.stopPropagation();
             if (images.length > 0) setLightboxOpen(true);
           }}
+          role={images.length > 0 ? "button" : undefined}
+          aria-label={images.length > 0 ? `View ${box.name} images` : undefined}
+          tabIndex={images.length > 0 ? 0 : undefined}
+          onKeyDown={(e) => {
+            if (images.length > 0 && (e.key === "Enter" || e.key === " ")) {
+              e.preventDefault();
+              setLightboxOpen(true);
+            }
+          }}
         >
           {images.length > 0 ? (
             <>
-              <Image
+              <ImageWithFallback
                 src={images[0]}
                 alt={box.name}
                 fill
+                loading={index < 3 ? "eager" : "lazy"}
+                priority={index < 3}
                 className="object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+                fallbackIconSize={40}
               />
               {/* Subtle hover gradient aura */}
               <div className="absolute inset-0 bg-linear-to-t from-red-950/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </>
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Package size={40} className="text-yellow-400" />
-            </div>
+            <ImageWithFallback
+              src=""
+              alt={box.name}
+              fill
+              fallbackIconSize={40}
+            />
           )}
 
           {images.length > 0 && <LightboxTrigger onClick={() => setLightboxOpen(true)} />}
 
           {/* Discount tag */}
           {discountPercent > 0 && (
-            <span className="absolute bottom-2 right-2 z-10 bg-red-600 text-white text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded-full shadow-md">
+            <span
+              className="absolute bottom-2 right-2 z-10 bg-red-600 text-white text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded-full shadow-md"
+              aria-label={`${discountPercent}% discount`}
+            >
               {discountPercent}% OFF
             </span>
           )}
         </div>
 
-        {/* Card Body (Equal height flex container with clean compact spacing) */}
+        {/* Card Body */}
         <div className="p-2.5 sm:p-3.5 flex flex-col flex-1">
           {/* Categories */}
-          <div className="flex flex-wrap gap-1 mb-1">
+          <div className="flex flex-wrap gap-1 mb-1" aria-label="Categories">
             {box.category
               .filter((c) => c !== "Gift Box")
               .slice(0, 2)
@@ -132,18 +158,24 @@ const GiftBoxCard = memo(function GiftBoxCard({ box }: GiftBoxCardProps) {
             {box.name}
           </h3>
 
-          {/* Pricing & Add to Cart button (pinned to bottom) */}
+          {/* Pricing & Add to Cart (pinned to bottom) */}
           <div className="pt-2 border-t border-amber-100/80 mt-auto space-y-1.5">
             <div className="flex items-baseline justify-between">
-              <span className="text-base sm:text-lg font-black text-red-700">
+              <span
+                className="text-base sm:text-lg font-black text-red-700"
+                aria-label={`Price: ${formatPrice(box.discountedPrice)}`}
+              >
                 {formatPrice(box.discountedPrice)}
               </span>
-              <span className="text-[11px] sm:text-xs text-gray-400 line-through">
+              <span
+                className="text-[11px] sm:text-xs text-gray-400 line-through"
+                aria-label={`Original: ${formatPrice(box.actualPrice)}`}
+              >
                 {formatPrice(box.actualPrice)}
               </span>
             </div>
 
-            {/* Controls: Full-width adaptive Add Combo or Stepper */}
+            {/* Controls */}
             <div className="h-8 sm:h-9 w-full">
               {!isInCart ? (
                 <button
@@ -152,31 +184,39 @@ const GiftBoxCard = memo(function GiftBoxCard({ box }: GiftBoxCardProps) {
                   aria-label={`Add ${box.name} combo to cart`}
                   className="w-full h-full flex items-center justify-center gap-1 bg-linear-to-r from-red-600 via-red-700 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white text-[11px] sm:text-xs font-bold px-2 rounded-xl transition-all duration-200 active:scale-95 shadow-xs hover:shadow-md cursor-pointer select-none"
                 >
-                  <ShoppingCart size={13} strokeWidth={2.5} />
+                  <ShoppingCart size={13} strokeWidth={2.5} aria-hidden="true" />
                   <span>Add Combo</span>
                 </button>
               ) : (
-                <div className="w-full h-full flex items-center justify-between bg-red-50/90 border border-red-300 rounded-xl px-1 shadow-xs">
+                <div
+                  className="w-full h-full flex items-center justify-between bg-red-50/90 border border-red-300 rounded-xl px-1 shadow-xs"
+                  role="group"
+                  aria-label={`${box.name} quantity: ${currentQty}`}
+                >
                   <button
                     type="button"
                     onClick={handleDecrease}
-                    aria-label="Decrease quantity"
+                    aria-label={`Decrease ${box.name} quantity`}
                     className="size-7 flex items-center justify-center rounded-lg bg-white hover:bg-red-600 text-red-700 hover:text-white border border-red-200 shadow-xs transition-colors active:scale-90 cursor-pointer shrink-0"
                   >
-                    <Minus size={13} strokeWidth={3} />
+                    <Minus size={13} strokeWidth={3} aria-hidden="true" />
                   </button>
 
-                  <span className="text-xs font-black text-red-700 select-none px-1 truncate">
+                  <span
+                    className="text-xs font-black text-red-700 select-none px-1 truncate"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
                     {currentQty} in Cart
                   </span>
 
                   <button
                     type="button"
                     onClick={handleIncrease}
-                    aria-label="Increase quantity"
+                    aria-label={`Increase ${box.name} quantity`}
                     className="size-7 flex items-center justify-center rounded-lg bg-yellow-400 hover:bg-yellow-500 text-red-950 font-bold shadow-xs transition-colors active:scale-90 cursor-pointer shrink-0"
                   >
-                    <Plus size={13} strokeWidth={3} />
+                    <Plus size={13} strokeWidth={3} aria-hidden="true" />
                   </button>
                 </div>
               )}
@@ -195,7 +235,7 @@ const GiftBoxCard = memo(function GiftBoxCard({ box }: GiftBoxCardProps) {
   );
 });
 
-// Section
+// ─── Section ──────────────────────────────────────────────────────────────────
 
 interface GiftBoxSectionProps {
   giftBoxes: Product[];
@@ -204,13 +244,22 @@ interface GiftBoxSectionProps {
 /**
  * Gift Box showcase using Swiper slider for smooth touch and mouse navigation,
  * responsive cards, and AOS entrance animations.
+ *
+ * A11y: aria-roledescription="carousel", aria-label on section and slides.
+ * Performance: autoplay disabled when prefers-reduced-motion is active.
  */
 export function GiftBoxSection({ giftBoxes }: GiftBoxSectionProps) {
   const swiperRef = useRef<SwiperType | null>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   if (giftBoxes.length === 0) return null;
 
   return (
-    <section className="py-10 bg-linear-to-b from-amber-50/70 via-white to-amber-50/30 overflow-hidden">
+    <section
+      className="py-10 bg-linear-to-b from-amber-50/70 via-white to-amber-50/30 overflow-hidden"
+      aria-label="Curated Gift Box Combos"
+      aria-roledescription="carousel"
+    >
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div
@@ -219,8 +268,11 @@ export function GiftBoxSection({ giftBoxes }: GiftBoxSectionProps) {
           className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-4 mb-6"
         >
           <div className="flex items-center gap-3">
-            <div className="size-11 bg-linear-to-br from-yellow-400 to-amber-500 rounded-2xl flex items-center justify-center shadow-md shadow-yellow-500/20 shrink-0">
-              <Gift size={22} className="text-red-950" strokeWidth={2.5} />
+            <div
+              className="size-11 bg-linear-to-br from-yellow-400 to-amber-500 rounded-2xl flex items-center justify-center shadow-md shadow-yellow-500/20 shrink-0"
+              aria-hidden="true"
+            >
+              <Gift size={22} className="text-red-950" strokeWidth={2.5} aria-hidden="true" />
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl font-black text-gray-900">
@@ -233,7 +285,10 @@ export function GiftBoxSection({ giftBoxes }: GiftBoxSectionProps) {
           </div>
 
           {/* Horizontally scrollable price tags on mobile */}
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none w-full sm:w-auto py-1 shrink-0 -mx-4 px-4 sm:mx-0 sm:px-0 touch-pan-x overscroll-x-contain">
+          <div
+            className="flex items-center gap-2 overflow-x-auto scrollbar-none w-full sm:w-auto py-1 shrink-0 -mx-4 px-4 sm:mx-0 sm:px-0 touch-pan-x overscroll-x-contain"
+            aria-label="Price ranges"
+          >
             {["₹99", "₹499", "₹1,999", "₹4,999"].map((p) => (
               <span
                 key={p}
@@ -248,7 +303,7 @@ export function GiftBoxSection({ giftBoxes }: GiftBoxSectionProps) {
         {/* Swiper Carousel with Custom Floating Navigation */}
         <div data-aos="fade-up" data-aos-duration="700" className="relative group/carousel">
           <Swiper
-            modules={[Autoplay, Pagination]}
+            modules={[Autoplay, Pagination, A11y]}
             onBeforeInit={(swiper) => {
               swiperRef.current = swiper;
             }}
@@ -256,45 +311,62 @@ export function GiftBoxSection({ giftBoxes }: GiftBoxSectionProps) {
             slidesPerView={2}
             loop={true}
             pagination={{ clickable: true }}
-            autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+            autoplay={
+              prefersReducedMotion
+                ? false
+                : { delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }
+            }
+            speed={prefersReducedMotion ? 0 : 500}
             breakpoints={{
               640: { slidesPerView: 3, spaceBetween: 14 },
               768: { slidesPerView: 4, spaceBetween: 16 },
               1024: { slidesPerView: 5, spaceBetween: 16 },
             }}
             className="giftbox-swiper pb-12! pt-3! overflow-hidden items-stretch"
+            a11y={{
+              prevSlideMessage: "Previous gift box",
+              nextSlideMessage: "Next gift box",
+            }}
           >
-            {giftBoxes.map((box) => (
-              <SwiperSlide key={box.id} className="h-auto pb-2 flex flex-col">
-                <GiftBoxCard box={box} />
+            {giftBoxes.map((box, index) => (
+              <SwiperSlide
+                key={box.id}
+                className="h-auto pb-2 flex flex-col"
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`Gift box ${index + 1} of ${giftBoxes.length}`}
+              >
+                <GiftBoxCard box={box} index={index} />
               </SwiperSlide>
             ))}
           </Swiper>
 
-          {/* Floating Side Navigation Controls (Visible on mobile & desktop) */}
+          {/* Floating Side Navigation Controls */}
           <button
             type="button"
             onClick={() => swiperRef.current?.slidePrev()}
-            aria-label="Previous Gift Box"
+            aria-label="Previous gift box"
             className="flex absolute -left-1.5 sm:-left-3 lg:-left-4 top-2/5 -translate-y-1/2 z-20 size-8 sm:size-10 lg:size-11 rounded-full bg-white/95 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-red-600 hover:text-yellow-200 border-2 border-amber-300 hover:border-yellow-400 shadow-md sm:shadow-lg shadow-amber-900/15 hover:shadow-xl hover:shadow-red-500/25 items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 cursor-pointer opacity-95 hover:opacity-100 group/sidebtn backdrop-blur-xs"
           >
             <ChevronLeft
               size={18}
               strokeWidth={2.5}
               className="transition-transform duration-300 ease-out group-hover/sidebtn:-translate-x-0.5"
+              aria-hidden="true"
             />
           </button>
 
           <button
             type="button"
             onClick={() => swiperRef.current?.slideNext()}
-            aria-label="Next Gift Box"
+            aria-label="Next gift box"
             className="flex absolute -right-1.5 sm:-right-3 lg:-right-4 top-2/5 -translate-y-1/2 z-20 size-8 sm:size-10 lg:size-11 rounded-full bg-white/95 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-red-600 hover:text-yellow-200 border-2 border-amber-300 hover:border-yellow-400 shadow-md sm:shadow-lg shadow-amber-900/15 hover:shadow-xl hover:shadow-red-500/25 items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 cursor-pointer opacity-95 hover:opacity-100 group/sidebtn backdrop-blur-xs"
           >
             <ChevronRight
               size={18}
               strokeWidth={2.5}
               className="transition-transform duration-300 ease-out group-hover/sidebtn:translate-x-0.5"
+              aria-hidden="true"
             />
           </button>
         </div>

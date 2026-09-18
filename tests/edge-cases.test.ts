@@ -133,6 +133,17 @@ describe("Comprehensive Edge Cases Test Suite", () => {
       store.setHasHydrated(false);
       assert.strictEqual(useCartStore.getState().hasHydrated, false);
     });
+
+    it("getTotalUnits returns 0 for empty cart without any items", () => {
+      // Cart is cleared in beforeEach; confirm getTotalUnits works on empty state
+      assert.strictEqual(useCartStore.getState().getTotalUnits(), 0);
+      assert.strictEqual(useCartStore.getState().items.length, 0);
+    });
+
+    it("isInCart returns false for any product when cart is empty", () => {
+      assert.strictEqual(useCartStore.getState().isInCart("p001"), false);
+      assert.strictEqual(useCartStore.getState().isInCart(""), false);
+    });
   });
 
   // 2. PRICING & CALCULATION UTILITIES EDGE CASES
@@ -218,6 +229,24 @@ describe("Comprehensive Edge Cases Test Suite", () => {
       assert.strictEqual(clamp(25, 10, 20), 20, "Should clamp to max");
       assert.strictEqual(clamp(15, 10, 20), 15, "Should preserve in-bounds value");
       assert.strictEqual(clamp(10, 10, 10), 10, "Should handle min === max");
+    });
+
+    it("formatPrice for fractional values below ₹1 does not throw", () => {
+      // Prices in the catalog are always integers, but guard against edge inputs
+      assert.doesNotThrow(() => formatPrice(0));
+      assert.doesNotThrow(() => formatPrice(0.5));
+      const result = formatPrice(0);
+      assert.ok(typeof result === "string" && result.includes("0"));
+    });
+
+    it("computeCartTotals skips items whose product is not found (itemCount excludes them)", () => {
+      const allValidItems = products.slice(0, 3).map((p) => ({
+        productId: p.id,
+        quantity: 1,
+      }));
+      const withGhost = [...allValidItems, { productId: "__ghost__", quantity: 5 }];
+      const totals = computeCartTotals(withGhost, products);
+      assert.strictEqual(totals.itemCount, 3, "Ghost product should be excluded from itemCount");
     });
 
     it("validates generateInvoiceNumber format and uniqueness collision safety", () => {

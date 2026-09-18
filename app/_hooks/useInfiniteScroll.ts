@@ -3,14 +3,27 @@ import { PAGINATION } from "../_lib/constants";
 
 /**
  * Enhanced infinite scroll hook with lazy loading state and intersection observer.
+ *
+ * Optimizations:
+ * - Direct render-time state adjustment when `items` reference changes (standard React pattern).
+ * - Observer is disconnected on cleanup.
  */
 export function useInfiniteScroll<T>(
   items: T[],
   pageSize: number = PAGINATION.productsPerPage
 ) {
+  const [prevItems, setPrevItems] = useState(items);
   const [page, setPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
   const sentinelRef = useRef<HTMLDivElement>(null);
+
+  // When items change (e.g. search/filter changed), adjust state during render
+  if (items !== prevItems) {
+    setPrevItems(items);
+    setPage(1);
+    setIsLoadingMore(false);
+  }
 
   // Slice visible items
   const visibleItems = useMemo(
@@ -20,13 +33,6 @@ export function useInfiniteScroll<T>(
 
   const hasMore = visibleItems.length < items.length;
 
-  const [prevItems, setPrevItems] = useState(items);
-  if (items !== prevItems) {
-    setPrevItems(items);
-    setPage(1);
-    setIsLoadingMore(false);
-  }
-
   // Observe sentinel element to trigger next page load
   useEffect(() => {
     if (!hasMore || isLoadingMore) return;
@@ -35,7 +41,6 @@ export function useInfiniteScroll<T>(
       ([entry]) => {
         if (entry.isIntersecting && hasMore) {
           setIsLoadingMore(true);
-          // Small progressive throttle for smooth lazy loading animation
           const timer = setTimeout(() => {
             setPage((prev) => prev + 1);
             setIsLoadingMore(false);
@@ -50,9 +55,15 @@ export function useInfiniteScroll<T>(
     if (el) observer.observe(el);
 
     return () => {
-      if (el) observer.unobserve(el);
+      // Disconnect fully to avoid memory leaks
+      observer.disconnect();
     };
   }, [hasMore, isLoadingMore, visibleItems.length]);
 
-  return { visibleItems, sentinelRef, hasMore, isLoadingMore };
+  return {
+    visibleItems,
+    sentinelRef,
+    hasMore,
+    isLoadingMore,
+  };
 }

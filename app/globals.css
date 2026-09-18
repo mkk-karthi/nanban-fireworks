@@ -30,7 +30,26 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* ─── Accessibility – Focus Rings ──────────────────────────────────────────── */
+
+/* Global visible focus ring for keyboard navigation */
+:focus-visible {
+  outline: 2px solid #C8102E;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Interactive elements should never lose focus visibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #C8102E;
+  outline-offset: 3px;
+}
+
+/* ─── Custom Scrollbar ─────────────────────────────────────────────────────── */
 ::-webkit-scrollbar        { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track  { background: #FFF3D4; }
 ::-webkit-scrollbar-thumb  { background: #C8102E; border-radius: 9999px; }
@@ -42,7 +61,7 @@ html {
 .scrollbar-none,
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Swiper Theme-Colored Pagination */
+/* ─── Swiper Theme-Colored Pagination ──────────────────────────────────────── */
 
 /* Base / Hero Banner Pagination (Dark background - Centered at bottom) */
 .swiper-pagination {
@@ -115,3 +134,65 @@ html {
   flex-direction: column !important;
 }
 
+/* ─── CSS Containment – Performance ────────────────────────────────────────── */
+
+/* Product grid section: contain layout/paint to avoid costly full-page reflows */
+#products {
+  contain: layout style;
+}
+
+/* ─── Touch Device Optimizations ───────────────────────────────────────────── */
+
+/* Prevent accidental horizontal scrolling on touch while vertical scrolling */
+.touch-pan-x {
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─── Reduced Motion – Accessibility ───────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Kill all AOS animations */
+  [data-aos] {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+
+  /* Kill Swiper slide transitions */
+  .swiper-wrapper {
+    transition: none !important;
+  }
+
+  /* Kill CSS animations */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Keep html scroll behaviour instant */
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ─── Hover-only Effects (Pointer-safe) ────────────────────────────────────── */
+
+/*
+  On touch-only devices (no hover pointer), suppress hover transforms
+  that would otherwise "stick" after a tap, causing visual jank.
+*/
+@media (hover: none) and (pointer: coarse) {
+  .hover\:scale-105:hover,
+  .hover\:scale-110:hover,
+  .group-hover\/nav\:scale-110:hover,
+  .group-hover\/sidebtn\:scale-110:hover {
+    transform: none !important;
+  }
+}
