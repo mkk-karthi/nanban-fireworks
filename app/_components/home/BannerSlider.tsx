@@ -104,13 +104,19 @@ export function BannerSlider() {
                     aria-atomic="true"
                   >
                     {/* Festive Pill Badge */}
-                    <div data-aos="fade-right" data-aos-delay="100" data-aos-duration="600">
-                      <span className="inline-flex items-center gap-1.5 bg-yellow-400/20 text-yellow-300 border border-yellow-400/50 text-[10px] sm:text-xs font-black uppercase tracking-widest px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full backdrop-blur-sm shadow-sm">
-                        <Sparkles size={13} className="text-yellow-400 animate-pulse" aria-hidden="true" />
-                        <span>Sivakasi Direct Factory Sale</span>
-                      </span>
-                    </div>
-
+                    <span
+                      data-aos="fade-right"
+                      data-aos-delay="100"
+                      data-aos-duration="600"
+                      className="inline-flex items-center gap-1.5 bg-yellow-400/20 text-yellow-300 border border-yellow-400/50 text-[10px] sm:text-xs font-black uppercase tracking-widest px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full backdrop-blur-sm shadow-sm"
+                    >
+                      <Sparkles
+                        size={13}
+                        className="text-yellow-400 animate-pulse"
+                        aria-hidden="true"
+                      />
+                      <span>Sivakasi Direct Factory Sale</span>
+                    </span>
                     {/* Main Headline */}
                     <h1
                       data-aos="fade-right"

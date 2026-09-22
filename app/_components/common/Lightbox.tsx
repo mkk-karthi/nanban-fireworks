@@ -86,7 +86,7 @@ export function Lightbox({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-999 flex items-center justify-center bg-black/80 backdrop-blur-md overflow-y-auto select-none"
+          className="fixed inset-0 z-999 flex items-center justify-center bg-black/80 backdrop-blur-md overflow-hidden select-none"
           onClick={onClose}
         >
           <motion.div
@@ -121,26 +121,15 @@ export function Lightbox({
             </div>
 
             {/* Main Stage: Image Container */}
-            <div className="relative w-full max-w-4xl flex items-center justify-center p-3 sm:p-4 overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentIndex}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="relative w-full h-[60vh] sm:h-[68vh] flex items-center justify-center"
-                >
-                  <Image
-                    src={images[currentIndex]}
-                    alt={`${productName} – image ${currentIndex + 1}`}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 1024px) 100vw, 800px"
-                    priority
-                  />
-                </motion.div>
-              </AnimatePresence>
+            <div className="relative w-full h-[60vh] sm:h-[68vh] flex items-center justify-center p-3 sm:p-4">
+              <Image
+                src={images[currentIndex]}
+                alt={`${productName} – image ${currentIndex + 1}`}
+                fill
+                className="object-contain"
+                sizes="(max-width: 1024px) 100vw, 800px"
+                priority
+              />
 
               {/* Left navigation arrow */}
               {images.length > 1 && (
@@ -148,7 +137,7 @@ export function Lightbox({
                   type="button"
                   onClick={goPrev}
                   aria-label="Previous image"
-                  className="absolute left-3 top-1/2 -translate-y-1/2 size-9 sm:size-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-red-600 text-white shadow-lg transition-all duration-200 active:scale-90 cursor-pointer z-10"
+                  className="absolute left-3 lg:left-2/12 top-1/2 -translate-y-1/2 size-9 sm:size-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-red-600 text-white shadow-lg transition-all duration-200 active:scale-90 cursor-pointer z-10"
                 >
                   <ChevronLeft size={22} />
                 </button>
@@ -160,7 +149,7 @@ export function Lightbox({
                   type="button"
                   onClick={goNext}
                   aria-label="Next image"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 size-9 sm:size-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-red-600 text-white shadow-lg transition-all duration-200 active:scale-90 cursor-pointer z-10"
+                  className="absolute right-3 lg:right-2/12 top-1/2 -translate-y-1/2 size-9 sm:size-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-red-600 text-white shadow-lg transition-all duration-200 active:scale-90 cursor-pointer z-10"
                 >
                   <ChevronRight size={22} />
                 </button>
