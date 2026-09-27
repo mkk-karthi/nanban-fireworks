@@ -1,14 +1,15 @@
 # MKK Fireworks – Antigravity Project Guide & Instructions
 
 ## Project Overview
-**MKK Fireworks** is a high-performance, festive fireworks e-commerce platform for Sivakasi direct factory wholesale and retail sales.
+**MKK Fireworks** is a festive fireworks e-commerce platform for Sivakasi direct factory wholesale and retail dispatch across Tamil Nadu.
 
-- **Framework**: Next.js 16 (App Router) with React 19 and TypeScript 5
+- **Framework**: Next.js 16 (App Router) with React 19 & TypeScript 5
 - **Styling**: Tailwind CSS v4 with PostCSS
-- **State Management**: Zustand with `localStorage` persistence (`app/_store/cartStore.ts`)
+- **State Management**: Zustand with `localStorage` persistence (`src/store/cartStore.ts`)
 - **Animation & Motion**: Framer Motion, Swiper 11, and AOS (Animate on Scroll)
-- **PDF & Forms**: jsPDF + jspdf-autotable (client-side estimate & invoice generation), Zod form validation
-- **Theme**: Festive Warm Light Theme (`#FFFBF0`, Crimson `#C8102E`, Golden Yellow `#FFD700`, Amber `#FF6B00`)
+- **PDF Engine**: jsPDF + jspdf-autotable (Festive Estimate & Order Invoice generation)
+- **Testing Engine**: Jest (`next/jest`), `@testing-library/react` (React 19), `@testing-library/dom`, `@testing-library/jest-dom`
+- **Site Configuration**: Single source of truth (`src/config/site.ts`)
 
 ---
 
@@ -17,90 +18,95 @@
 # Run local development server
 npm run dev
 
+# Run TypeScript type check
+npx tsc --noEmit
+
+# Run ESLint linter
+npm run lint
+
+# Run automated tests (Jest + React Testing Library)
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
 # Build production bundle
 npm run build
-
-# Run linter
-npm run lint
 ```
 
 ---
 
+## Testing Architecture & Conventions
+
+1. **Next.js & React 19 Testing Stack**:
+   - Built on `next/jest.js` (`jest.config.mjs`) with automatic SWC transformation and `@/*` alias resolution.
+   - Setup file `jest.setup.ts` polyfills `TextEncoder`, `TextDecoder`, `window.matchMedia`, `ResizeObserver`, `IntersectionObserver`, and mocks `next/image`, `swiper/react`, `aos`, and `jsPDF`.
+
+2. **DOM Queries & Accessibility First**:
+   - Query elements by accessible role (`getByRole("button")`, `getByRole("heading")`, `getByRole("searchbox")`).
+   - Use accessible names rather than brittle CSS selectors or class names.
+
+3. **Standard Test Suites (`tests/`)**:
+   - `01-catalog-render.test.tsx`: Banners, Gift Box combos, and Product Grid DOM rendering.
+   - `02-filter-sort-search.test.tsx`: Live search, category filtering chips, and price/name sorting.
+   - `03-cart-stepper-discounts.test.tsx`: Add to cart, reactive stepper transitions (`-`, `qty`, `+`), Zustand persistence, and exact discount calculations.
+   - `04-minimum-order-estimate-pdf.test.tsx`: ₹3,000 threshold enforcement, progress bar, and Festive Estimate PDF download.
+   - `05-order-checkout-invoice-pdf.test.tsx`: Checkout modal validation, order submit, celebratory view, and final Invoice PDF download.
+   - `06-lightbox-and-fallback.test.tsx`: Lightbox opening, multiple image navigation, keyboard controls, temp image fallback, and lightbox prevention when images are unavailable.
+
+---
+
 ## Tailwind CSS Rules & Guidelines (Strictly Enforced)
-Always follow these Tailwind CSS rules across all files:
 
 1. **Linear Gradients**:
-   - Do **NOT** use `bg-gradient-to-*` (legacy).
-   - **Always** use `bg-linear-to-*` (e.g., `bg-linear-to-r`, `bg-linear-to-br`, `bg-linear-to-b`).
+   - **Always** use `bg-linear-to-*` (e.g., `bg-linear-to-r`, `bg-linear-to-br`).
+   - Do **NOT** use `bg-gradient-to-*`.
 
 2. **Equal Width & Height (`size-{n}`)**:
-   - Whenever width and height are identical, do **NOT** write `w-{n} h-{n}`.
-   - **Always** use `size-{n}` (e.g., `size-10` instead of `w-10 h-10`, `size-8` instead of `w-8 h-8`).
+   - **Always** use `size-{n}` whenever width and height are equal (e.g., `size-10` instead of `w-10 h-10`).
 
 3. **Standard Spacing Scale ($px / 4$)**:
    - Do **NOT** use arbitrary pixel brackets like `w-[40px]` or `min-w-[20px]`.
-   - Divide pixels by 4 to map to standard units:
-     - `w-[40px]` $\rightarrow$ `w-10`
-     - `w-[24px]` $\rightarrow$ `w-6`
-     - `min-w-[20px]` $\rightarrow$ `min-w-5`
-     - `min-h-[1.25rem]` $\rightarrow$ `min-h-5` ($20px$)
-     - `min-h-[2rem]` $\rightarrow$ `min-h-8` ($32px$)
-     - `min-h-[2.5rem]` $\rightarrow$ `min-h-10` ($40px$)
+   - Map to standard Tailwind spacing scale (`w-10`, `min-w-5`, `min-h-5`, `min-h-8`, `min-h-10`).
 
 4. **Aspect Ratio & Z-Index Utilities**:
-   - Use standard classes without brackets:
-     - `aspect-[4/3]` $\rightarrow$ `aspect-4/3`
-     - `z-[999]` $\rightarrow$ `z-999`
+   - Use standard classes without brackets: `aspect-4/3`, `aspect-square`, `z-999`.
 
 5. **Single Display Style per Element**:
-   - Do **NOT** combine multiple conflicting display utilities on a single element (e.g., avoid `block ... flex items-center`).
-   - Use a single, unambiguous display property (e.g., `flex items-center gap-1`).
+   - Avoid conflicting display properties on the same element (e.g. use `flex items-center gap-1`).
+
+6. **No Raw Emojis**:
+   - Use Lucide React SVG icons exclusively across the application.
 
 ---
 
 ## Core Business & UX Conventions
 
 1. **Product Cards & Catalog**:
-   - Full product titles are displayed without truncation across product cards, gift box cards, and cart items.
-   - Equal card heights across rows with responsive grid (2 columns on mobile, 3 on tablet, 4 on desktop, 5 on wide screens) using flex column layout with bottom actions pinned (`mt-auto`).
-   - Zero card hover translate jumps; clean border and shadow hover transitions.
+   - Full product titles displayed without truncation.
+   - Equal card heights across rows with pinned bottom actions (`mt-auto`).
+   - Clean border and shadow hover transitions without layout shifts.
    - Real-time search, category filtering, price sorting, and infinite scroll.
 
-2. **Cart & Stepper Behavior**:
-   - Default quantity is `0` when a product is unselected or removed.
-   - Stepper displays `0` when item is not in cart, transitioning smoothly to `1` when added.
-   - Quantity increases/decreases dynamically sync with the persistent Zustand store.
+2. **Image Loading & Lightbox Safety**:
+   - Products with valid images open full-window `<Lightbox />` on image click or zoom trigger.
+   - Multi-image products support Next/Prev arrows, keyboard navigation, and thumbnail strip.
+   - When images are absent (`images: []`) or fail to load (`onError`), `<ImageWithFallback />` displays a themed placeholder with a Lucide `Package` icon and accessible label (`${product.name} – image unavailable`).
+   - In fallback state, the zoom trigger is omitted, image container button role is disabled, and Lightbox opening is blocked.
 
-3. **Gift Box Slider**:
-   - Matches product list grid column scale (`2` on mobile, `3` on small screens/tablets, `4` on medium screens, `5` on laptop/desktop).
-   - Container has `overflow-hidden` so corner/partial peek slides are hidden.
-   - Price pills (`From ₹99`, `From ₹499`, etc.) support horizontal touch swipe on mobile.
-   - Floating theme-colored SVG navigation buttons with smooth micro-hover animations.
+3. **Cart & Stepper Behavior**:
+   - Default quantity is `0` when an item is not in cart.
+   - Stepper displays `0` and transitions smoothly to `1` when added.
+   - State persists via Zustand and `localStorage`.
 
-4. **Lightbox Preview Modal**:
-   - Built to match the spring modal architecture of `OrderModal` (`type: "spring", stiffness: 350, damping: 26`).
-   - Locks scroll cleanly while preserving the exact window scroll position without jumping to top.
-   - Thumbnail strip, navigation arrows (`ChevronLeft`, `ChevronRight`), and photo counter (`Photo X of Y`) are conditionally rendered **only when multiple images are found** (`images.length > 1`).
+4. **Minimum Order & Factory Checkout**:
+   - Minimum order threshold is ₹3,000 for direct Sivakasi transport dispatch.
+   - Below ₹3,000: Displays shortfall progress bar and "Add More" action.
+   - Above ₹3,000: Enables factory order checkout modal and festive PDF estimate generation.
 
-5. **Minimum Order & Factory Checkout**:
-   - Minimum order value is ₹3,000 for direct Sivakasi factory dispatch.
-   - Below ₹3,000: Shows dynamic progress bar with shortfall amount and active "Add More to Order Now" CTA.
-   - Above ₹3,000: Enables "Order Now" modal checkout.
+5. **Dual PDF Generation Engine**:
+   - **Festive Estimate PDF**: Generated for orders $\ge ₹3,000$ with festive branding and native `₹` symbol.
+   - **Order Invoice PDF**: Clean monochrome layout strictly **$\le 40\text{ KB}$** with Deflate compression for rapid transmission.
 
-6. **Dual PDF Generation Engine**:
-   - **Festive Estimate PDF**: Generated for orders $\ge ₹3,000$, rich festive colors (Crimson `#C8102E`, Golden Yellow `#FFD700`, Warm Ivory `#FFFBF0`), `#` numbering, native `₹` symbol, no size limit.
-   - **Final Order Invoice PDF**: Clean monochrome layout, strictly **$\le 40\text{ KB}$** (measured at **~17.85 KB**) with Deflate compression (`compress: true`) for rapid email transmission.
-   - Native Indian Rupee (`₹` U+20B9) rendered via embedded Roboto TrueType font.
-
-7. **Order Modal & Delivery Scope**:
-   - Checkout is streamlined to "Order Confirmation".
-   - Prominent delivery notice: **Delivery is strictly within Tamil Nadu** via Sivakasi transport hubs.
-   - Form fields: Name, Phone, Email (mandatory with regex validation), Address, City/District, Pincode.
-
-8. **Navigation & Floating Elements**:
-   - Floating Cart FAB is visible **only** on the catalog page (`/`) and automatically hidden on `/cart`.
-   - Hero slider and gift box carousel use custom theme-colored SVG chevrons (`ChevronLeft` / `ChevronRight`).
-
-9. **Icons & Styling Policy**:
-   - **Zero Raw Emojis**: Use Lucide React SVG icons only.
-   - Use **AOS** (`data-aos="..."`) for scroll-triggered animations.
+6. **Delivery Scope**:
+   - Delivery is strictly within **Tamil Nadu** via Sivakasi transport hubs.
