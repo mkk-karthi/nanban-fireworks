@@ -7,16 +7,16 @@ import { CartFab } from "@/components/common/CartFab";
 import { AosInitializer } from "@/components/common/AosInitializer";
 import { COMPANY_DETAILS } from "@/config/site";
 
-// ─── Typography ──────────────────────────────────────────────────────────────
+// Typography
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 
-// ─── Viewport (mobile theme color, width) ────────────────────────────────────
+// Viewport (mobile theme color, width)
 
 export const viewport: Viewport = {
   themeColor: "#C8102E",
@@ -25,11 +25,21 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
+// Shared SEO Strings
+
+const SITE_TITLE = `${COMPANY_DETAILS.name} – Premium Crackers & Fireworks | Sivakasi`;
+const OG_IMAGE = {
+  url: "/images/logo.webp",
+  width: 500,
+  height: 500,
+  alt: `${COMPANY_DETAILS.name} – Sivakasi Direct Factory Sale`,
+};
+
 // Site-Wide Metadata
 export const metadata: Metadata = {
   metadataBase: new URL(COMPANY_DETAILS.siteUrl),
   title: {
-    default: `${COMPANY_DETAILS.name} – Premium Crackers & Fireworks | Sivakasi`,
+    default: SITE_TITLE,
     template: `%s | ${COMPANY_DETAILS.name}`,
   },
   description: COMPANY_DETAILS.description,
@@ -43,7 +53,7 @@ export const metadata: Metadata = {
     "rockets",
     "gift box fireworks",
     "buy fireworks online",
-    "MKK Fireworks",
+    "Nanban Crackers",
     "Sivakasi wholesale",
     "Tamil Nadu crackers",
   ],
@@ -69,39 +79,66 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: COMPANY_DETAILS.siteUrl,
     siteName: COMPANY_DETAILS.name,
-    title: `${COMPANY_DETAILS.name} – Premium Crackers & Fireworks | Sivakasi`,
+    title: SITE_TITLE,
     description: COMPANY_DETAILS.description,
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: `${COMPANY_DETAILS.name} – Sivakasi Direct Factory Sale`,
-      },
-    ],
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${COMPANY_DETAILS.name} – Premium Crackers & Fireworks | Sivakasi`,
+    title: SITE_TITLE,
     description: COMPANY_DETAILS.description,
-    images: ["/og-image.jpg"],
+    images: [OG_IMAGE.url],
   },
   category: "shopping",
 };
 
-// ─── Root Layout ──────────────────────────────────────────────────────────────
+// JSON-LD Structured Data
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: COMPANY_DETAILS.name,
+      url: COMPANY_DETAILS.siteUrl,
+      logo: `${COMPANY_DETAILS.siteUrl}/images/logo.webp`,
+      email: COMPANY_DETAILS.email,
+      telephone: COMPANY_DETAILS.phoneClean,
+      description: COMPANY_DETAILS.description,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Sivakasi",
+        addressRegion: "Tamil Nadu",
+        addressCountry: "IN",
+      },
+    },
+    {
+      "@type": "WebSite",
+      name: COMPANY_DETAILS.name,
+      url: COMPANY_DETAILS.siteUrl,
+      description: COMPANY_DETAILS.description,
+      inLanguage: "en-IN",
+    },
+  ],
+};
+
+// Root Layout
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang="en"
+      lang="en-IN"
+      dir="ltr"
       className={`${poppins.variable} h-full scroll-smooth`}
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className="min-h-full flex flex-col bg-amber-50 text-gray-900 antialiased"
         suppressHydrationWarning
@@ -120,7 +157,7 @@ export default function RootLayout({
         <Header />
 
         {/* Page content */}
-        <main id="main-content" className="flex-1">
+        <main id="main-content" className="flex-1" role="main">
           {children}
         </main>
 

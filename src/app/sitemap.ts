@@ -4,8 +4,9 @@ import { COMPANY_DETAILS } from "@/config/site";
 export const dynamic = "force-static";
 
 /**
- * Dynamic sitemap for MKK Fireworks.
+ * Dynamic sitemap for Nanban Crackers.
  * Next.js 16 automatically serves this at /sitemap.xml.
+ * Cart page excluded — it has robots noindex set.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = COMPANY_DETAILS.siteUrl;
@@ -17,12 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "daily",
       priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/cart`,
-      lastModified: now,
-      changeFrequency: "never",
-      priority: 0.3,
     },
   ];
 }

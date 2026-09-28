@@ -24,7 +24,7 @@ describe("03: Cart Interactions, Stepper Controls & Discount Calculations", () =
 
       // Initially shows "Add to Cart" button with 0 in cart
       const addBtn = screen.getByRole("button", {
-        name: new RegExp(`Add ${sampleProduct.name} to cart`, "i"),
+        name: `Add ${sampleProduct.name} to cart`,
       });
       expect(addBtn).toBeInTheDocument();
 
@@ -36,14 +36,14 @@ describe("03: Cart Interactions, Stepper Controls & Discount Calculations", () =
 
       // Increment (+) button increases to 2
       const plusBtn = screen.getByRole("button", {
-        name: new RegExp(`Increase ${sampleProduct.name} quantity`, "i"),
+        name: `Increase ${sampleProduct.name} quantity`,
       });
       fireEvent.click(plusBtn);
       expect(screen.getByText("2 in Cart")).toBeInTheDocument();
 
       // Decrement (-) button decreases back to 1
       const minusBtn = screen.getByRole("button", {
-        name: new RegExp(`Decrease ${sampleProduct.name} quantity`, "i"),
+        name: `Decrease ${sampleProduct.name} quantity`,
       });
       fireEvent.click(minusBtn);
       expect(screen.getByText("1 in Cart")).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe("03: Cart Interactions, Stepper Controls & Discount Calculations", () =
       fireEvent.click(minusBtn);
       expect(
         screen.getByRole("button", {
-          name: new RegExp(`Add ${sampleProduct.name} to cart`, "i"),
+          name: `Add ${sampleProduct.name} to cart`,
         })
       ).toBeInTheDocument();
     });
@@ -73,7 +73,7 @@ describe("03: Cart Interactions, Stepper Controls & Discount Calculations", () =
 
       // Transitions to stepper
       expect(screen.getByText("1 in Cart")).toBeInTheDocument();
-      expect(useCartStore.getState().getItemQuantity(sampleGiftBox.id)).toBe(1);
+      expect(useCartStore.getState().items.find(i => i.productId === sampleGiftBox.id)?.quantity ?? 0).toBe(1);
     });
   });
 

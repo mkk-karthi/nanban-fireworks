@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useCallback, useState, useSyncExternalStore, memo } from "react";
+import { useEffect, useCallback, useState, memo } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { useScrollLock } from "@/hooks/useScrollLock";
+import { useIsMounted } from "@/hooks/useIsMounted";
 
 interface LightboxProps {
   images: string[];
@@ -14,11 +16,9 @@ interface LightboxProps {
   productName: string;
 }
 
-const emptySubscribe = () => () => {};
-
 /**
  * Image Lightbox Modal:
- * Matches OrderModal architecture and animations with spring entrance,
+ * Full-screen image viewer with spring entrance,
  * backdrop-blur, full keyboard & touch controls, and body scroll lock.
  */
 export const Lightbox = memo(function Lightbox({
@@ -29,11 +29,10 @@ export const Lightbox = memo(function Lightbox({
   productName,
 }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
-  const isMounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false,
-  );
+  const isMounted = useIsMounted();
+
+  // DRY: shared scroll lock hook
+  useScrollLock(isOpen);
 
   // Sync initial index when lightbox opens
   const [prevOpenState, setPrevOpenState] = useState(isOpen);
@@ -52,12 +51,9 @@ export const Lightbox = memo(function Lightbox({
     setCurrentIndex((i) => (i - 1 + images.length) % images.length);
   }, [images.length]);
 
-  // Lock background scroll when modal is open
+  // Keyboard navigation
   useEffect(() => {
     if (!isOpen) return;
-
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
 
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -68,11 +64,7 @@ export const Lightbox = memo(function Lightbox({
     };
 
     window.addEventListener("keydown", handleKey);
-
-    return () => {
-      window.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = originalOverflow;
-    };
+    return () => window.removeEventListener("keydown", handleKey);
   }, [isOpen, images.length, onClose, goNext, goPrev]);
 
   if (!isMounted || !isOpen || images.length === 0) return null;
@@ -88,6 +80,9 @@ export const Lightbox = memo(function Lightbox({
           transition={{ duration: 0.25 }}
           className="fixed inset-0 z-999 flex items-center justify-center bg-black/80 backdrop-blur-md overflow-hidden select-none"
           onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${productName} – image gallery`}
         >
           <motion.div
             key="lightbox-card"
@@ -114,17 +109,19 @@ export const Lightbox = memo(function Lightbox({
                 type="button"
                 onClick={onClose}
                 className="size-10 flex items-center justify-center rounded-full bg-black/20 hover:bg-red-600 text-white shadow-lg transition-all duration-200 active:scale-90 cursor-pointer"
-                aria-label="Close modal"
+                aria-label="Close image gallery"
               >
-                <X size={18} />
+                <X size={18} aria-hidden="true" />
               </button>
             </div>
 
             {/* Main Stage: Image Container */}
-            <div className="relative w-full h-[60vh] sm:h-[68vh] flex items-center justify-center p-3 sm:p-4">
+            <div
+              className={`relative w-full ${images.length > 1 ? "h-[60vh] sm:h-" : "h-[86vh]"} flex items-center justify-center p-3 sm:p-4`}
+            >
               <Image
                 src={images[currentIndex]}
-                alt={`${productName} – image ${currentIndex + 1}`}
+                alt={`${productName} – image ${currentIndex + 1} of ${images.length}`}
                 fill
                 className="object-contain"
                 sizes="(max-width: 1024px) 100vw, 800px"
@@ -137,9 +134,9 @@ export const Lightbox = memo(function Lightbox({
                   type="button"
                   onClick={goPrev}
                   aria-label="Previous image"
-                  className="absolute left-3 lg:left-2/12 top-1/2 -translate-y-1/2 size-9 sm:size-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-red-600 text-white shadow-lg transition-all duration-200 active:scale-90 cursor-pointer z-10"
+                  className="absolute left-3 lg:left-2/12 top-1/2 -translate-y-1/2 size-10 sm:size-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-red-600 text-white shadow-lg transition-all duration-200 active:scale-90 cursor-pointer z-10"
                 >
-                  <ChevronLeft size={22} />
+                  <ChevronLeft size={22} aria-hidden="true" />
                 </button>
               )}
 
@@ -149,21 +146,28 @@ export const Lightbox = memo(function Lightbox({
                   type="button"
                   onClick={goNext}
                   aria-label="Next image"
-                  className="absolute right-3 lg:right-2/12 top-1/2 -translate-y-1/2 size-9 sm:size-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-red-600 text-white shadow-lg transition-all duration-200 active:scale-90 cursor-pointer z-10"
+                  className="absolute right-3 lg:right-2/12 top-1/2 -translate-y-1/2 size-10 sm:size-10 flex items-center justify-center rounded-full bg-black/60 hover:bg-red-600 text-white shadow-lg transition-all duration-200 active:scale-90 cursor-pointer z-10"
                 >
-                  <ChevronRight size={22} />
+                  <ChevronRight size={22} aria-hidden="true" />
                 </button>
               )}
             </div>
 
             {/* Thumbnail Strip (Only when multiple images) */}
             {images.length > 1 && (
-              <div className="px-4 py-3 flex items-center justify-center gap-2 shrink-0 overflow-x-auto scrollbar-none w-full">
+              <div
+                className="px-4 py-3 flex items-center justify-center gap-2 shrink-0 overflow-x-auto scrollbar-none w-full"
+                role="tablist"
+                aria-label="Image thumbnails"
+              >
                 {images.map((img, idx) => (
                   <button
                     type="button"
                     key={idx}
+                    role="tab"
                     onClick={() => setCurrentIndex(idx)}
+                    aria-selected={idx === currentIndex}
+                    aria-label={`View image ${idx + 1}`}
                     className={`relative size-12 sm:size-14 rounded-xl overflow-hidden border-2 transition-all duration-200 shrink-0 cursor-pointer ${
                       idx === currentIndex
                         ? "border-yellow-400 scale-105 shadow-md shadow-yellow-400/40"
@@ -205,9 +209,9 @@ export const LightboxTrigger = memo(function LightboxTrigger({ onClick }: Lightb
         onClick();
       }}
       aria-label="View full window image"
-      className="absolute top-2 right-2 size-8 flex items-center justify-center rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-red-600 hover:scale-110 z-10 shadow-md cursor-pointer"
+      className="absolute top-2 right-2 size-10 flex items-center justify-center rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-red-600 hover:scale-110 z-10 shadow-md cursor-pointer"
     >
-      <ZoomIn size={16} />
+      <ZoomIn size={16} aria-hidden="true" />
     </button>
   );
 });

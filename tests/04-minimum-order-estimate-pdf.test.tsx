@@ -122,7 +122,7 @@ describe("04: Minimum Order Enforcement & Festive Estimate PDF Download", () => 
     expect(result.estimateId).toMatch(/^EST-\d+/);
     expect(mockPdfSave).toHaveBeenCalledTimes(1);
     expect(mockPdfSave).toHaveBeenCalledWith(
-      expect.stringMatching(/^MKK_Fireworks_Estimate_EST-.*\.pdf$/)
+      expect.stringMatching(/^Nanban_Crackers_Estimate_EST-.*\.pdf$/)
     );
   });
 

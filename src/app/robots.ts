@@ -4,7 +4,7 @@ import { COMPANY_DETAILS } from "@/config/site";
 export const dynamic = "force-static";
 
 /**
- * Dynamic robots.txt for MKK Fireworks.
+ * Dynamic robots.txt for Nanban Crackers.
  * Next.js 16 automatically serves this at /robots.txt.
  */
 export default function robots(): MetadataRoute.Robots {

@@ -1,7 +1,8 @@
-# MKK Fireworks – Antigravity Project Guide & Instructions
+# Nanban Crackers – Antigravity Project Guide
 
 ## Project Overview
-**MKK Fireworks** is a festive fireworks e-commerce platform for Sivakasi direct factory wholesale and retail dispatch across Tamil Nadu.
+
+**Nanban Crackers** is a festive fireworks e-commerce platform for Sivakasi direct factory wholesale and retail dispatch across Tamil Nadu.
 
 - **Framework**: Next.js 16 (App Router) with React 19 & TypeScript 5
 - **Styling**: Tailwind CSS v4 with PostCSS
@@ -14,99 +15,45 @@
 ---
 
 ## Developer Commands
+
 ```bash
-# Run local development server
-npm run dev
-
-# Run TypeScript type check
-npx tsc --noEmit
-
-# Run ESLint linter
-npm run lint
-
-# Run automated tests (Jest + React Testing Library)
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Build production bundle
-npm run build
+npm run dev          # Local development server
+npx tsc --noEmit     # TypeScript type check
+npm run lint         # ESLint linter
+npm test             # Automated tests (Jest + RTL)
+npm run test:watch   # Tests in watch mode
+npm run build        # Production build
 ```
 
 ---
 
-## Testing Architecture & Conventions
+## Tailwind CSS v4 Rules (Strictly Enforced)
 
-1. **Next.js & React 19 Testing Stack**:
-   - Built on `next/jest.js` (`jest.config.mjs`) with automatic SWC transformation and `@/*` alias resolution.
-   - Setup file `jest.setup.ts` polyfills `TextEncoder`, `TextDecoder`, `window.matchMedia`, `ResizeObserver`, `IntersectionObserver`, and mocks `next/image`, `swiper/react`, `aos`, and `jsPDF`.
-
-2. **DOM Queries & Accessibility First**:
-   - Query elements by accessible role (`getByRole("button")`, `getByRole("heading")`, `getByRole("searchbox")`).
-   - Use accessible names rather than brittle CSS selectors or class names.
-
-3. **Standard Test Suites (`tests/`)**:
-   - `01-catalog-render.test.tsx`: Banners, Gift Box combos, and Product Grid DOM rendering.
-   - `02-filter-sort-search.test.tsx`: Live search, category filtering chips, and price/name sorting.
-   - `03-cart-stepper-discounts.test.tsx`: Add to cart, reactive stepper transitions (`-`, `qty`, `+`), Zustand persistence, and exact discount calculations.
-   - `04-minimum-order-estimate-pdf.test.tsx`: ₹3,000 threshold enforcement, progress bar, and Festive Estimate PDF download.
-   - `05-order-checkout-invoice-pdf.test.tsx`: Checkout modal validation, order submit, celebratory view, and final Invoice PDF download.
-   - `06-lightbox-and-fallback.test.tsx`: Lightbox opening, multiple image navigation, keyboard controls, temp image fallback, and lightbox prevention when images are unavailable.
-
----
-
-## Tailwind CSS Rules & Guidelines (Strictly Enforced)
-
-1. **Linear Gradients**:
-   - **Always** use `bg-linear-to-*` (e.g., `bg-linear-to-r`, `bg-linear-to-br`).
-   - Do **NOT** use `bg-gradient-to-*`.
-
-2. **Equal Width & Height (`size-{n}`)**:
-   - **Always** use `size-{n}` whenever width and height are equal (e.g., `size-10` instead of `w-10 h-10`).
-
-3. **Standard Spacing Scale ($px / 4$)**:
-   - Do **NOT** use arbitrary pixel brackets like `w-[40px]` or `min-w-[20px]`.
-   - Map to standard Tailwind spacing scale (`w-10`, `min-w-5`, `min-h-5`, `min-h-8`, `min-h-10`).
-
-4. **Aspect Ratio & Z-Index Utilities**:
-   - Use standard classes without brackets: `aspect-4/3`, `aspect-square`, `z-999`.
-
-5. **Single Display Style per Element**:
-   - Avoid conflicting display properties on the same element (e.g. use `flex items-center gap-1`).
-
-6. **No Raw Emojis**:
-   - Use Lucide React SVG icons exclusively across the application.
+1. **Linear Gradients**: Always `bg-linear-to-*` — never `bg-gradient-to-*`.
+2. **Equal Dimensions**: Always `size-{n}` — never `w-{n} h-{n}`.
+3. **Standard Spacing Scale**: No arbitrary brackets (`w-[40px]`). Use Tailwind scale (`w-10`).
+4. **Aspect Ratio & Z-Index**: Unbracketed (`aspect-4/3`, `z-999`).
+5. **Single Display**: One display utility per element.
+6. **No Raw Emojis**: Use Lucide React SVG icons exclusively.
 
 ---
 
 ## Core Business & UX Conventions
 
-1. **Product Cards & Catalog**:
-   - Full product titles displayed without truncation.
-   - Equal card heights across rows with pinned bottom actions (`mt-auto`).
-   - Clean border and shadow hover transitions without layout shifts.
-   - Real-time search, category filtering, price sorting, and infinite scroll.
+1. **Product Catalog**: Full titles, equal-height cards, pinned bottom actions, real-time search, category filtering, price sorting, infinite scroll.
+2. **Image & Lightbox**: Valid images open `<Lightbox />` with multi-image nav & keyboard controls. Missing/failed images show `<ImageWithFallback />` placeholder (Lucide `Package` icon) and block Lightbox.
+3. **Cart & Stepper**: Default qty `0`, smooth `0 → 1` transition on add, persists via Zustand + `localStorage`.
+4. **Minimum Order**: ₹3,000 threshold for Sivakasi factory dispatch. Below: progress bar + "Add More". Above: checkout modal + festive PDF estimate.
+5. **Dual PDF Engine**: Festive Estimate (branded, ₹ symbol) and Order Invoice (monochrome, ≤ 40 KB, Deflate compressed).
+6. **Delivery**: Free delivery, strictly within **Tamil Nadu** via Sivakasi transport hubs.
 
-2. **Image Loading & Lightbox Safety**:
-   - Products with valid images open full-window `<Lightbox />` on image click or zoom trigger.
-   - Multi-image products support Next/Prev arrows, keyboard navigation, and thumbnail strip.
-   - When images are absent (`images: []`) or fail to load (`onError`), `<ImageWithFallback />` displays a themed placeholder with a Lucide `Package` icon and accessible label (`${product.name} – image unavailable`).
-   - In fallback state, the zoom trigger is omitted, image container button role is disabled, and Lightbox opening is blocked.
+---
 
-3. **Cart & Stepper Behavior**:
-   - Default quantity is `0` when an item is not in cart.
-   - Stepper displays `0` and transitions smoothly to `1` when added.
-   - State persists via Zustand and `localStorage`.
+## Testing Suites (`tests/`)
 
-4. **Minimum Order & Factory Checkout**:
-   - Minimum order threshold is ₹3,000 for direct Sivakasi transport dispatch.
-   - Below ₹3,000: Displays shortfall progress bar and "Add More" action.
-   - Above ₹3,000: Enables factory order checkout modal and festive PDF estimate generation.
-
-5. **Dual PDF Generation Engine**:
-   - **Festive Estimate PDF**: Generated for orders $\ge ₹3,000$ with festive branding and native `₹` symbol.
-   - **Order Invoice PDF**: Clean monochrome layout strictly **$\le 40\text{ KB}$** with Deflate compression for rapid transmission.
-
-6. **Delivery Scope**:
-   - Delivery is strictly within **Tamil Nadu** via Sivakasi transport hubs.
+- `01-catalog-render`: Banners, Gift Boxes, Product Grid DOM rendering.
+- `02-filter-sort-search`: Category filtering, live search, sorting.
+- `03-cart-stepper-discounts`: Add to cart, stepper transitions, discount calculations.
+- `04-minimum-order-estimate-pdf`: ₹3,000 threshold, progress bar, Festive Estimate PDF.
+- `05-order-checkout-invoice-pdf`: Checkout validation, order submit, Invoice PDF.
+- `06-lightbox-and-fallback`: Lightbox nav, keyboard controls, fallback image safety.

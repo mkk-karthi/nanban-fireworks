@@ -1,8 +1,9 @@
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import { BRAND, CONTACT, ORDER_CONFIG } from "@/config/site";
+import { COMPANY_DETAILS, ORDER_CONFIG } from "@/config/site";
 import { generateInvoiceNumber } from "./utils";
 import { robotoRegularBase64 } from "./pdfFont";
+import { nanbanCrackersLogoBase64 } from "./pdfLogo";
 import type { CartProductItem, CartTotals } from "./types";
 
 export interface CustomerDetails {
@@ -99,17 +100,24 @@ export function generateEstimatePdf(
   doc.setFillColor(255, 215, 0); // #FFD700
   doc.rect(0, 38, 210, 3, "F");
 
-  // Brand Name & Subtitle
+  // Brand Logo (Estimate PDF only)
+  try {
+    doc.addImage(nanbanCrackersLogoBase64, "PNG", 14, 5, 42, 28);
+  } catch {
+    // Fallback if image rendering is unsupported
+  }
+
+  // Brand Name & Subtitle (Positioned adjacent to logo)
   doc.setTextColor(255, 255, 255);
   doc.setFont("Roboto", "bold");
-  doc.setFontSize(22);
-  doc.text(BRAND.name.toUpperCase(), 14, 18);
+  doc.setFontSize(20);
+  doc.text(COMPANY_DETAILS.name.toUpperCase(), 60, 17);
 
   doc.setFont("Roboto", "normal");
-  doc.setFontSize(9);
+  doc.setFontSize(8.5);
   doc.setTextColor(255, 235, 235);
-  doc.text("Direct Sivakasi Factory Wholesale & Retail Pricing", 14, 25);
-  doc.text(`${CONTACT.address} | Phone: ${CONTACT.phone}`, 14, 31);
+  doc.text("Direct Sivakasi Factory Wholesale & Retail Pricing", 60, 23);
+  doc.text(`Phone: ${COMPANY_DETAILS.phone} | Email: ${COMPANY_DETAILS.email}`, 60, 29);
 
   // Estimate Title & Meta (Right side - Date only, No Ref. No)
   doc.setFont("Roboto", "bold");
@@ -234,13 +242,13 @@ export function generateEstimatePdf(
   doc.setFontSize(8);
   doc.setTextColor(255, 255, 255);
   doc.text(
-    `Thank you for choosing ${BRAND.name}! Direct Sivakasi Factory Quality Fireworks.`,
+    `Thank you for choosing ${COMPANY_DETAILS.name}! Direct Sivakasi Factory Quality Fireworks.`,
     105,
     pageHeight - 5.5,
     { align: "center" }
   );
 
-  doc.save(`MKK_Fireworks_Estimate_${estimateId}.pdf`);
+  doc.save(`Nanban_Crackers_Estimate_${estimateId}.pdf`);
   return { success: true, estimateId };
 }
 
@@ -275,13 +283,12 @@ export function generateInvoicePdf(
   doc.setFont("Roboto", "bold");
   doc.setFontSize(15);
   doc.setTextColor(17, 24, 39);
-  doc.text(BRAND.name.toUpperCase(), 14, 18);
+  doc.text(COMPANY_DETAILS.name.toUpperCase(), 14, 18);
 
   doc.setFont("Roboto", "normal");
   doc.setFontSize(8);
   doc.setTextColor(75, 85, 99);
-  doc.text(CONTACT.address, 14, 23);
-  doc.text(`Phone: ${CONTACT.phone} | Email: ${CONTACT.email}`, 14, 27.5);
+  doc.text(`Phone: ${COMPANY_DETAILS.phone} | Email: ${COMPANY_DETAILS.email}`, 14, 24);
 
   // Invoice Title & Meta Box (Right aligned)
   doc.setFont("Roboto", "bold");
@@ -426,13 +433,13 @@ export function generateInvoicePdf(
   doc.setFontSize(7);
   doc.setTextColor(107, 114, 128);
   doc.text(
-    `This is a computer generated invoice from ${BRAND.name}, Sivakasi. No physical signature required.`,
+    `This is a computer generated invoice from ${COMPANY_DETAILS.name}, Sivakasi. No physical signature required.`,
     105,
     pageHeight - 7,
     { align: "center" }
   );
 
-  doc.save(`MKK_Fireworks_Invoice_${orderId}.pdf`);
+  doc.save(`Nanban_Crackers_Invoice_${orderId}.pdf`);
   return { success: true, orderId, doc };
 }
 

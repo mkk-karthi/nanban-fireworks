@@ -34,12 +34,16 @@ export interface ProductCardProps {
 export const ProductCard = memo(function ProductCard({
   product,
   priority = false,
-  index = 0,
   variant,
   aspectRatio,
   className = "",
 }: ProductCardProps) {
-  const isGiftBox = variant === "giftBox" || (!variant && product.category.includes("Gift Box"));
+  const isGiftBox =
+    variant === "giftBox" ||
+    (!variant &&
+      (Boolean(product.isGiftBox) ||
+        product.category.includes("Gift Box") ||
+        product.category.includes("Premium Gift box")));
   const isPremium = Boolean(product.isPremium || product.badge);
 
   const imgAspectClass =
@@ -73,14 +77,8 @@ export const ProductCard = memo(function ProductCard({
   const images = product.images ?? [];
   const hasValidImages = images.length > 0 && !imageError;
 
-  // Filter categories to display
-  const displayCategories = useMemo(() => {
-    if (isGiftBox) {
-      const filtered = product.category.filter((c) => c !== "Gift Box");
-      return (filtered.length > 0 ? filtered : product.category).slice(0, 2);
-    }
-    return product.category.slice(0, 2);
-  }, [product.category, isGiftBox]);
+  // Single category per product
+  const singleCategory = product.category[0];
 
   // Lightbox handlers
   const openLightbox = useCallback(
@@ -115,8 +113,6 @@ export const ProductCard = memo(function ProductCard({
     updateQuantity(product.id, 1);
   }, [updateQuantity, product.id]);
 
-  const isPriority = priority || index < 3;
-
   return (
     <>
       <article
@@ -129,9 +125,17 @@ export const ProductCard = memo(function ProductCard({
         } ${className}`}
         aria-label={product.name}
       >
-        {/* 1. Top Badges Container (COMBO & PREMIUM tags) */}
+        {/* 1. Top Badges Container (Single COMBO or PREMIUM COMBO tag only) */}
         <div className="absolute top-2.5 left-2.5 z-10 flex flex-wrap items-center gap-1.5 pointer-events-none">
-          {isGiftBox && (
+          {isPremium ? (
+            <div
+              className="flex items-center gap-1 bg-linear-to-r from-amber-600 via-red-600 to-amber-600 text-white text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md border border-yellow-300/80"
+              aria-label={`Premium combo: ${product.badge || "PREMIUM COMBO"}`}
+            >
+              <Sparkles size={11} className="text-yellow-300 fill-yellow-300" aria-hidden="true" />
+              <span>{product.badge || "PREMIUM COMBO"}</span>
+            </div>
+          ) : isGiftBox ? (
             <div
               className="flex items-center gap-1 bg-linear-to-r from-yellow-400 to-amber-500 text-red-950 text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md"
               aria-label="Gift combo"
@@ -139,17 +143,7 @@ export const ProductCard = memo(function ProductCard({
               <Gift size={11} strokeWidth={2.5} aria-hidden="true" />
               <span>COMBO</span>
             </div>
-          )}
-
-          {isPremium && (
-            <div
-              className="flex items-center gap-1 bg-linear-to-r from-amber-600 via-red-600 to-amber-600 text-white text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md border border-yellow-300/80"
-              aria-label={`Premium product: ${product.badge || "PREMIUM"}`}
-            >
-              <Sparkles size={11} className="text-yellow-300 fill-yellow-300" aria-hidden="true" />
-              <span>{product.badge || "PREMIUM"}</span>
-            </div>
-          )}
+          ) : null}
         </div>
 
         {/* 2. Product Image Container */}
@@ -178,8 +172,8 @@ export const ProductCard = memo(function ProductCard({
                 src={images[0]}
                 alt={product.name}
                 fill
-                loading={isPriority ? "eager" : "lazy"}
-                priority={isPriority}
+                loading={priority ? "eager" : "lazy"}
+                priority={priority}
                 className="object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                 fallbackIconSize={40}
@@ -220,17 +214,14 @@ export const ProductCard = memo(function ProductCard({
 
         {/* 3. Card Body */}
         <div className="flex flex-col flex-1 p-2.5 sm:p-3.5">
-          {/* Category tags */}
-          <div className="flex flex-wrap gap-1 mb-1" aria-label="Categories">
-            {displayCategories.map((cat) => (
-              <span
-                key={cat}
-                className="text-[9px] sm:text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded tracking-wide"
-              >
-                {cat}
+          {/* Single Category tag */}
+          {singleCategory && (
+            <div className="flex flex-wrap gap-1 mb-1" aria-label="Category">
+              <span className="text-[9px] sm:text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded tracking-wide">
+                {singleCategory}
               </span>
-            ))}
-          </div>
+            </div>
+          )}
 
           {/* Product Title (uniform height across rows) */}
           <h3 className="font-black text-gray-900 text-xs sm:text-sm leading-snug group-hover:text-red-600 transition-colors min-h-8 sm:min-h-9 flex items-start">
@@ -241,15 +232,22 @@ export const ProductCard = memo(function ProductCard({
           <div className="pt-2 border-t border-amber-100/80 mt-auto space-y-1.5">
             {/* Price display */}
             <div className="flex items-baseline justify-between">
-              <span
-                className="text-base sm:text-lg font-black text-red-700"
-                aria-label={`Price: ${formatPrice(product.discountedPrice)}`}
-              >
-                {formatPrice(product.discountedPrice)}
-              </span>
+              <div className="flex items-baseline gap-1">
+                <span
+                  className="text-base sm:text-lg font-black text-red-700"
+                  aria-label={`Price: ${formatPrice(product.discountedPrice)}`}
+                >
+                  {formatPrice(product.discountedPrice)}
+                </span>
+                {product.unit && (
+                  <span className="text-[10px] sm:text-xs text-gray-500 font-semibold">
+                    / {product.unit}
+                  </span>
+                )}
+              </div>
               {product.actualPrice > product.discountedPrice && (
                 <span
-                  className="text-[11px] sm:text-xs text-gray-400 line-through"
+                  className="text-[11px] sm:text-xs text-gray-500 line-through"
                   aria-label={`Original price: ${formatPrice(product.actualPrice)}`}
                 >
                   {formatPrice(product.actualPrice)}

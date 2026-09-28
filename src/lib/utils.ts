@@ -20,13 +20,6 @@ export const getDiscountPercent = (
   discountedPrice: number
 ): number => Math.round(((actualPrice - discountedPrice) / actualPrice) * 100);
 
-/** Total savings for a given quantity */
-export const getTotalSavings = (
-  actualPrice: number,
-  discountedPrice: number,
-  qty: number
-): number => (actualPrice - discountedPrice) * qty;
-
 // Cart Calculation Helpers
 
 /**
@@ -61,18 +54,22 @@ let invoiceSeq = 1000;
 
 /**
  * Generates a unique, collision-resistant Invoice Number formatted for factory orders.
- * Format: MKK-YYYYMMDD-HHMMSS-XXXX (e.g. MKK-20260918-134520-8941)
+ * Format: NBC-YYYYMMDD-HHMMSS-XXXX (e.g. NBC-20260918-134520-8941)
  */
 export const generateInvoiceNumber = (): string => {
   const d = new Date();
   const datePart = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
   const timePart = `${String(d.getHours()).padStart(2, "0")}${String(d.getMinutes()).padStart(2, "0")}${String(d.getSeconds()).padStart(2, "0")}`;
   invoiceSeq = ((invoiceSeq + 1) % 9000) + 1000;
-  return `MKK-${datePart}-${timePart}-${invoiceSeq}`;
+  return `NBC-${datePart}-${timePart}-${invoiceSeq}`;
 };
 
-// Array Helpers
+// DOM Helpers
 
-/** Clamp a value between min and max (inclusive) */
-export const clamp = (value: number, min: number, max: number): number =>
-  Math.min(Math.max(value, min), max);
+/** Smooth-scroll to the #products section after a rAF tick (avoids layout thrash) */
+export const scrollToProducts = (): void => {
+  if (typeof window === "undefined") return;
+  requestAnimationFrame(() => {
+    document.getElementById("products")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+};

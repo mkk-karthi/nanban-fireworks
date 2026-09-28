@@ -64,9 +64,9 @@ describe("06: Lightbox Interactions & Fallback Placeholder Logic", () => {
       expect(prevBtn).toBeInTheDocument();
 
       // Verify thumbnails are rendered for multiple images
-      expect(screen.getByRole("button", { name: /Thumbnail 1/i })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Thumbnail 2/i })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Thumbnail 3/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /View image 1/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /View image 2/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /View image 3/i })).toBeInTheDocument();
 
       // Navigate to next image
       fireEvent.click(nextBtn);
@@ -77,11 +77,11 @@ describe("06: Lightbox Interactions & Fallback Placeholder Logic", () => {
       expect(lightboxModal).toHaveTextContent("Photo 1 of 3");
 
       // Direct thumbnail jump
-      fireEvent.click(screen.getByRole("button", { name: /Thumbnail 3/i }));
+      fireEvent.click(screen.getByRole("tab", { name: /View image 3/i }));
       expect(lightboxModal).toHaveTextContent("Photo 3 of 3");
 
       // Close modal
-      const closeBtn = screen.getByRole("button", { name: /Close modal/i });
+      const closeBtn = screen.getByRole("button", { name: /Close image gallery/i });
       fireEvent.click(closeBtn);
       expect(screen.queryByText("Photo 3 of 3")).not.toBeInTheDocument();
     });

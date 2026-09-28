@@ -36,6 +36,7 @@ export const GiftBoxSection = memo(function GiftBoxSection({ giftBoxes }: GiftBo
 
   return (
     <section
+      id="gift-boxes"
       className="py-10 bg-linear-to-b from-amber-50/70 via-white to-amber-50/30 overflow-hidden"
       aria-label="Curated Gift Box Combos"
       aria-roledescription="carousel"
@@ -67,11 +68,13 @@ export const GiftBoxSection = memo(function GiftBoxSection({ giftBoxes }: GiftBo
           {/* Horizontally scrollable price tags on mobile */}
           <div
             className="flex items-center gap-2 overflow-x-auto scrollbar-none w-full sm:w-auto py-1 shrink-0 -mx-4 px-4 sm:mx-0 sm:px-0 touch-pan-x overscroll-x-contain"
-            aria-label="Price ranges"
+            role="list"
+            aria-label="Starting price ranges"
           >
-            {["₹99", "₹499", "₹1,999", "₹4,999"].map((p) => (
+            {["₹350", "₹500", "₹1,000", "₹1,800"].map((p) => (
               <span
                 key={p}
+                role="listitem"
                 className="text-xs font-extrabold bg-red-50 text-red-700 px-3 py-1 rounded-full border border-red-200 whitespace-nowrap shrink-0 shadow-xs"
               >
                 From {p}
@@ -90,11 +93,10 @@ export const GiftBoxSection = memo(function GiftBoxSection({ giftBoxes }: GiftBo
             spaceBetween={12}
             slidesPerView={2}
             loop={true}
-            pagination={{ clickable: true }}
             autoplay={
               prefersReducedMotion
                 ? false
-                : { delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }
+                : { delay: 8000, disableOnInteraction: false, pauseOnMouseEnter: true }
             }
             speed={prefersReducedMotion ? 0 : 500}
             breakpoints={{
@@ -102,7 +104,7 @@ export const GiftBoxSection = memo(function GiftBoxSection({ giftBoxes }: GiftBo
               768: { slidesPerView: 4, spaceBetween: 16 },
               1024: { slidesPerView: 5, spaceBetween: 16 },
             }}
-            className="giftbox-swiper pb-12! pt-3! overflow-hidden items-stretch"
+            className="giftbox-swiper overflow-hidden items-stretch"
             a11y={{
               prevSlideMessage: "Previous gift box",
               nextSlideMessage: "Next gift box",
@@ -114,13 +116,9 @@ export const GiftBoxSection = memo(function GiftBoxSection({ giftBoxes }: GiftBo
                 className="h-auto pb-2 flex flex-col"
                 role="group"
                 aria-roledescription="slide"
-                aria-label={`Gift box ${index + 1} of ${giftBoxes.length}`}
+                aria-label={`Gift box ${index + 1} of ${giftBoxes.length}: ${box.name}`}
               >
-                <ProductCard
-                  product={box}
-                  variant="giftBox"
-                  index={index}
-                />
+                <ProductCard product={box} variant="giftBox" index={index} priority={false} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -130,7 +128,7 @@ export const GiftBoxSection = memo(function GiftBoxSection({ giftBoxes }: GiftBo
             type="button"
             onClick={handlePrev}
             aria-label="Previous gift box"
-            className="flex absolute -left-1.5 sm:-left-3 lg:-left-4 top-2/5 -translate-y-1/2 z-20 size-8 sm:size-10 lg:size-11 rounded-full bg-white/95 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-red-600 hover:text-yellow-200 border-2 border-amber-300 hover:border-yellow-400 shadow-md sm:shadow-lg shadow-amber-900/15 hover:shadow-xl hover:shadow-red-500/25 items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 cursor-pointer opacity-95 hover:opacity-100 group/sidebtn backdrop-blur-xs"
+            className="flex absolute -left-1.5 sm:-left-3 lg:-left-4 top-2/5 -translate-y-1/2 z-20 size-10 sm:size-10 lg:size-11 rounded-full bg-white/95 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-red-600 hover:text-yellow-200 border-2 border-amber-300 hover:border-yellow-400 shadow-md sm:shadow-lg shadow-amber-900/15 hover:shadow-xl hover:shadow-red-500/25 items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 cursor-pointer opacity-95 hover:opacity-100 group/sidebtn backdrop-blur-xs"
           >
             <ChevronLeft
               size={18}
@@ -144,7 +142,7 @@ export const GiftBoxSection = memo(function GiftBoxSection({ giftBoxes }: GiftBo
             type="button"
             onClick={handleNext}
             aria-label="Next gift box"
-            className="flex absolute -right-1.5 sm:-right-3 lg:-right-4 top-2/5 -translate-y-1/2 z-20 size-8 sm:size-10 lg:size-11 rounded-full bg-white/95 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-red-600 hover:text-yellow-200 border-2 border-amber-300 hover:border-yellow-400 shadow-md sm:shadow-lg shadow-amber-900/15 hover:shadow-xl hover:shadow-red-500/25 items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 cursor-pointer opacity-95 hover:opacity-100 group/sidebtn backdrop-blur-xs"
+            className="flex absolute -right-1.5 sm:-right-3 lg:-right-4 top-2/5 -translate-y-1/2 z-20 size-10 sm:size-10 lg:size-11 rounded-full bg-white/95 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-red-600 hover:text-yellow-200 border-2 border-amber-300 hover:border-yellow-400 shadow-md sm:shadow-lg shadow-amber-900/15 hover:shadow-xl hover:shadow-red-500/25 items-center justify-center transition-all duration-300 hover:scale-110 active:scale-90 cursor-pointer opacity-95 hover:opacity-100 group/sidebtn backdrop-blur-xs"
           >
             <ChevronRight
               size={18}

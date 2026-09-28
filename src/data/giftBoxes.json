@@ -1,118 +1,164 @@
 [
   {
-    "id": "gb001",
-    "name": "Budget Starter Pack",
-    "description": "Perfect beginner pack with sparklers, crackers, and ground items.",
-    "images": [
-      "https://picsum.photos/seed/gb1a/400/400",
-      "https://picsum.photos/seed/gb1b/400/400"
-    ],
-    "category": ["Gift Box", "Sparklers", "Bijili Crackers"],
-    "actualPrice": 120,
-    "discountedPrice": 99,
+    "id": "gb143",
+    "name": "21 item economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/21-item-economy.webp"],
+    "category": ["Gift Box"],
+    "actualPrice": 3500,
+    "discountedPrice": 350,
     "isGiftBox": true,
     "isPremium": false
   },
   {
-    "id": "gb002",
-    "name": "Kids Delight Pack",
-    "description": "Safe & fun items for children – sparklers, confetti poppers, snake tablets, and toy cap guns.",
-    "images": [
-      "https://picsum.photos/seed/gb2a/400/400",
-      "https://picsum.photos/seed/gb2b/400/400"
-    ],
-    "category": ["Gift Box", "Novelty Items", "Sparklers"],
-    "actualPrice": 120,
-    "discountedPrice": 99,
+    "id": "gb149",
+    "name": "18 item economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/18-items-premium.webp"],
+    "category": ["Premium Gift box"],
+    "actualPrice": 3500,
+    "discountedPrice": 350,
+    "isGiftBox": true,
+    "isPremium": true,
+    "badge": "PREMIUM COMBO"
+  },
+  {
+    "id": "gb144",
+    "name": "25 item economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/25-item-economy.webp"],
+    "category": ["Gift Box"],
+    "actualPrice": 3800,
+    "discountedPrice": 380,
     "isGiftBox": true,
     "isPremium": false
   },
   {
-    "id": "gb003",
-    "name": "Family Fun Pack",
-    "description": "A well-rounded assortment for the whole family – ground items, sparklers, and sky shots.",
-    "images": [
-      "https://picsum.photos/seed/gb3a/400/400",
-      "https://picsum.photos/seed/gb3b/400/400"
-    ],
-    "category": ["Gift Box", "Sparklers", "Sky Shots", "Flower Pots"],
-    "actualPrice": 600,
-    "discountedPrice": 499,
+    "id": "gb150",
+    "name": "25 item economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/25-items-premium.webp"],
+    "category": ["Premium Gift box"],
+    "actualPrice": 4500,
+    "discountedPrice": 450,
+    "isGiftBox": true,
+    "isPremium": true,
+    "badge": "PREMIUM COMBO"
+  },
+  {
+    "id": "gb145",
+    "name": "30 item economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/30-item-economy.webp"],
+    "category": ["Gift Box"],
+    "actualPrice": 5000,
+    "discountedPrice": 500,
     "isGiftBox": true,
     "isPremium": false
   },
   {
-    "id": "gb004",
-    "name": "Diwali Celebration Box",
-    "description": "Everything you need for Diwali – rockets, sky shots, ladi, chakkar and sparklers.",
-    "images": [
-      "https://picsum.photos/seed/gb4a/400/400",
-      "https://picsum.photos/seed/gb4b/400/400"
-    ],
-    "category": ["Gift Box", "Rockets", "Sky Shots", "Bijili Crackers"],
-    "actualPrice": 600,
-    "discountedPrice": 499,
+    "id": "gb151",
+    "name": "30 item economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/30-items-premium.webp"],
+    "category": ["Premium Gift box"],
+    "actualPrice": 5700,
+    "discountedPrice": 570,
     "isGiftBox": true,
     "isPremium": true,
-    "badge": "BESTSELLER"
+    "badge": "PREMIUM COMBO"
   },
   {
-    "id": "gb005",
-    "name": "Sky Show Special",
-    "description": "Sky-shot heavy pack – 5-shot shells, rockets, roman candles and more for aerial display.",
-    "images": [
-      "https://picsum.photos/seed/gb5a/400/400",
-      "https://picsum.photos/seed/gb5b/400/400"
-    ],
-    "category": ["Gift Box", "Sky Shots", "Rockets", "Fancy Items"],
-    "actualPrice": 600,
-    "discountedPrice": 499,
+    "id": "gb152",
+    "name": "35 item economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/35-item-premium.webp"],
+    "category": ["Premium Gift box"],
+    "actualPrice": 6700,
+    "discountedPrice": 670,
+    "isGiftBox": true,
+    "isPremium": true,
+    "badge": "PREMIUM COMBO"
+  },
+  {
+    "id": "gb146",
+    "name": "40 item economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/40-item-economy.webp"],
+    "category": ["Gift Box"],
+    "actualPrice": 7000,
+    "discountedPrice": 700,
     "isGiftBox": true,
     "isPremium": false
   },
   {
-    "id": "gb006",
-    "name": "Premium Diwali Pack",
-    "description": "Our most popular Diwali pack with 30+ items including premium sky shells, rockets, and fountains.",
-    "images": [
-      "https://picsum.photos/seed/gb6a/400/400",
-      "https://picsum.photos/seed/gb6b/400/400"
-    ],
-    "category": ["Gift Box", "Sky Shots", "Rockets", "Flower Pots", "Sparklers"],
-    "actualPrice": 2500,
-    "discountedPrice": 1999,
+    "id": "gb147",
+    "name": "45 items economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/45-items-economy.webp"],
+    "category": ["Gift Box"],
+    "actualPrice": 8000,
+    "discountedPrice": 800,
     "isGiftBox": true,
-    "isPremium": true,
-    "badge": "PREMIUM"
+    "isPremium": false
   },
   {
-    "id": "gb007",
-    "name": "Wedding Special Box",
-    "description": "Grand wedding crackers pack – fountains, sparklers, sky lanterns and brocade shells.",
-    "images": [
-      "https://picsum.photos/seed/gb7a/400/400",
-      "https://picsum.photos/seed/gb7b/400/400"
-    ],
-    "category": ["Gift Box", "Fancy Items", "Sky Shots", "Sparklers"],
-    "actualPrice": 2500,
-    "discountedPrice": 1999,
+    "id": "gb153",
+    "name": "40 items economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/40-items-premium.webp"],
+    "category": ["Premium Gift box"],
+    "actualPrice": 8000,
+    "discountedPrice": 800,
     "isGiftBox": true,
     "isPremium": true,
-    "badge": "EXCLUSIVE"
+    "badge": "PREMIUM COMBO"
   },
   {
-    "id": "gb008",
-    "name": "Grand Celebration Mega Box",
-    "description": "Our ultimate all-in-one mega box with 60+ items for the grandest celebrations.",
-    "images": [
-      "https://picsum.photos/seed/gb8a/400/400",
-      "https://picsum.photos/seed/gb8b/400/400"
-    ],
-    "category": ["Gift Box", "Sky Shots", "Rockets", "Fancy Items", "Flower Pots", "Sparklers"],
-    "actualPrice": 2500,
-    "discountedPrice": 1999,
+    "id": "gb148",
+    "name": "50 items economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/50-items-economy.webp"],
+    "category": ["Gift Box"],
+    "actualPrice": 9000,
+    "discountedPrice": 900,
+    "isGiftBox": true,
+    "isPremium": false
+  },
+  {
+    "id": "gb154",
+    "name": "50 items economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/50-items-premium.webp"],
+    "category": ["Premium Gift box"],
+    "actualPrice": 10600,
+    "discountedPrice": 1060,
     "isGiftBox": true,
     "isPremium": true,
-    "badge": "ROYAL PREMIUM"
+    "badge": "PREMIUM COMBO"
+  },
+  {
+    "id": "gb155",
+    "name": "60 items economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/60-item-premium.webp"],
+    "category": ["Premium Gift box"],
+    "actualPrice": 14000,
+    "discountedPrice": 1400,
+    "isGiftBox": true,
+    "isPremium": true,
+    "badge": "PREMIUM COMBO"
+  },
+  {
+    "id": "gb156",
+    "name": "70 items economy",
+    "unit": "Box",
+    "images": ["/images/gift-box/70-item-premium.webp"],
+    "category": ["Premium Gift box"],
+    "actualPrice": 18000,
+    "discountedPrice": 1800,
+    "isGiftBox": true,
+    "isPremium": true,
+    "badge": "PREMIUM COMBO"
   }
 ]

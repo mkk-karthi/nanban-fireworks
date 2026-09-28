@@ -121,7 +121,7 @@ describe("05: Order Checkout Modal, Form Validation & Invoice PDF", () => {
     // Verify invoice PDF was generated and downloaded
     await waitFor(() => {
       expect(mockPdfSave).toHaveBeenCalledWith(
-        expect.stringMatching(/^MKK_Fireworks_Invoice_MKK-.*\.pdf$/)
+        expect.stringMatching(/^Nanban_Crackers_Invoice_NBC-.*\.pdf$/)
       );
     });
 
@@ -158,12 +158,12 @@ describe("05: Order Checkout Modal, Form Validation & Invoice PDF", () => {
       city: "Sivakasi",
       pincode: "626123",
     };
-    const orderId = "MKK-TEST-999999";
+    const orderId = "NBC-TEST-999999";
 
     const result = generateInvoicePdf(cartItems, customer, sampleTotals, orderId);
 
     expect(result.success).toBe(true);
     expect(result.orderId).toBe(orderId);
-    expect(mockPdfSave).toHaveBeenCalledWith(`MKK_Fireworks_Invoice_${orderId}.pdf`);
+    expect(mockPdfSave).toHaveBeenCalledWith(`Nanban_Crackers_Invoice_${orderId}.pdf`);
   });
 });

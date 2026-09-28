@@ -25,7 +25,6 @@ interface CartSummaryProps {
   itemCount: number;
   onCheckout: () => void;
   onGenerateEstimate?: () => void;
-  onDownloadQuickPdf?: () => void;
 }
 
 /**
@@ -39,13 +38,12 @@ export const CartSummary = memo(function CartSummary({
   itemCount,
   onCheckout,
   onGenerateEstimate,
-  onDownloadQuickPdf,
 }: CartSummaryProps) {
   const { minimumOrderAmount, isOrderingEnabled, ordersDisabledMessage } = ORDER_CONFIG;
   const meetsMinimum = discountedTotal >= minimumOrderAmount;
   const shortfall = Math.max(0, minimumOrderAmount - discountedTotal);
   const progressPercent = Math.min(100, Math.round((discountedTotal / minimumOrderAmount) * 100));
-  const handleEstimate = onGenerateEstimate ?? onDownloadQuickPdf;
+
 
   return (
     <aside className="bg-white rounded-3xl border border-amber-100 shadow-xl overflow-hidden sticky top-24">
@@ -186,10 +184,10 @@ export const CartSummary = memo(function CartSummary({
           )}
 
           {/* Generate Estimate Button */}
-          {itemCount > 0 && isOrderingEnabled && handleEstimate && meetsMinimum && (
+          {itemCount > 0 && isOrderingEnabled && onGenerateEstimate && meetsMinimum && (
             <button
               type="button"
-              onClick={handleEstimate}
+              onClick={onGenerateEstimate}
               className="w-full flex items-center justify-center gap-2 border-2 border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-950 font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm transition-colors cursor-pointer"
             >
               <FileDown size={16} className="text-amber-700" />

@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect, useSyncExternalStore, memo, useCallback } from "react";
+import { useState, memo, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useScrollLock } from "@/hooks/useScrollLock";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import {
   X,
   CheckCircle2,
@@ -31,7 +33,7 @@ interface OrderModalProps {
   onOrderSuccess: () => void;
 }
 
-const emptySubscribe = () => () => {};
+
 
 /**
  * Clean Order Confirmation Modal:
@@ -46,11 +48,10 @@ export const OrderModal = memo(function OrderModal({
   totals,
   onOrderSuccess,
 }: OrderModalProps) {
-  const isMounted = useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false,
-  );
+  const isMounted = useIsMounted();
+
+  // DRY: shared scroll lock hook
+  useScrollLock(isOpen);
   const [customer, setCustomer] = useState<CustomerDetails>({
     name: "",
     phone: "",
@@ -67,17 +68,7 @@ export const OrderModal = memo(function OrderModal({
     savedCustomer: CustomerDetails;
   } | null>(null);
 
-  // Lock background scroll when modal is open
-  useEffect(() => {
-    if (!isOpen) return;
 
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, [isOpen]);
 
   const validate = useCallback(() => {
     const errs: Partial<Record<keyof CustomerDetails, string>> = {};
@@ -149,6 +140,9 @@ export const OrderModal = memo(function OrderModal({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
           className="fixed inset-0 z-999 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md overflow-y-auto select-none"
+          role="dialog"
+          aria-modal="true"
+          aria-label={orderComplete ? "Order confirmed" : "Order confirmation form"}
         >
           <motion.div
             key="order-modal-card"
@@ -335,6 +329,7 @@ export const OrderModal = memo(function OrderModal({
                       placeholder="e.g. Senthil Kumar"
                       value={customer.name}
                       onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
+                      autoComplete="name"
                       className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 ${
                         errors.name
                           ? "border-red-500 focus:ring-red-200"
@@ -357,6 +352,7 @@ export const OrderModal = memo(function OrderModal({
                       placeholder="10-digit number (e.g. 9876543210)"
                       value={customer.phone}
                       onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
+                      autoComplete="tel"
                       className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 ${
                         errors.phone
                           ? "border-red-500 focus:ring-red-200"
@@ -379,6 +375,7 @@ export const OrderModal = memo(function OrderModal({
                       placeholder="your.email@example.com"
                       value={customer.email}
                       onChange={(e) => setCustomer({ ...customer, email: e.target.value })}
+                      autoComplete="email"
                       className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 ${
                         errors.email
                           ? "border-red-500 focus:ring-red-200"
@@ -402,6 +399,7 @@ export const OrderModal = memo(function OrderModal({
                       placeholder="Door No, Street Name, Area / Preferred Transport Hub"
                       value={customer.address}
                       onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
+                      autoComplete="street-address"
                       className={`w-full px-3.5 py-2 rounded-xl border text-sm focus:outline-none focus:ring-2 ${
                         errors.address
                           ? "border-red-500 focus:ring-red-200"

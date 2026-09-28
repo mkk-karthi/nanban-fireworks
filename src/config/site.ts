@@ -3,45 +3,25 @@
 
 // Company Details
 export const COMPANY_DETAILS = {
-  name: "MKK Fireworks",
-  shortName: "MKK",
+  name: "Nanban Crackers",
+  shortName: "Nanban",
   tagline: "Light Up Your Celebrations!",
   subtitle: "Sivakasi Direct Factory Wholesale & Retail Fireworks",
   description:
-    "Buy premium quality fireworks, sparklers, sky shots, rockets, and gift boxes at MKK Fireworks. Best wholesale prices direct from Sivakasi factory. Minimum order ₹3,000.",
-  establishedYear: 2005,
-  email: "mkkfireworks@gmail.com",
+    "Buy premium quality fireworks, sparklers, sky shots, rockets, and gift boxes at Nanban Crackers. Best wholesale prices direct from Sivakasi factory. Minimum order ₹3,000.",
+  logo: "/images/logo.webp",
+  email: "Nanbancrackers0506@gmail.com",
   phone: "+91 98765 43210",
   phoneClean: "+919876543210",
   whatsapp: "+91 98765 43210",
   whatsappClean: "+919876543210",
   whatsappUrl: "https://wa.me/919876543210",
-  address: {
-    line1: "123, Market Street",
-    city: "Sivakasi",
-    state: "Tamil Nadu",
-    pincode: "626123",
-    country: "India",
-    formatted: "123, Market Street, Sivakasi, Tamil Nadu – 626 123",
-  },
   developer: {
     name: "MKK Creation",
     url: "https://mkkcreation.com",
   },
-  siteUrl: "https://nanban-fireworks.pages.dev",
+  siteUrl: "https://nanbancrackers.mkkcreation.com",
 } as const;
-
-// Brand and Contact Quick Access
-export const BRAND = {
-  name: COMPANY_DETAILS.name,
-  tagline: COMPANY_DETAILS.tagline,
-  email: COMPANY_DETAILS.email,
-  phone: COMPANY_DETAILS.phone,
-  whatsapp: COMPANY_DETAILS.whatsapp,
-  address: COMPANY_DETAILS.address.formatted,
-} as const;
-
-export const CONTACT = BRAND;
 
 // Order and Delivery Configuration
 export const ORDER_CONFIG = {
@@ -52,8 +32,9 @@ export const ORDER_CONFIG = {
     "We are currently not taking new orders. Bookings will reopen soon. For urgent bulk enquiries, please reach out via phone or WhatsApp.",
   // Minimum order amount in Rupees for factory dispatch
   minimumOrderAmount: 3000,
-  // Free delivery threshold in Rupees
-  freeDeliveryAbove: 5000,
+  // Free delivery threshold in Rupees (all orders are free delivery)
+  freeDeliveryAbove: 0,
+  freeDeliveryText: "Free delivery",
   // Transport delivery notice
   deliveryRegionNotice: "Delivery is strictly within Tamil Nadu via Sivakasi transport hubs.",
   dispatchHub: "Sivakasi Direct Factory Dispatch",
@@ -62,16 +43,25 @@ export const ORDER_CONFIG = {
 // Product Categories
 export const CATEGORIES = [
   "All",
-  "Sparklers",
-  "Ground Chakkar",
-  "Sky Shots",
-  "Rockets",
-  "Flower Pots",
+  "One Sound Crackers",
+  "Giant Crackers",
+  "Deluxe Crackers",
   "Bijili Crackers",
-  "Fancy Items",
+  "Flowerpots",
+  "Ground Chakkars",
+  "Pencils",
+  "Twinkling Stars",
+  "Rockets",
   "Bombs",
-  "Snake Tablets",
-  "Novelty Items",
+  "Paper Bombs",
+  "Garlands",
+  "Fancy Items",
+  "SPECIAL Fancy Items",
+  "Sky Fancy",
+  "Sky Multishorts",
+  "SKY BLASTER Shots",
+  "Sparklers",
+  "Matches",
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
@@ -82,7 +72,6 @@ export const SORT_OPTIONS = [
   { label: "Price: Low to High", value: "price-asc" },
   { label: "Price: High to Low", value: "price-desc" },
   { label: "Name: A – Z", value: "name-asc" },
-  { label: "Best Discount", value: "discount-desc" },
 ] as const;
 
 export type SortOption = (typeof SORT_OPTIONS)[number]["value"];
@@ -97,37 +86,34 @@ export const PAGINATION = {
 export const BANNER_SLIDES = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=1920&h=700&fit=crop&auto=format",
-    title: "Diwali Grand Sale",
-    subtitle: "Up to 30% off on all fireworks",
+    image: "/images/banners/banner1.webp",
+    title: "Diwali Grand Wholesale Sale",
+    subtitle: "Flat 90% discount on 100+ premium crackers & sky shots",
     cta: "Shop Now",
+    ctaLink: "#products",
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1920&h=700&fit=crop&auto=format",
-    title: "Sparkle the Night",
-    subtitle: "Premium sparklers for every celebration",
-    cta: "Explore",
+    image: "/images/banners/banner2.webp",
+    title: "Curated Gift Box Combos",
+    subtitle: "14 festive combo packs starting from ₹350 • Flat 90% off",
+    cta: "See Gift Boxes",
+    ctaLink: "#gift-boxes",
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1498931299472-f7a63a5a1cfa?w=1920&h=700&fit=crop&auto=format",
-    title: "Sky Show Collection",
-    subtitle: "Aerial shells & sky shots at best prices",
-    cta: "View Collection",
+    image: "/images/banners/banner3.webp",
+    title: "Sky Show & Multi-Shots",
+    subtitle: "Aerial repeating shots, sky fancy & blasters at direct factory rates",
+    cta: "View Sky Shots",
+    ctaLink: "#products",
   },
   {
     id: 4,
-    image: "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=1920&h=700&fit=crop&auto=format",
-    title: "Gift Box Deals",
-    subtitle: "Curated fireworks gift packs from ₹99",
-    cta: "See Gift Boxes",
-  },
-  {
-    id: 5,
-    image: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1920&h=700&fit=crop&auto=format",
-    title: "Celebrate in Style",
-    subtitle: "Quality crackers, trusted since 2005",
-    cta: "Shop All",
+    image: "/images/banners/banner4.webp",
+    title: "Sivakasi Direct Factory Dispatch",
+    subtitle: "Free transport dispatch across Tamil Nadu • Minimum order ₹3,000",
+    cta: "Explore Catalog",
+    ctaLink: "#products",
   },
 ] as const;

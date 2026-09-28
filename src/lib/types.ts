@@ -5,6 +5,8 @@ export const ProductSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string().optional(),
+  /** Packaging unit e.g. "Pkt", "Box", "Bag" */
+  unit: z.string().optional(),
   /** Multiple image URLs (optional). Show lightbox when clicked. */
   images: z.array(z.string()).optional().default([]),
   /** Product can belong to multiple categories */

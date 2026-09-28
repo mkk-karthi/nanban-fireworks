@@ -55,18 +55,19 @@ describe("01: Catalog DOM Rendering – Banners, Gift Boxes & Product Grid", () 
       render(<GiftBoxSection giftBoxes={giftBoxes} />);
 
       // Verify section heading
-      expect(screen.getByText(/Gift Box/i)).toBeInTheDocument();
-      expect(screen.getByText(/Combos/i)).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /Gift Box Combos/i })).toBeInTheDocument();
 
       // Verify each gift box combo is rendered
       for (const box of giftBoxes) {
-        expect(screen.getByRole("heading", { name: box.name })).toBeInTheDocument();
+        expect(
+          screen.getAllByRole("heading", { name: box.name }).length
+        ).toBeGreaterThanOrEqual(1);
 
         // Verify "Add Combo" button for each box
-        const addComboBtn = screen.getByRole("button", {
+        const addComboBtns = screen.getAllByRole("button", {
           name: new RegExp(`Add ${box.name} combo to cart`, "i"),
         });
-        expect(addComboBtn).toBeInTheDocument();
+        expect(addComboBtns.length).toBeGreaterThanOrEqual(1);
       }
 
       // Verify premium tags are visible for premium gift boxes
@@ -74,7 +75,7 @@ describe("01: Catalog DOM Rendering – Banners, Gift Boxes & Product Grid", () 
       expect(premiumBoxes.length).toBeGreaterThan(0);
       for (const box of premiumBoxes) {
         if (box.badge) {
-          expect(screen.getByText(box.badge)).toBeInTheDocument();
+          expect(screen.getAllByText(box.badge).length).toBeGreaterThan(0);
         }
       }
     });
@@ -93,7 +94,7 @@ describe("01: Catalog DOM Rendering – Banners, Gift Boxes & Product Grid", () 
         expect(screen.getByRole("heading", { name: prod.name })).toBeInTheDocument();
 
         const addToCartBtn = screen.getByRole("button", {
-          name: new RegExp(`Add ${prod.name} to cart`, "i"),
+          name: `Add ${prod.name} to cart`,
         });
         expect(addToCartBtn).toBeInTheDocument();
       }

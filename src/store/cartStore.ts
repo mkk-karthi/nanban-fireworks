@@ -17,9 +17,6 @@ interface CartStore {
 
   // Actions
 
-  /** Add product with optional quantity */
-  addItem: (productId: string, quantity?: number) => void;
-
   /** Remove the entire product entry from the cart */
   removeItem: (productId: string) => void;
 
@@ -30,12 +27,6 @@ interface CartStore {
   clearCart: () => void;
 
   // Selectors (non-reactive helpers)
-
-  /** Check if a product is in the cart */
-  isInCart: (productId: string) => boolean;
-
-  /** Quantity of a specific product in the cart (0 if absent) */
-  getItemQuantity: (productId: string) => number;
 
   /** Total number of individual units across all cart entries */
   getTotalUnits: () => number;
@@ -53,24 +44,6 @@ export const useCartStore = create<CartStore>()(
       hasHydrated: false,
 
       setHasHydrated: (value) => set({ hasHydrated: value }),
-
-      addItem: (productId, quantity = 1) =>
-        set((state) => {
-          const qtyToAdd = Math.max(1, quantity);
-          const existing = state.items.find((i) => i.productId === productId);
-
-          if (existing) {
-            return {
-              items: state.items.map((i) =>
-                i.productId === productId
-                  ? { ...i, quantity: i.quantity + qtyToAdd }
-                  : i
-              ),
-            };
-          }
-
-          return { items: [...state.items, { productId, quantity: qtyToAdd }] };
-        }),
 
       removeItem: (productId) =>
         set((state) => ({
@@ -95,17 +68,11 @@ export const useCartStore = create<CartStore>()(
 
       clearCart: () => set({ items: [] }),
 
-      isInCart: (productId) =>
-        get().items.some((i) => i.productId === productId),
-
-      getItemQuantity: (productId) =>
-        get().items.find((i) => i.productId === productId)?.quantity ?? 0,
-
       getTotalUnits: () =>
         get().items.reduce((sum, item) => sum + item.quantity, 0),
     }),
     {
-      name: "mkk-fireworks-cart",
+      name: "nanban-crackers-cart",
       storage: createJSONStorage(() =>
         typeof window !== "undefined"
           ? localStorage

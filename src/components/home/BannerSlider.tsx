@@ -6,34 +6,22 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import { Autoplay, Pagination, EffectFade, A11y } from "swiper/modules";
 import { Sparkles, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import AOS from "aos";
 import { BANNER_SLIDES } from "@/config/site";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
- * Modern Banner Slider with reactive AOS typography animations,
- * pure Tailwind CSS styling, and smooth slide synchronization.
+ * Modern Banner Slider with smooth slide synchronization.
  *
  * A11y improvements:
  * - `aria-roledescription="carousel"` on section
  * - `aria-label` on each slide
  * - `aria-live="polite"` on typography container for screen readers
  * - Autoplay disabled when `prefers-reduced-motion` is active
- *
- * Performance:
- * - Uses `AOS.refresh()` instead of `AOS.refreshHard()` (lighter)
- * - Reduced-motion guard skips AOS refresh entirely
  */
 export const BannerSlider = memo(function BannerSlider() {
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeRealIndex, setActiveRealIndex] = useState(0);
   const prefersReducedMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    if (!prefersReducedMotion) {
-      AOS.refresh();
-    }
-  }, [activeRealIndex, prefersReducedMotion]);
 
   const handlePrev = useCallback(() => {
     swiperRef.current?.slidePrev();
@@ -49,10 +37,26 @@ export const BannerSlider = memo(function BannerSlider() {
 
   return (
     <section
-      className="relative w-full bg-red-950 overflow-hidden select-none group"
+      className="relative w-full bg-red-950 overflow-hidden select-none group h-65 sm:h-95 md:h-115 lg:h-130"
       aria-label="Hero banner – featured promotions"
       aria-roledescription="carousel"
     >
+      {/* Static Hero LCP Background Image – decoupled from Swiper DOM hydration */}
+      <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src={BANNER_SLIDES[0].image}
+          alt=""
+          fill
+          priority
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/45 to-transparent" />
+      </div>
+
       <Swiper
         modules={[Autoplay, Pagination, EffectFade, A11y]}
         effect="fade"
@@ -61,7 +65,7 @@ export const BannerSlider = memo(function BannerSlider() {
           prefersReducedMotion
             ? false
             : {
-                delay: 4500,
+                delay: 8000,
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
               }
@@ -72,7 +76,7 @@ export const BannerSlider = memo(function BannerSlider() {
         onBeforeInit={(swiper) => {
           swiperRef.current = swiper;
         }}
-        className="w-full h-65 sm:h-95 md:h-115 lg:h-130"
+        className="w-full h-full relative z-10"
         a11y={{
           prevSlideMessage: "Previous slide",
           nextSlideMessage: "Next slide",
@@ -89,22 +93,26 @@ export const BannerSlider = memo(function BannerSlider() {
               aria-roledescription="slide"
               aria-label={`Slide ${index + 1} of ${BANNER_SLIDES.length}: ${slide.title}`}
             >
-              {/* Background Image */}
-              <div className="absolute inset-0" aria-hidden="true">
-                <Image
-                  src={slide.image}
-                  alt=""
-                  fill
-                  priority={index === 0}
-                  className="object-cover"
-                  sizes="100vw"
-                />
-                {/* Cinematic Vignette Overlay */}
-                <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/45 to-transparent" />
-              </div>
+              {/* Background Image for secondary slides */}
+              {index !== 0 && (
+                <div className="absolute inset-0" aria-hidden="true">
+                  <Image
+                    src={slide.image}
+                    alt=""
+                    fill
+                    loading="lazy"
+                    fetchPriority="low"
+                    decoding="async"
+                    className="object-cover"
+                    sizes="100vw"
+                  />
+                  {/* Cinematic Vignette Overlay */}
+                  <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/45 to-transparent" />
+                </div>
+              )}
 
-              {/* Slide Typography Content with Reactive AOS Animations */}
-              <div className="absolute inset-0 flex items-center px-12 sm:px-16 md:px-20 max-w-4xl z-10">
+              {/* Slide Typography Content */}
+              <div className="absolute inset-0 flex items-center px-8 sm:px-16 md:px-20 max-w-4xl z-10">
                 {isActive && (
                   <div
                     key={`slide-typography-${slide.id}-${activeRealIndex}`}
@@ -127,14 +135,14 @@ export const BannerSlider = memo(function BannerSlider() {
                       <span>Sivakasi Direct Factory Sale</span>
                     </span>
                     {/* Main Headline */}
-                    <h1
+                    <h2
                       data-aos="fade-right"
                       data-aos-delay="200"
                       data-aos-duration="700"
                       className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight drop-shadow-md"
                     >
                       {slide.title}
-                    </h1>
+                    </h2>
 
                     {/* Subtitle */}
                     <p
@@ -154,9 +162,9 @@ export const BannerSlider = memo(function BannerSlider() {
                       className="pt-1.5 sm:pt-4"
                     >
                       <a
-                        href="#products"
+                        href={slide.ctaLink ?? "#products"}
                         className="group/cta inline-flex items-center gap-2 bg-linear-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-300 hover:to-amber-300 text-red-950 font-black px-5 sm:px-8 py-2 sm:py-3.5 rounded-full text-xs sm:text-sm md:text-base transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl shadow-yellow-500/30"
-                        aria-label={`${slide.cta} – go to products`}
+                        aria-label={`${slide.cta} – go to section`}
                       >
                         <span>{slide.cta}</span>
                         <ArrowRight
@@ -180,7 +188,7 @@ export const BannerSlider = memo(function BannerSlider() {
         type="button"
         onClick={handlePrev}
         aria-label="Previous slide"
-        className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-20 size-8 sm:size-12 rounded-full bg-red-950/70 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-yellow-300 hover:text-yellow-100 border border-yellow-400/50 hover:border-yellow-300 shadow-lg shadow-black/40 hover:shadow-yellow-500/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer opacity-85 hover:opacity-100 group/nav"
+        className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-20 size-10 sm:size-12 rounded-full bg-red-950/70 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-yellow-300 hover:text-yellow-100 border border-yellow-400/50 hover:border-yellow-300 shadow-lg shadow-black/40 hover:shadow-yellow-500/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer opacity-85 hover:opacity-100 group/nav"
       >
         <ChevronLeft
           size={18}
@@ -194,7 +202,7 @@ export const BannerSlider = memo(function BannerSlider() {
         type="button"
         onClick={handleNext}
         aria-label="Next slide"
-        className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-20 size-8 sm:size-12 rounded-full bg-red-950/70 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-yellow-300 hover:text-yellow-100 border border-yellow-400/50 hover:border-yellow-300 shadow-lg shadow-black/40 hover:shadow-yellow-500/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer opacity-85 hover:opacity-100 group/nav"
+        className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-20 size-10 sm:size-12 rounded-full bg-red-950/70 hover:bg-linear-to-br hover:from-red-600 hover:to-red-700 text-yellow-300 hover:text-yellow-100 border border-yellow-400/50 hover:border-yellow-300 shadow-lg shadow-black/40 hover:shadow-yellow-500/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer opacity-85 hover:opacity-100 group/nav"
       >
         <ChevronRight
           size={18}
