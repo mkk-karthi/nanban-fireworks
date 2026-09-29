@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: `Shopping Cart | ${COMPANY_DETAILS.name}`,
-    description: `Review your fireworks order with ${COMPANY_DETAILS.name}. Direct factory dispatch from Sivakasi.`,
+    description: `Review your fireworks order with ${COMPANY_DETAILS.name}. Sivakasi Direct dispatch.`,
     url: `${COMPANY_DETAILS.siteUrl}/cart`,
   },
 };

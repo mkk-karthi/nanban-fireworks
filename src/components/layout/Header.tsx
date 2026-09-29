@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, ShoppingCart, Truck, AlertTriangle } from "lucide-react";
@@ -28,7 +27,7 @@ export function Header() {
         >
           <AlertTriangle size={15} className="text-red-900 shrink-0" aria-hidden="true" />
           <span>
-            Notice: Online bookings are currently paused. Factory dispatch will resume shortly.
+            Notice: Online bookings are currently paused. Sivakasi direct dispatch will resume shortly.
           </span>
         </div>
       )}

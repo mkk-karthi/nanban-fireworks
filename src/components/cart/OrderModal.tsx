@@ -21,8 +21,10 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { formatPrice, generateInvoiceNumber } from "@/lib/utils";
-import { ORDER_CONFIG } from "@/config/site";
+import { ORDER_CONFIG, COMPANY_DETAILS } from "@/config/site";
 import { generateInvoicePdf, type CustomerDetails } from "@/lib/pdfGenerator";
+import { sendAdminOrderEmail } from "@/lib/emailService";
+import { TurnstileCaptcha } from "@/components/common/TurnstileCaptcha";
 import type { CartProductItem, CartTotals } from "@/lib/types";
 
 interface OrderModalProps {
@@ -33,11 +35,9 @@ interface OrderModalProps {
   onOrderSuccess: () => void;
 }
 
-
-
 /**
  * Clean Order Confirmation Modal:
- * Direct Sivakasi factory order confirmation with customer details,
+ * Sivakasi Direct Sale order confirmation with customer details,
  * auto-generates lightweight monochrome invoice PDF, auto-downloads it,
  * and renders an animated celebratory success view with re-download button.
  */
@@ -62,35 +62,76 @@ export const OrderModal = memo(function OrderModal({
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof CustomerDetails, string>>>({});
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderComplete, setOrderComplete] = useState<{
     orderId: string;
     savedCustomer: CustomerDetails;
   } | null>(null);
 
-
-
   const validate = useCallback(() => {
     const errs: Partial<Record<keyof CustomerDetails, string>> = {};
-    if (!customer.name.trim()) errs.name = "Please enter your full name";
+
+    // Full Name: min 3, max 50 chars
+    const trimmedName = customer.name.trim();
+    if (!trimmedName) {
+      errs.name = "Please enter your full name";
+    } else if (trimmedName.length < 3 || trimmedName.length > 50) {
+      errs.name = "Name must be between 3 and 50 characters";
+    }
+
+    // Phone: strict 10-digit Indian mobile
+    const cleanPhone = customer.phone.replace(/[\s-]/g, "");
     if (!customer.phone.trim()) {
       errs.phone = "Please enter your phone number";
-    } else if (!/^[6-9]\d{9}$/.test(customer.phone.replace(/[\s-]/g, ""))) {
+    } else if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
       errs.phone = "Enter a valid 10-digit Indian mobile number";
     }
-    if (!customer.email.trim()) {
+
+    // Email Address: min 10, max 50 chars + valid email format
+    const trimmedEmail = customer.email.trim();
+    if (!trimmedEmail) {
       errs.email = "Please enter your email address";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email.trim())) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
       errs.email = "Enter a valid email address";
+    } else if (trimmedEmail.length < 10 || trimmedEmail.length > 50) {
+      errs.email = "Email must be between 10 and 50 characters";
     }
-    if (!customer.address.trim()) errs.address = "Please enter your delivery address";
-    if (!customer.city.trim()) errs.city = "Please enter your city / district in Tamil Nadu";
-    if (!customer.pincode.trim() || !/^\d{6}$/.test(customer.pincode.trim())) {
+
+    // Delivery Address: min 10, max 150 chars
+    const trimmedAddress = customer.address.trim();
+    if (!trimmedAddress) {
+      errs.address = "Please enter your delivery address";
+    } else if (trimmedAddress.length < 10 || trimmedAddress.length > 150) {
+      errs.address = "Address must be between 10 and 150 characters";
+    }
+
+    // City: min 3, max 25 chars
+    const trimmedCity = customer.city.trim();
+    if (!trimmedCity) {
+      errs.city = "Please enter your city / district in Tamil Nadu";
+    } else if (trimmedCity.length < 3 || trimmedCity.length > 25) {
+      errs.city = "City must be between 3 and 25 characters";
+    }
+
+    // Pincode: strict 6 digit number
+    const trimmedPincode = customer.pincode.trim();
+    if (!trimmedPincode || !/^\d{6}$/.test(trimmedPincode)) {
       errs.pincode = "Enter a valid 6-digit pincode";
     }
+
     setErrors(errs);
+
+    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !captchaToken) {
+      setCaptchaError("Invalid Re-captcha");
+      return false;
+    }
+    setCaptchaError(null);
+
     return Object.keys(errs).length === 0;
-  }, [customer]);
+  }, [customer, captchaToken]);
 
   const handleOrderSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -99,22 +140,49 @@ export const OrderModal = memo(function OrderModal({
       if (!validate()) return;
 
       setIsSubmitting(true);
+      setSubmissionError(null);
       const orderId = generateInvoiceNumber();
       const currentCustomer = { ...customer };
 
       try {
-        generateInvoicePdf(items, currentCustomer, totals, orderId);
+        const invoiceResult = generateInvoicePdf(items, currentCustomer, totals, orderId, false);
+        const pdfBase64 = invoiceResult?.doc
+          ? invoiceResult.doc.output("datauristring")
+          : undefined;
+
+        const emailResult = await sendAdminOrderEmail({
+          customer: currentCustomer,
+          items,
+          totals,
+          orderId,
+          captchaToken,
+          pdfBase64,
+        });
+
+        if (emailResult && !emailResult.success && !emailResult.skipped) {
+          setSubmissionError(
+            "Your order could not be processed at the moment. Please try again later or contact us directly on WhatsApp / Phone.",
+          );
+          return;
+        }
+
+        // Email successfully sent or skipped in dev: auto-download invoice PDF
+        invoiceResult?.doc?.save(`Nanban_Crackers_Invoice_${orderId}.pdf`);
+
         setOrderComplete({
           orderId,
           savedCustomer: currentCustomer,
         });
       } catch (err) {
-        console.error("Failed to generate invoice PDF:", err);
+        console.error("Failed to process order:", err);
+        setSubmissionError(
+          "Your order could not be processed at the moment. Please try again later or contact us directly on WhatsApp / Phone.",
+        );
       } finally {
         setIsSubmitting(false);
       }
     },
-    [validate, customer, items, totals]
+    [validate, customer, items, totals, captchaToken],
   );
 
   const handleManualInvoiceDownload = useCallback(() => {
@@ -175,7 +243,7 @@ export const OrderModal = memo(function OrderModal({
               <p className="text-red-100 text-xs sm:text-sm mt-0.5 font-medium">
                 {orderComplete
                   ? "Your order has been recorded and your invoice has been downloaded."
-                  : "Enter your contact details to place your factory order directly."}
+                  : "Enter your contact details to place your Sivakasi direct order."}
               </p>
             </div>
 
@@ -230,14 +298,13 @@ export const OrderModal = memo(function OrderModal({
                   </p>
                   <div className="space-y-2 text-gray-700 leading-relaxed text-[11px] sm:text-xs">
                     <p>
-                      <strong>1. Confirmation Call:</strong> Our factory representative will call
-                      you at{" "}
+                      <strong>1. Confirmation Call:</strong> Our representative will call you at{" "}
                       <strong className="text-gray-900">{orderComplete.savedCustomer.phone}</strong>{" "}
                       to confirm order items and transport hub.
                     </p>
                     <p>
-                      <strong>2. Secure Dispatch:</strong> Packed at our Sivakasi factory and
-                      dispatched directly across Tamil Nadu.
+                      <strong>2. Secure Dispatch:</strong> Packed directly at Sivakasi and
+                      dispatched across Tamil Nadu.
                     </p>
                     <p>
                       <strong>3. Payment:</strong> Direct bank transfer, UPI, or cash on
@@ -326,6 +393,8 @@ export const OrderModal = memo(function OrderModal({
                     </label>
                     <input
                       type="text"
+                      minLength={3}
+                      maxLength={50}
                       placeholder="e.g. Senthil Kumar"
                       value={customer.name}
                       onChange={(e) => setCustomer({ ...customer, name: e.target.value })}
@@ -349,6 +418,7 @@ export const OrderModal = memo(function OrderModal({
                     </label>
                     <input
                       type="tel"
+                      maxLength={14}
                       placeholder="10-digit number (e.g. 9876543210)"
                       value={customer.phone}
                       onChange={(e) => setCustomer({ ...customer, phone: e.target.value })}
@@ -372,6 +442,8 @@ export const OrderModal = memo(function OrderModal({
                     </label>
                     <input
                       type="email"
+                      minLength={10}
+                      maxLength={50}
                       placeholder="your.email@example.com"
                       value={customer.email}
                       onChange={(e) => setCustomer({ ...customer, email: e.target.value })}
@@ -396,6 +468,8 @@ export const OrderModal = memo(function OrderModal({
                     </label>
                     <textarea
                       rows={2}
+                      minLength={10}
+                      maxLength={150}
                       placeholder="Door No, Street Name, Area / Preferred Transport Hub"
                       value={customer.address}
                       onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
@@ -421,6 +495,8 @@ export const OrderModal = memo(function OrderModal({
                     </label>
                     <input
                       type="text"
+                      minLength={3}
+                      maxLength={25}
                       placeholder="e.g. Madurai, Chennai, Coimbatore"
                       value={customer.city}
                       onChange={(e) => setCustomer({ ...customer, city: e.target.value })}
@@ -445,7 +521,12 @@ export const OrderModal = memo(function OrderModal({
                       maxLength={6}
                       placeholder="6-digit pincode"
                       value={customer.pincode}
-                      onChange={(e) => setCustomer({ ...customer, pincode: e.target.value })}
+                      onChange={(e) =>
+                        setCustomer({
+                          ...customer,
+                          pincode: e.target.value.replace(/\D/g, "").slice(0, 6),
+                        })
+                      }
                       className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 ${
                         errors.pincode
                           ? "border-red-500 focus:ring-red-200"
@@ -460,8 +541,48 @@ export const OrderModal = memo(function OrderModal({
                   </div>
                 </div>
 
+                {/* Cloudflare Turnstile Anti-Bot Protection */}
+                <div className="pt-1">
+                  <TurnstileCaptcha
+                    onSuccess={(token) => {
+                      setCaptchaToken(token);
+                      setCaptchaError(null);
+                    }}
+                    onError={(err) => setCaptchaError(err || "Security check failed")}
+                    onExpire={() => setCaptchaToken(null)}
+                  />
+                  {captchaError && (
+                    <p className="text-[11px] text-red-600 mt-1 text-center font-semibold">
+                      {captchaError}
+                    </p>
+                  )}
+                </div>
+
+                {/* Submission Error Alert Banner */}
+                {submissionError && (
+                  <div
+                    role="alert"
+                    className="bg-red-50 border-2 border-red-300 rounded-2xl p-3.5 sm:p-4 flex items-start gap-3 text-xs text-red-900 shadow-sm"
+                  >
+                    <AlertTriangle size={20} className="text-red-600 shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="font-extrabold text-red-800 text-sm">Order Processing Error</p>
+                      <p className="text-gray-700 leading-relaxed font-medium">{submissionError}</p>
+                      <p className="text-gray-600 text-[11px] pt-0.5">
+                        For immediate assistance, call / WhatsApp us at{" "}
+                        <a
+                          href={`tel:${COMPANY_DETAILS.phone}`}
+                          className="font-bold text-red-700 underline hover:text-red-800"
+                        >
+                          {COMPANY_DETAILS.phone}
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Submit Action: "Order Now" */}
-                <div className="pt-2">
+                <div className="pt-1">
                   <button
                     type="submit"
                     disabled={isSubmitting || !ORDER_CONFIG.isOrderingEnabled}
@@ -475,7 +596,7 @@ export const OrderModal = memo(function OrderModal({
                     ) : (
                       <>
                         <CheckCircle2 size={19} strokeWidth={2.5} />
-                        <span>Confirm & Place Factory Order</span>
+                        <span>Confirm & Place Order</span>
                       </>
                     )}
                   </button>
@@ -483,9 +604,7 @@ export const OrderModal = memo(function OrderModal({
 
                 <p className="text-[11px] text-gray-400 text-center flex items-center justify-center gap-1.5 pb-1">
                   <AlertCircle size={12} className="text-amber-500" />
-                  <span>
-                    Direct Sivakasi factory order • Representative will call to confirm delivery
-                  </span>
+                  <span>Sivakasi Direct Sale • Representative will call to confirm delivery</span>
                 </p>
               </form>
             )}

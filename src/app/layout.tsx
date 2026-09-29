@@ -32,7 +32,7 @@ const OG_IMAGE = {
   url: "/images/logo.webp",
   width: 500,
   height: 500,
-  alt: `${COMPANY_DETAILS.name} – Sivakasi Direct Factory Sale`,
+  alt: `${COMPANY_DETAILS.name} – Sivakasi Direct Sale`,
 };
 
 // Site-Wide Metadata
@@ -47,17 +47,31 @@ export const metadata: Metadata = {
     "fireworks",
     "crackers",
     "Sivakasi fireworks",
+    "Sivakasi crackers",
     "Diwali crackers",
+    "Diwali fireworks",
     "sparklers",
     "sky shots",
     "rockets",
     "gift box fireworks",
+    "fireworks gift box",
     "buy fireworks online",
     "Nanban Crackers",
+    "Nanban Fireworks",
     "Sivakasi wholesale",
     "Tamil Nadu crackers",
+    "Tamil Nadu crackers wholesale",
   ],
-  authors: [{ name: COMPANY_DETAILS.name, url: COMPANY_DETAILS.siteUrl }],
+  icons: {
+    icon: [{ url: "/images/logo.png", type: "image/png" }],
+    shortcut: "/images/logo.png",
+    apple: [{ url: "/images/logo.png", sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/manifest.webmanifest",
+  authors: [
+    { name: COMPANY_DETAILS.name, url: COMPANY_DETAILS.siteUrl },
+    { name: COMPANY_DETAILS.developer.name, url: COMPANY_DETAILS.developer.url },
+  ],
   creator: COMPANY_DETAILS.developer.name,
   publisher: COMPANY_DETAILS.name,
   robots: {

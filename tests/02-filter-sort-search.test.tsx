@@ -117,4 +117,16 @@ describe("02: Product Filtering, Live Search & Sorting Interactions", () => {
     const nextHeadings = screen.getAllByRole("heading", { level: 3 });
     expect(nextHeadings.length).toBe(40);
   });
+
+  it("shows 'No products found' empty state when search yields zero results", () => {
+    render(<ProductGrid products={products} />);
+
+    const searchInput = screen.getByRole("searchbox", { name: /Search products/i });
+    fireEvent.change(searchInput, { target: { value: "zzz_nonexistent_product_xyz" } });
+
+    expect(screen.getByText("No products found")).toBeInTheDocument();
+    expect(
+      screen.getByText(/Try selecting a different category or clearing search terms/i)
+    ).toBeInTheDocument();
+  });
 });

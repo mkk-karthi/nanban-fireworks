@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback, memo } from "react";
+import { useRef, useState, useCallback, memo } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
@@ -132,7 +132,7 @@ export const BannerSlider = memo(function BannerSlider() {
                         className="text-yellow-400 animate-pulse"
                         aria-hidden="true"
                       />
-                      <span>Sivakasi Direct Factory Sale</span>
+                      <span>Sivakasi Direct Sale</span>
                     </span>
                     {/* Main Headline */}
                     <h2

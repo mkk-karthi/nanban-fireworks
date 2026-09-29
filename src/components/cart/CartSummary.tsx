@@ -136,7 +136,7 @@ export const CartSummary = memo(function CartSummary({
             </div>
 
             <p className="text-xs text-amber-900 leading-relaxed">
-              Add <span className="font-black text-red-700">{formatPrice(shortfall)}</span> more fireworks to unlock Sivakasi direct factory checkout!
+              Add <span className="font-black text-red-700">{formatPrice(shortfall)}</span> more fireworks to unlock Sivakasi Direct Sale checkout!
             </p>
           </div>
         )}
@@ -145,7 +145,7 @@ export const CartSummary = memo(function CartSummary({
         {meetsMinimum && isOrderingEnabled && (
           <div className="bg-green-50 border-2 border-green-300 rounded-2xl p-3.5 text-xs text-green-800 font-extrabold flex items-center gap-2.5 shadow-xs">
             <CheckCircle2 size={18} className="text-green-600 shrink-0" />
-            <span>Minimum order amount met! Ready for factory dispatch.</span>
+            <span>Minimum order amount met! Ready for Sivakasi direct dispatch.</span>
           </div>
         )}
 
@@ -205,7 +205,7 @@ export const CartSummary = memo(function CartSummary({
         </div>
 
         <p className="text-center text-[11px] text-gray-400">
-          Direct factory billing • No online gateway required
+          Sivakasi Direct Sale billing • No online gateway required
         </p>
 
         {/* Continue shopping button */}

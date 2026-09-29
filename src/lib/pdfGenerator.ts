@@ -72,7 +72,7 @@ function getPdfDateString(): string {
  */
 export function generateEstimatePdf(
   items: CartProductItem[],
-  totals: OrderTotals
+  totals: OrderTotals,
 ): { success: boolean; error?: string; estimateId?: string } {
   if (totals.discountedTotal < ORDER_CONFIG.minimumOrderAmount) {
     return {
@@ -116,7 +116,7 @@ export function generateEstimatePdf(
   doc.setFont("Roboto", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(255, 235, 235);
-  doc.text("Direct Sivakasi Factory Wholesale & Retail Pricing", 60, 23);
+  doc.text("Direct Sivakasi Wholesale & Retail Pricing", 60, 23);
   doc.text(`Phone: ${COMPANY_DETAILS.phone} | Email: ${COMPANY_DETAILS.email}`, 60, 29);
 
   // Estimate Title & Meta (Right side - Date only, No Ref. No)
@@ -145,9 +145,9 @@ export function generateEstimatePdf(
   doc.setFont("Roboto", "normal");
   doc.setFontSize(8);
   doc.text(
-    "All prices shown include festival wholesale discounts. Direct dispatch from Sivakasi factory transport hubs.",
+    "All prices shown include festival wholesale discounts. Direct dispatch from Sivakasi transport hubs.",
     20,
-    startY + 11.5
+    startY + 11.5,
   );
 
   // Items Table (Category Column Removed, '#' used for number)
@@ -155,7 +155,7 @@ export function generateEstimatePdf(
 
   autoTable(doc, {
     startY: startY + 21,
-    margin: { left: 14, right: 14 },
+    margin: { top: 18, bottom: 20, left: 14, right: 14 },
     head: [["#", "Product Name", "MRP", "Offer Rate", "Qty", "Total Amount"]],
     body: tableData,
     theme: "grid",
@@ -187,14 +187,22 @@ export function generateEstimatePdf(
     },
   });
 
-  // Totals & Notes Section
+  // Totals & Notes Section (Move to next page if exceeding bottom margin limit)
+  const boxHeight = 32;
+  const pageHeight = doc.internal.pageSize.height;
+  const maxAvailableY = pageHeight - 14 - boxHeight; // 14mm bottom margin
   // @ts-expect-error autoTable adds lastAutoTable to doc
-  const finalY = (doc.lastAutoTable?.finalY ?? 150) + 6;
+  let finalY = (doc.lastAutoTable?.finalY ?? 150) + 6;
+
+  if (finalY > maxAvailableY) {
+    doc.addPage();
+    finalY = 18; // Match top margin
+  }
 
   // Left side: Order & Dispatch Notes Box
   doc.setFillColor(255, 251, 240);
   doc.setDrawColor(254, 215, 170);
-  doc.roundedRect(14, finalY, 92, 32, 2, 2, "FD");
+  doc.roundedRect(14, finalY, 92, boxHeight, 2, 2, "FD");
 
   doc.setFontSize(8.5);
   doc.setFont("Roboto", "bold");
@@ -204,14 +212,14 @@ export function generateEstimatePdf(
   doc.setFont("Roboto", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(80, 80, 80);
-  doc.text("• Minimum order ₹ 3,000 required for factory dispatch.", 18, finalY + 13);
+  doc.text("• Minimum order ₹ 3,000 required for Sivakasi dispatch.", 18, finalY + 13);
   doc.text("• Deliveries strictly within Tamil Nadu transport hubs.", 18, finalY + 18);
   doc.text("• Final invoice generated upon order confirmation.", 18, finalY + 23);
 
   // Right side: Totals Box
   doc.setFillColor(255, 251, 240);
   doc.setDrawColor(200, 16, 46);
-  doc.roundedRect(110, finalY, 86, 32, 2, 2, "FD");
+  doc.roundedRect(110, finalY, 86, boxHeight, 2, 2, "FD");
 
   doc.setFont("Roboto", "normal");
   doc.setFontSize(8.5);
@@ -222,7 +230,9 @@ export function generateEstimatePdf(
   doc.setTextColor(22, 163, 74);
   doc.setFont("Roboto", "bold");
   doc.text("Your Festival Discount:", 114, finalY + 14);
-  doc.text(`- ₹ ${totals.totalSaved.toLocaleString("en-IN")}`, 192, finalY + 14, { align: "right" });
+  doc.text(`- ₹ ${totals.totalSaved.toLocaleString("en-IN")}`, 192, finalY + 14, {
+    align: "right",
+  });
 
   doc.setDrawColor(230, 200, 180);
   doc.line(114, finalY + 17, 192, finalY + 17);
@@ -231,22 +241,30 @@ export function generateEstimatePdf(
   doc.setFontSize(10);
   doc.setFont("Roboto", "bold");
   doc.text("Estimated Net Payable:", 114, finalY + 24);
-  doc.text(`₹ ${totals.discountedTotal.toLocaleString("en-IN")}`, 192, finalY + 24, { align: "right" });
+  doc.text(`₹ ${totals.discountedTotal.toLocaleString("en-IN")}`, 192, finalY + 24, {
+    align: "right",
+  });
 
-  // Footer
-  const pageHeight = doc.internal.pageSize.height;
-  doc.setFillColor(200, 16, 46);
-  doc.rect(0, pageHeight - 12, 210, 12, "F");
+  // Footer on all pages
+  const totalPages = doc.getNumberOfPages();
+  for (let p = 1; p <= totalPages; p++) {
+    doc.setPage(p);
+    doc.setFillColor(200, 16, 46);
+    doc.rect(0, pageHeight - 12, 210, 12, "F");
 
-  doc.setFont("Roboto", "normal");
-  doc.setFontSize(8);
-  doc.setTextColor(255, 255, 255);
-  doc.text(
-    `Thank you for choosing ${COMPANY_DETAILS.name}! Direct Sivakasi Factory Quality Fireworks.`,
-    105,
-    pageHeight - 5.5,
-    { align: "center" }
-  );
+    doc.setFont("Roboto", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(255, 255, 255);
+    doc.text(
+      `Thank you for choosing ${COMPANY_DETAILS.name}! Sivakasi Direct Sale Quality Fireworks.`,
+      105,
+      pageHeight - 5.5,
+      { align: "center" },
+    );
+  }
+
+  doc.save(`Nanban_Crackers_Estimate_${estimateId}.pdf`);
+  return { success: true, estimateId };
 
   doc.save(`Nanban_Crackers_Estimate_${estimateId}.pdf`);
   return { success: true, estimateId };
@@ -266,7 +284,8 @@ export function generateInvoicePdf(
   items: CartProductItem[],
   customer: CustomerDetails,
   totals: OrderTotals,
-  orderId: string
+  orderId: string,
+  autoDownload: boolean = true,
 ): { success: boolean; orderId: string; doc: jsPDF } {
   const doc = new jsPDF({
     orientation: "portrait",
@@ -335,7 +354,9 @@ export function generateInvoicePdf(
 
   doc.setFont("Roboto", "normal");
   doc.setTextColor(17, 24, 39);
-  const fullAddress = [customer.address, customer.city, customer.pincode, "Tamil Nadu"].filter(Boolean).join(", ");
+  const fullAddress = [customer.address, customer.city, customer.pincode, "Tamil Nadu"]
+    .filter(Boolean)
+    .join(", ");
   doc.text(fullAddress || "Direct Sivakasi Transport Dispatch", 112, startY + 16, {
     maxWidth: 80,
   });
@@ -345,7 +366,7 @@ export function generateInvoicePdf(
 
   autoTable(doc, {
     startY: startY + 28,
-    margin: { left: 14, right: 14 },
+    margin: { top: 18, bottom: 20, left: 14, right: 14 },
     head: [["#", "Description / Product", "MRP", "Rate", "Qty", "Amount"]],
     body: tableData,
     theme: "plain",
@@ -379,14 +400,22 @@ export function generateInvoicePdf(
     },
   });
 
-  // Totals & Terms Section (Matched layout with estimate PDF, Zero Overlap)
+  // Totals & Terms Section (Move to next page if exceeding bottom margin limit)
+  const boxHeight = 28;
+  const pageHeight = doc.internal.pageSize.height;
+  const maxAvailableY = pageHeight - 14 - boxHeight; // 14mm bottom margin
   // @ts-expect-error autoTable adds lastAutoTable to doc
-  const finalY = (doc.lastAutoTable?.finalY ?? 140) + 5;
+  let finalY = (doc.lastAutoTable?.finalY ?? 140) + 5;
+
+  if (finalY > maxAvailableY) {
+    doc.addPage();
+    finalY = 18; // Match top margin
+  }
 
   // Left side: Terms & Delivery Guidelines Box (x: 14, width: 92)
   doc.setFillColor(250, 250, 250);
   doc.setDrawColor(229, 231, 235);
-  doc.roundedRect(14, finalY, 92, 28, 1.5, 1.5, "FD");
+  doc.roundedRect(14, finalY, 92, boxHeight, 1.5, 1.5, "FD");
 
   doc.setFont("Roboto", "bold");
   doc.setFontSize(8);
@@ -396,23 +425,31 @@ export function generateInvoicePdf(
   doc.setFont("Roboto", "normal");
   doc.setFontSize(7);
   doc.setTextColor(75, 85, 99);
-  doc.text("1. Dispatched directly from Sivakasi factory transport hubs.", 18, finalY + 11.5);
-  doc.text("2. Service strictly within Tamil Nadu. Transport hub confirmed by call.", 18, finalY + 16.5);
+  doc.text("1. Dispatched directly from Sivakasi transport hubs.", 18, finalY + 11.5);
+  doc.text(
+    "2. Service strictly within Tamil Nadu. Transport hub confirmed by call.",
+    18,
+    finalY + 16.5,
+  );
   doc.text("3. Payment: Direct bank transfer / UPI or cash on confirmation.", 18, finalY + 21.5);
 
   // Right side: Totals Box (x: 110, width: 86)
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(209, 213, 219);
-  doc.roundedRect(110, finalY, 86, 28, 1.5, 1.5, "FD");
+  doc.roundedRect(110, finalY, 86, boxHeight, 1.5, 1.5, "FD");
 
   doc.setFont("Roboto", "normal");
   doc.setFontSize(8);
   doc.setTextColor(75, 85, 99);
   doc.text("Total MRP:", 114, finalY + 6.5);
-  doc.text(`₹ ${totals.actualTotal.toLocaleString("en-IN")}`, 192, finalY + 6.5, { align: "right" });
+  doc.text(`₹ ${totals.actualTotal.toLocaleString("en-IN")}`, 192, finalY + 6.5, {
+    align: "right",
+  });
 
   doc.text("Festival Discount:", 114, finalY + 12.5);
-  doc.text(`- ₹ ${totals.totalSaved.toLocaleString("en-IN")}`, 192, finalY + 12.5, { align: "right" });
+  doc.text(`- ₹ ${totals.totalSaved.toLocaleString("en-IN")}`, 192, finalY + 12.5, {
+    align: "right",
+  });
 
   doc.setDrawColor(229, 231, 235);
   doc.line(114, finalY + 15.5, 192, finalY + 15.5);
@@ -421,25 +458,32 @@ export function generateInvoicePdf(
   doc.setFont("Roboto", "bold");
   doc.setTextColor(17, 24, 39);
   doc.text("Net Payable Amount:", 114, finalY + 22);
-  doc.text(`₹ ${totals.discountedTotal.toLocaleString("en-IN")}`, 192, finalY + 22, { align: "right" });
+  doc.text(`₹ ${totals.discountedTotal.toLocaleString("en-IN")}`, 192, finalY + 22, {
+    align: "right",
+  });
 
-  // Simple Minimalist Footer
-  const pageHeight = doc.internal.pageSize.height;
-  doc.setDrawColor(209, 213, 219);
-  doc.setLineWidth(0.2);
-  doc.line(14, pageHeight - 12, 196, pageHeight - 12);
+  // Simple Minimalist Footer on all pages
+  const totalPages = doc.getNumberOfPages();
+  for (let p = 1; p <= totalPages; p++) {
+    doc.setPage(p);
+    doc.setDrawColor(209, 213, 219);
+    doc.setLineWidth(0.2);
+    doc.line(14, pageHeight - 14, 196, pageHeight - 14);
 
-  doc.setFont("Roboto", "normal");
-  doc.setFontSize(7);
-  doc.setTextColor(107, 114, 128);
-  doc.text(
-    `This is a computer generated invoice from ${COMPANY_DETAILS.name}, Sivakasi. No physical signature required.`,
-    105,
-    pageHeight - 7,
-    { align: "center" }
-  );
+    doc.setFont("Roboto", "normal");
+    doc.setFontSize(7);
+    doc.setTextColor(107, 114, 128);
+    doc.text(
+      `This is a computer generated invoice from ${COMPANY_DETAILS.name}, Sivakasi. No physical signature required.`,
+      105,
+      pageHeight - 8.5,
+      { align: "center" },
+    );
+  }
 
-  doc.save(`Nanban_Crackers_Invoice_${orderId}.pdf`);
+  if (autoDownload) {
+    doc.save(`Nanban_Crackers_Invoice_${orderId}.pdf`);
+  }
   return { success: true, orderId, doc };
 }
 
@@ -449,7 +493,7 @@ export function generateInvoicePdf(
 export const generateOrderPdf = (
   items: CartProductItem[],
   customer: CustomerDetails,
-  totals: OrderTotals
+  totals: OrderTotals,
 ) => {
   const orderId = generateInvoiceNumber();
   return generateInvoicePdf(items, customer, totals, orderId);

@@ -53,7 +53,7 @@ export const computeCartTotals = (
 let invoiceSeq = 1000;
 
 /**
- * Generates a unique, collision-resistant Invoice Number formatted for factory orders.
+ * Generates a unique, collision-resistant Invoice Number formatted for Sivakasi orders.
  * Format: NBC-YYYYMMDD-HHMMSS-XXXX (e.g. NBC-20260918-134520-8941)
  */
 export const generateInvoiceNumber = (): string => {

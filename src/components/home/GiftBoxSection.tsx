@@ -60,7 +60,7 @@ export const GiftBoxSection = memo(function GiftBoxSection({ giftBoxes }: GiftBo
                 Curated <span className="text-red-600">Gift Box Combos</span>
               </h2>
               <p className="text-xs sm:text-sm text-gray-500">
-                All-in-one family assortments at wholesale factory rates
+                All-in-one family assortments at Sivakasi direct wholesale rates
               </p>
             </div>
           </div>

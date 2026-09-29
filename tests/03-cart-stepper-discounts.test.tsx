@@ -120,4 +120,30 @@ describe("03: Cart Interactions, Stepper Controls & Discount Calculations", () =
       expect(screen.getAllByText(formatPrice(expectedSaved)).length).toBeGreaterThanOrEqual(1);
     });
   });
+
+  describe("Cart Store Operations", () => {
+    it("clearCart removes all items from the store", () => {
+      useCartStore.getState().updateQuantity(sampleProduct.id, 5);
+      useCartStore.getState().updateQuantity(sampleGiftBox.id, 3);
+      expect(useCartStore.getState().items.length).toBe(2);
+
+      useCartStore.getState().clearCart();
+      expect(useCartStore.getState().items).toEqual([]);
+    });
+
+    it("getTotalUnits returns sum of all item quantities", () => {
+      useCartStore.getState().updateQuantity(sampleProduct.id, 4);
+      useCartStore.getState().updateQuantity(sampleGiftBox.id, 2);
+
+      expect(useCartStore.getState().getTotalUnits()).toBe(6);
+    });
+
+    it("updateQuantity with 0 removes item from cart", () => {
+      useCartStore.getState().updateQuantity(sampleProduct.id, 3);
+      expect(useCartStore.getState().items.length).toBe(1);
+
+      useCartStore.getState().updateQuantity(sampleProduct.id, 0);
+      expect(useCartStore.getState().items).toEqual([]);
+    });
+  });
 });

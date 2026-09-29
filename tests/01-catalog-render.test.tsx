@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { BannerSlider } from "@/components/home/BannerSlider";
 import { GiftBoxSection } from "@/components/home/GiftBoxSection";
 import { ProductGrid } from "@/components/home/ProductGrid";
-import { BANNER_SLIDES } from "@/config/site";
+import { BANNER_SLIDES, PAGINATION } from "@/config/site";
 import { ProductSchema, type Product } from "@/lib/types";
 import rawProducts from "@/data/products.json";
 import rawGiftBoxes from "@/data/giftBoxes.json";
@@ -88,15 +88,13 @@ describe("01: Catalog DOM Rendering – Banners, Gift Boxes & Product Grid", () 
       // Verify filter bar elements
       expect(screen.getByPlaceholderText(/Search products…/i)).toBeInTheDocument();
 
-      // Verify first batch of products rendered
-      const initialProducts = products.slice(0, 12);
+      // Verify first batch of products rendered (uses actual PAGINATION constant)
+      const initialProducts = products.slice(0, PAGINATION.productsPerPage);
       for (const prod of initialProducts) {
         expect(screen.getByRole("heading", { name: prod.name })).toBeInTheDocument();
-
-        const addToCartBtn = screen.getByRole("button", {
-          name: `Add ${prod.name} to cart`,
-        });
-        expect(addToCartBtn).toBeInTheDocument();
+        expect(
+          screen.getByRole("button", { name: `Add ${prod.name} to cart` })
+        ).toBeInTheDocument();
       }
     });
   });

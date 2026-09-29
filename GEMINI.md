@@ -52,8 +52,10 @@ npm run build        # Production build
 ## Testing Suites (`tests/`)
 
 - `01-catalog-render`: Banners, Gift Boxes, Product Grid DOM rendering.
-- `02-filter-sort-search`: Category filtering, live search, sorting.
-- `03-cart-stepper-discounts`: Add to cart, stepper transitions, discount calculations.
+- `02-filter-sort-search`: Category filtering, live search, sorting, empty state.
+- `03-cart-stepper-discounts`: Add to cart, stepper transitions, discount calculations, store operations.
 - `04-minimum-order-estimate-pdf`: ₹3,000 threshold, progress bar, Festive Estimate PDF.
 - `05-order-checkout-invoice-pdf`: Checkout validation, order submit, Invoice PDF.
 - `06-lightbox-and-fallback`: Lightbox nav, keyboard controls, fallback image safety.
+- `07-emailjs-turnstile`: EmailJS free tier dispatch, 45KB payload ceiling, Turnstile captcha.
+- `08-utilities-and-store`: formatPrice, getDiscountPercent, generateInvoiceNumber, computeCartTotals.

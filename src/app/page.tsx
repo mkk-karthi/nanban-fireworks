@@ -11,7 +11,7 @@ import { COMPANY_DETAILS } from "@/config/site";
 export const metadata: Metadata = {
   title: `Shop Premium Crackers Online | ${COMPANY_DETAILS.name} Sivakasi`,
   description:
-    "Browse 100+ premium fireworks products: sparklers, sky shots, rockets, bijili crackers, flower pots, gift boxes and more. Competitive factory prices, direct from Sivakasi.",
+    "Browse 100+ premium fireworks products: sparklers, sky shots, rockets, bijili crackers, flower pots, gift boxes and more. Sivakasi Direct Sale pricing.",
   keywords: [
     "buy crackers online",
     "Diwali fireworks Sivakasi",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     url: COMPANY_DETAILS.siteUrl,
     title: `Shop Premium Crackers Online | ${COMPANY_DETAILS.name} Sivakasi`,
-    description: "100+ fireworks products – sparklers, sky shots, rockets, gift boxes. Factory prices from Sivakasi.",
+    description: "100+ fireworks products – sparklers, sky shots, rockets, gift boxes. Best prices with Sivakasi Direct Sale.",
   },
 };
 

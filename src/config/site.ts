@@ -6,9 +6,9 @@ export const COMPANY_DETAILS = {
   name: "Nanban Crackers",
   shortName: "Nanban",
   tagline: "Light Up Your Celebrations!",
-  subtitle: "Sivakasi Direct Factory Wholesale & Retail Fireworks",
+  subtitle: "Sivakasi Direct Wholesale & Retail Fireworks",
   description:
-    "Buy premium quality fireworks, sparklers, sky shots, rockets, and gift boxes at Nanban Crackers. Best wholesale prices direct from Sivakasi factory. Minimum order ₹3,000.",
+    "Buy premium quality fireworks, sparklers, sky shots, rockets, and gift boxes at Nanban Crackers. Best wholesale prices with Sivakasi Direct Sale. Minimum order ₹3,000.",
   logo: "/images/logo.webp",
   email: "Nanbancrackers0506@gmail.com",
   phone: "+91 98765 43210",
@@ -30,14 +30,14 @@ export const ORDER_CONFIG = {
   // Customer notification shown when ordering is paused
   ordersDisabledMessage:
     "We are currently not taking new orders. Bookings will reopen soon. For urgent bulk enquiries, please reach out via phone or WhatsApp.",
-  // Minimum order amount in Rupees for factory dispatch
+  // Minimum order amount in Rupees for Sivakasi dispatch
   minimumOrderAmount: 3000,
   // Free delivery threshold in Rupees (all orders are free delivery)
   freeDeliveryAbove: 0,
   freeDeliveryText: "Free delivery",
   // Transport delivery notice
   deliveryRegionNotice: "Delivery is strictly within Tamil Nadu via Sivakasi transport hubs.",
-  dispatchHub: "Sivakasi Direct Factory Dispatch",
+  dispatchHub: "Sivakasi Direct Dispatch",
 } as const;
 
 // Product Categories
@@ -104,14 +104,14 @@ export const BANNER_SLIDES = [
     id: 3,
     image: "/images/banners/banner3.webp",
     title: "Sky Show & Multi-Shots",
-    subtitle: "Aerial repeating shots, sky fancy & blasters at direct factory rates",
+    subtitle: "Aerial repeating shots, sky fancy & blasters at Sivakasi Direct Sale rates",
     cta: "View Sky Shots",
     ctaLink: "#products",
   },
   {
     id: 4,
     image: "/images/banners/banner4.webp",
-    title: "Sivakasi Direct Factory Dispatch",
+    title: "Sivakasi Direct Sale Dispatch",
     subtitle: "Free transport dispatch across Tamil Nadu • Minimum order ₹3,000",
     cta: "Explore Catalog",
     ctaLink: "#products",

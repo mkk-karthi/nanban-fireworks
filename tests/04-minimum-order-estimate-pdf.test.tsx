@@ -46,7 +46,7 @@ describe("04: Minimum Order Enforcement & Festive Estimate PDF Download", () => 
 
     // Shortfall message is displayed
     expect(
-      screen.getByText(/more fireworks to unlock Sivakasi direct factory checkout!/i)
+      screen.getByText(/more fireworks to unlock Sivakasi Direct Sale checkout!/i)
     ).toBeInTheDocument();
 
     // "Order Now" button is NOT rendered
@@ -88,7 +88,7 @@ describe("04: Minimum Order Enforcement & Festive Estimate PDF Download", () => 
 
     // Minimum met badge is rendered
     expect(
-      screen.getByText(/Minimum order amount met! Ready for factory dispatch/i)
+      screen.getByText(/Minimum order amount met! Ready for Sivakasi direct dispatch/i)
     ).toBeInTheDocument();
 
     // Order Now button is enabled and clickable
