@@ -1,7 +1,7 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import emailjs from "@emailjs/browser";
 import { buildOrderItemsHtml, sendAdminOrderEmail, MAX_PAYLOAD_BYTES } from "@/lib/emailService";
-import { TurnstileCaptcha } from "@/components/common/TurnstileCaptcha";
+import { GoogleRecaptcha } from "@/components/common/GoogleRecaptcha";
 import { ProductSchema, type Product, type CartProductItem } from "@/lib/types";
 import rawProducts from "@/data/products.json";
 
@@ -30,12 +30,13 @@ const sampleCustomer = {
   pincode: "625001",
 };
 
-describe("07: EmailJS Free Tier Service & Cloudflare Turnstile", () => {
+describe("07: EmailJS Free Tier Service & Google reCAPTCHA", () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
     jest.clearAllMocks();
     process.env = { ...originalEnv };
+    delete (window as unknown as { grecaptcha?: unknown }).grecaptcha;
   });
 
   afterAll(() => {
@@ -92,7 +93,7 @@ describe("07: EmailJS Free Tier Service & Cloudflare Turnstile", () => {
         items: cartItems,
         totals: sampleTotals,
         orderId,
-        captchaToken: "test-cf-token",
+        captchaToken: "test-recaptcha-token",
       });
 
       expect(result.success).toBe(true);
@@ -111,7 +112,7 @@ describe("07: EmailJS Free Tier Service & Cloudflare Turnstile", () => {
       expect(templateParams.customer_name).toBe("Karthikeyan Admin");
       expect(templateParams.customer_phone).toBe("9876543210");
       expect(templateParams.customer_city).toBe("Madurai");
-      expect(templateParams["g-recaptcha-response"]).toBe("test-cf-token");
+      expect(templateParams["g-recaptcha-response"]).toBe("test-recaptcha-token");
       expect(templateParams.orders).toBeDefined();
       expect(templateParams.total).toBeDefined();
       expect(templateParams.payable).toBeDefined();
@@ -191,10 +192,10 @@ describe("07: EmailJS Free Tier Service & Cloudflare Turnstile", () => {
     });
   });
 
-  describe("TurnstileCaptcha Component", () => {
+  describe("GoogleRecaptcha Component", () => {
     it("gracefully bypasses and calls onSuccess when no site key is configured", async () => {
       const onSuccess = jest.fn();
-      render(<TurnstileCaptcha siteKey="" onSuccess={onSuccess} />);
+      render(<GoogleRecaptcha siteKey="" onSuccess={onSuccess} />);
 
       expect(screen.getByText(/Anti-bot protection active/i)).toBeInTheDocument();
       await waitFor(() => {
@@ -202,11 +203,117 @@ describe("07: EmailJS Free Tier Service & Cloudflare Turnstile", () => {
       });
     });
 
-    it("renders Turnstile widget container when site key is provided", () => {
+    it("renders reCAPTCHA widget container when site key is provided", () => {
       const onSuccess = jest.fn();
-      render(<TurnstileCaptcha siteKey="1x00000000000000000000AA" onSuccess={onSuccess} />);
+      render(
+        <GoogleRecaptcha
+          siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          onSuccess={onSuccess}
+        />
+      );
 
-      expect(screen.getByTestId("cf-turnstile-widget")).toBeInTheDocument();
+      expect(screen.getByTestId("google-recaptcha-widget")).toBeInTheDocument();
+    });
+
+    it("renders reCAPTCHA using window.grecaptcha.render when API is available", () => {
+      const mockRender = jest.fn().mockReturnValue(123);
+      window.grecaptcha = {
+        render: mockRender,
+        reset: jest.fn(),
+        ready: (cb: () => void) => cb(),
+      } as unknown as typeof window.grecaptcha;
+
+      const onSuccess = jest.fn();
+      render(
+        <GoogleRecaptcha
+          siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          onSuccess={onSuccess}
+        />
+      );
+
+      expect(mockRender).toHaveBeenCalledWith(
+        expect.any(HTMLElement),
+        expect.objectContaining({
+          sitekey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+          theme: "light",
+        })
+      );
+    });
+
+    it("triggers onSuccess callback when reCAPTCHA generates a token", () => {
+      let capturedCallback: ((token: string) => void) | undefined;
+      window.grecaptcha = {
+        render: jest.fn().mockImplementation((_, opts) => {
+          capturedCallback = opts.callback;
+          return 1;
+        }),
+        reset: jest.fn(),
+        ready: (cb: () => void) => cb(),
+      } as unknown as typeof window.grecaptcha;
+
+      const onSuccess = jest.fn();
+      render(
+        <GoogleRecaptcha
+          siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          onSuccess={onSuccess}
+        />
+      );
+
+      expect(capturedCallback).toBeDefined();
+      capturedCallback!("valid-recaptcha-token");
+      expect(onSuccess).toHaveBeenCalledWith("valid-recaptcha-token");
+    });
+
+    it("triggers onExpire callback when token expires", () => {
+      let capturedExpire: (() => void) | undefined;
+      window.grecaptcha = {
+        render: jest.fn().mockImplementation((_, opts) => {
+          capturedExpire = opts["expired-callback"];
+          return 1;
+        }),
+        reset: jest.fn(),
+        ready: (cb: () => void) => cb(),
+      } as unknown as typeof window.grecaptcha;
+
+      const onExpire = jest.fn();
+      render(
+        <GoogleRecaptcha
+          siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          onSuccess={jest.fn()}
+          onExpire={onExpire}
+        />
+      );
+
+      expect(capturedExpire).toBeDefined();
+      capturedExpire!();
+      expect(onExpire).toHaveBeenCalled();
+    });
+
+    it("triggers onError callback when reCAPTCHA encounters error", () => {
+      let capturedError: (() => void) | undefined;
+      window.grecaptcha = {
+        render: jest.fn().mockImplementation((_, opts) => {
+          capturedError = opts["error-callback"];
+          return 1;
+        }),
+        reset: jest.fn(),
+        ready: (cb: () => void) => cb(),
+      } as unknown as typeof window.grecaptcha;
+
+      const onError = jest.fn();
+      render(
+        <GoogleRecaptcha
+          siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          onSuccess={jest.fn()}
+          onError={onError}
+        />
+      );
+
+      expect(capturedError).toBeDefined();
+      act(() => {
+        capturedError!();
+      });
+      expect(onError).toHaveBeenCalledWith("reCAPTCHA verification failed");
     });
   });
 });

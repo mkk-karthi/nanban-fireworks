@@ -3,52 +3,54 @@
 import { useEffect, useRef, useState, memo } from "react";
 import { ShieldCheck, AlertCircle } from "lucide-react";
 
-interface TurnstileCaptchaProps {
+export interface GoogleRecaptchaProps {
   siteKey?: string;
   onSuccess: (token: string) => void;
   onError?: (error?: string) => void;
   onExpire?: () => void;
-  theme?: "light" | "dark" | "auto";
+  theme?: "light" | "dark";
+  size?: "normal" | "compact";
 }
 
 declare global {
   interface Window {
-    turnstile?: {
+    grecaptcha?: {
       render: (
         container: HTMLElement | string,
-        options: {
+        parameters: {
           sitekey: string;
+          theme?: "light" | "dark";
+          size?: "normal" | "compact";
           callback?: (token: string) => void;
-          "error-callback"?: (error?: unknown) => void;
           "expired-callback"?: () => void;
-          theme?: "light" | "dark" | "auto";
-          size?: "normal" | "compact" | "flexible";
+          "error-callback"?: (error?: unknown) => void;
         },
-      ) => string;
-      reset: (widgetId: string) => void;
-      remove: (widgetId: string) => void;
+      ) => number;
+      reset: (opt_widget_id?: number) => void;
+      ready: (callback: () => void) => void;
     };
-    onloadTurnstileCallback?: () => void;
+    onloadRecaptchaCallback?: () => void;
   }
 }
 
-const SCRIPT_ID = "cf-turnstile-script";
-const SCRIPT_URL = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+const SCRIPT_ID = "google-recaptcha-script";
+const SCRIPT_URL = "https://www.google.com/recaptcha/api.js?onload=onloadRecaptchaCallback&render=explicit";
 
 /**
- * Cloudflare Turnstile Captcha Component
- * Embeds Turnstile anti-bot challenge to protect order placement and free tier email quotas.
+ * Google reCAPTCHA v2 Component
+ * Embeds Google reCAPTCHA anti-bot challenge to protect order placement and email quotas.
  * Automatically falls back to dev verification if no site key is configured.
  */
-export const TurnstileCaptcha = memo(function TurnstileCaptcha({
-  siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "",
+export const GoogleRecaptcha = memo(function GoogleRecaptcha({
+  siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "",
   onSuccess,
   onError,
   onExpire,
   theme = "light",
-}: TurnstileCaptchaProps) {
+  size = "normal",
+}: GoogleRecaptchaProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const widgetIdRef = useRef<string | null>(null);
+  const widgetIdRef = useRef<number | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isBypassed, setIsBypassed] = useState(false);
 
@@ -72,37 +74,37 @@ export const TurnstileCaptcha = memo(function TurnstileCaptcha({
     let isMounted = true;
     let pollInterval: ReturnType<typeof setInterval> | null = null;
 
-    const safelyRemoveWidget = () => {
+    const safelyResetWidget = () => {
       if (
-        widgetIdRef.current &&
+        widgetIdRef.current !== null &&
         typeof window !== "undefined" &&
-        window.turnstile &&
-        containerRef.current &&
-        document.body.contains(containerRef.current)
+        window.grecaptcha &&
+        typeof window.grecaptcha.reset === "function"
       ) {
         try {
-          window.turnstile.remove(widgetIdRef.current);
+          window.grecaptcha.reset(widgetIdRef.current);
         } catch {
-          // Ignore removal errors if container is already detached
+          // Ignore reset errors if container is already detached
         }
       }
       widgetIdRef.current = null;
     };
 
     const renderWidget = () => {
-      if (!isMounted || !containerRef.current || !window.turnstile) return;
-
-      safelyRemoveWidget();
+      if (!isMounted || !containerRef.current || !window.grecaptcha || typeof window.grecaptcha.render !== "function") return;
+      if (widgetIdRef.current !== null) return;
 
       try {
-        widgetIdRef.current = window.turnstile.render(containerRef.current, {
+        containerRef.current.innerHTML = "";
+        widgetIdRef.current = window.grecaptcha.render(containerRef.current, {
           sitekey: siteKey,
           theme,
+          size,
           callback: (token: string) => {
             if (isMounted) onSuccessRef.current(token);
           },
           "error-callback": (err: unknown) => {
-            const msg = typeof err === "string" ? err : "Verification failed";
+            const msg = typeof err === "string" ? err : "reCAPTCHA verification failed";
             if (isMounted) {
               setLoadError(msg);
               onErrorRef.current?.(msg);
@@ -114,16 +116,31 @@ export const TurnstileCaptcha = memo(function TurnstileCaptcha({
         });
       } catch (err) {
         if (isMounted) {
-          const msg = err instanceof Error ? err.message : "Error initializing Turnstile";
+          const msg = err instanceof Error ? err.message : "Error initializing reCAPTCHA";
           setLoadError(msg);
           onErrorRef.current?.(msg);
         }
       }
     };
 
-    if (window.turnstile) {
-      renderWidget();
+    const tryRender = () => {
+      if (!isMounted) return;
+      if (window.grecaptcha?.ready) {
+        window.grecaptcha.ready(() => {
+          if (isMounted) renderWidget();
+        });
+      } else {
+        renderWidget();
+      }
+    };
+
+    if (window.grecaptcha && typeof window.grecaptcha.render === "function") {
+      tryRender();
     } else {
+      window.onloadRecaptchaCallback = () => {
+        if (isMounted) tryRender();
+      };
+
       let script = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
       if (!script) {
         script = document.createElement("script");
@@ -144,20 +161,20 @@ export const TurnstileCaptcha = memo(function TurnstileCaptcha({
         }
 
         script.onload = () => {
-          if (isMounted) renderWidget();
+          if (isMounted) tryRender();
         };
         script.onerror = () => {
           if (isMounted) {
-            setLoadError("Failed to load Cloudflare security check");
+            setLoadError("Failed to load Google security check");
             onErrorRef.current?.("Failed to load script");
           }
         };
         document.head.appendChild(script);
       } else {
         pollInterval = setInterval(() => {
-          if (window.turnstile) {
+          if (window.grecaptcha && typeof window.grecaptcha.render === "function") {
             if (pollInterval) clearInterval(pollInterval);
-            if (isMounted) renderWidget();
+            if (isMounted) tryRender();
           }
         }, 100);
       }
@@ -166,9 +183,9 @@ export const TurnstileCaptcha = memo(function TurnstileCaptcha({
     return () => {
       isMounted = false;
       if (pollInterval) clearInterval(pollInterval);
-      safelyRemoveWidget();
+      safelyResetWidget();
     };
-  }, [siteKey, theme]);
+  }, [siteKey, theme, size]);
 
   if (isBypassed) {
     return (
@@ -190,7 +207,10 @@ export const TurnstileCaptcha = memo(function TurnstileCaptcha({
 
   return (
     <div className="flex justify-center py-1 overflow-hidden min-h-16">
-      <div ref={containerRef} data-testid="cf-turnstile-widget" />
+      <div ref={containerRef} data-testid="google-recaptcha-widget" />
     </div>
   );
 });
+
+// Also export as default and alias for backwards compatibility
+export default GoogleRecaptcha;

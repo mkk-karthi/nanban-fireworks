@@ -24,7 +24,7 @@ import { formatPrice, generateInvoiceNumber } from "@/lib/utils";
 import { ORDER_CONFIG, COMPANY_DETAILS } from "@/config/site";
 import { generateInvoicePdf, type CustomerDetails } from "@/lib/pdfGenerator";
 import { sendAdminOrderEmail } from "@/lib/emailService";
-import { TurnstileCaptcha } from "@/components/common/TurnstileCaptcha";
+import { GoogleRecaptcha } from "@/components/common/GoogleRecaptcha";
 import type { CartProductItem, CartTotals } from "@/lib/types";
 
 interface OrderModalProps {
@@ -124,8 +124,8 @@ export const OrderModal = memo(function OrderModal({
 
     setErrors(errs);
 
-    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !captchaToken) {
-      setCaptchaError("Invalid Re-captcha");
+    if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !captchaToken) {
+      setCaptchaError("Please complete the reCAPTCHA verification");
       return false;
     }
     setCaptchaError(null);
@@ -541,14 +541,14 @@ export const OrderModal = memo(function OrderModal({
                   </div>
                 </div>
 
-                {/* Cloudflare Turnstile Anti-Bot Protection */}
+                {/* Google reCAPTCHA Anti-Bot Protection */}
                 <div className="pt-1">
-                  <TurnstileCaptcha
+                  <GoogleRecaptcha
                     onSuccess={(token) => {
                       setCaptchaToken(token);
                       setCaptchaError(null);
                     }}
-                    onError={(err) => setCaptchaError(err || "Security check failed")}
+                    onError={(err) => setCaptchaError(err || "reCAPTCHA verification failed")}
                     onExpire={() => setCaptchaToken(null)}
                   />
                   {captchaError && (

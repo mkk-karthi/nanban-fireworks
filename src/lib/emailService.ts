@@ -123,7 +123,7 @@ export async function sendAdminOrderEmail(
     };
   }
 
-  const { customer, items, totals, orderId, captchaToken, pdfBase64 } = params;
+  const { customer, items, totals, orderId, captchaToken } = params;
 
   const templateParams: Record<string, string | number | OrderItemPayload[]> = {
     // Order Metadata
@@ -145,20 +145,13 @@ export async function sendAdminOrderEmail(
 
     // Dynamic items array for EmailJS template iteration
     orders: buildOrderItems(items),
-    // orders_content: buildOrderItemsHtml(items),
 
-    // Cloudflare Turnstile token for verification
+    // Google reCAPTCHA token for verification
     "g-recaptcha-response": captchaToken || "",
   };
 
-  // // Optional PDF attachment / content
-  // if (pdfBase64) {
-  //   templateParams.pdf_content = pdfBase64;
-  //   // templateParams.orders_content = pdfBase64;
-  // }
-
   // Enforce 45KB free tier ceiling guard
-  let payloadBytes = new TextEncoder().encode(JSON.stringify(templateParams)).length;
+  const payloadBytes = new TextEncoder().encode(JSON.stringify(templateParams)).length;
 
   // If payload above 45KB (e.g. extremely huge order with hundreds of items), condense HTML table
   if (payloadBytes > MAX_PAYLOAD_BYTES) {

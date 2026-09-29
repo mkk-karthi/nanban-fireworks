@@ -49,6 +49,15 @@ npm run build        # Production build
 
 ---
 
+## Environment Variables & Security Rules (Strictly Enforced)
+
+1. **NEVER read, view, or log `.env` files**: Do NOT read, view, or print `.env`, `.env.local`, `.env.production`, or any sensitive environment files.
+2. **NEVER write, edit, or overwrite `.env` files**: Local `.env` files belong strictly to the developer/user. Never generate or modify them directly.
+3. **Use `.env.example` exclusively**: All environment variable schemas, documentation, and mock values belong in `.env.example`.
+4. **Instruct user for local env changes**: Guide the user to add or update variables in their own `.env` file manually.
+
+---
+
 ## Testing Suites (`tests/`)
 
 - `01-catalog-render`: Banners, Gift Boxes, Product Grid DOM rendering.
@@ -57,5 +66,5 @@ npm run build        # Production build
 - `04-minimum-order-estimate-pdf`: ₹3,000 threshold, progress bar, Festive Estimate PDF.
 - `05-order-checkout-invoice-pdf`: Checkout validation, order submit, Invoice PDF.
 - `06-lightbox-and-fallback`: Lightbox nav, keyboard controls, fallback image safety.
-- `07-emailjs-turnstile`: EmailJS free tier dispatch, 45KB payload ceiling, Turnstile captcha.
+- `07-emailjs-recaptcha`: EmailJS free tier dispatch, 45KB payload ceiling, Google reCAPTCHA.
 - `08-utilities-and-store`: formatPrice, getDiscountPercent, generateInvoiceNumber, computeCartTotals.

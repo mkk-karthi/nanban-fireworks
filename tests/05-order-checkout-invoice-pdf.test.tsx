@@ -49,15 +49,15 @@ function fillValidForm() {
 }
 
 describe("05: Order Checkout Modal, Form Validation & Invoice PDF", () => {
-  const origKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const origRecaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
   beforeEach(() => {
     mockPdfSave.mockClear();
-    delete process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+    delete process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
   });
 
   afterAll(() => {
-    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = origKey;
+    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY = origRecaptchaKey;
   });
 
   it("validates all required customer fields and displays error hints when submitted empty or invalid", () => {
@@ -127,6 +127,27 @@ describe("05: Order Checkout Modal, Form Validation & Invoice PDF", () => {
     expect(screen.getByText("Email must be between 10 and 50 characters")).toBeInTheDocument();
     expect(screen.getByText("Address must be between 10 and 150 characters")).toBeInTheDocument();
     expect(screen.getByText("City must be between 3 and 25 characters")).toBeInTheDocument();
+  });
+
+  it("blocks order submission and prompts user if reCAPTCHA is enabled but not verified", () => {
+    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+
+    render(
+      <OrderModal
+        isOpen={true}
+        onClose={jest.fn()}
+        items={cartItems}
+        totals={sampleTotals}
+        onOrderSuccess={jest.fn()}
+      />
+    );
+
+    const form = document.querySelector("form")!;
+    fillValidForm();
+    fireEvent.submit(form);
+
+    expect(screen.getByText("Please complete the reCAPTCHA verification")).toBeInTheDocument();
+    expect(mockPdfSave).not.toHaveBeenCalled();
   });
 
   it("submits valid customer inputs, generates invoice PDF, shows success screen, and clears cart on done", async () => {
