@@ -38,7 +38,7 @@ export function Footer() {
           </div>
           <p className="text-sm text-red-200 leading-relaxed max-w-xs">
             Premium quality fireworks, sparklers, and celebration accessories with Sivakasi Direct
-            Sale, Tamil Nadu.
+            Sale dispatch across Tamil Nadu, Kerala, and Bangalore.
           </p>
         </div>
 

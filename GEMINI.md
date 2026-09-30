@@ -45,7 +45,7 @@ npm run build        # Production build
 3. **Cart & Stepper**: Default qty `0`, smooth `0 → 1` transition on add, persists via Zustand + `localStorage`.
 4. **Minimum Order**: ₹3,000 threshold for Sivakasi factory dispatch. Below: progress bar + "Add More". Above: checkout modal + festive PDF estimate.
 5. **Dual PDF Engine**: Festive Estimate (branded, ₹ symbol) and Order Invoice (monochrome, ≤ 40 KB, Deflate compressed).
-6. **Delivery**: Free delivery, strictly within **Tamil Nadu** via Sivakasi transport hubs.
+6. **Delivery**: Free delivery, strictly within **Tamil Nadu, Kerala, and Bangalore** via Sivakasi transport hubs.
 
 ---
 

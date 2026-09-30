@@ -9,12 +9,12 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: `${COMPANY_DETAILS.siteUrl}/cart`,
+    canonical: `${COMPANY_DETAILS.siteUrl}/cart/`,
   },
   openGraph: {
     title: `Shopping Cart | ${COMPANY_DETAILS.name}`,
     description: `Review your fireworks order with ${COMPANY_DETAILS.name}. Sivakasi Direct dispatch.`,
-    url: `${COMPANY_DETAILS.siteUrl}/cart`,
+    url: `${COMPANY_DETAILS.siteUrl}/cart/`,
   },
 };
 

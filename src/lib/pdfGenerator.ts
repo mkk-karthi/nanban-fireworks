@@ -213,7 +213,7 @@ export function generateEstimatePdf(
   doc.setFontSize(7.5);
   doc.setTextColor(80, 80, 80);
   doc.text("• Minimum order ₹ 3,000 required for Sivakasi dispatch.", 18, finalY + 13);
-  doc.text("• Deliveries strictly within Tamil Nadu transport hubs.", 18, finalY + 18);
+  doc.text("• Deliveries within Tamil Nadu, Kerala & Bangalore transport hubs.", 18, finalY + 18);
   doc.text("• Final invoice generated upon order confirmation.", 18, finalY + 23);
 
   // Right side: Totals Box
@@ -354,7 +354,7 @@ export function generateInvoicePdf(
 
   doc.setFont("Roboto", "normal");
   doc.setTextColor(17, 24, 39);
-  const fullAddress = [customer.address, customer.city, customer.pincode, "Tamil Nadu"]
+  const fullAddress = [customer.address, customer.city, customer.pincode]
     .filter(Boolean)
     .join(", ");
   doc.text(fullAddress || "Direct Sivakasi Transport Dispatch", 112, startY + 16, {
@@ -427,7 +427,7 @@ export function generateInvoicePdf(
   doc.setTextColor(75, 85, 99);
   doc.text("1. Dispatched directly from Sivakasi transport hubs.", 18, finalY + 11.5);
   doc.text(
-    "2. Service strictly within Tamil Nadu. Transport hub confirmed by call.",
+    "2. Service within Tamil Nadu, Kerala & Bangalore. Transport hub confirmed by call.",
     18,
     finalY + 16.5,
   );

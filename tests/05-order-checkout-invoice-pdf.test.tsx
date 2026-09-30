@@ -82,7 +82,7 @@ describe("05: Order Checkout Modal, Form Validation & Invoice PDF", () => {
     expect(screen.getByText("Please enter your email address")).toBeInTheDocument();
     expect(screen.getByText("Please enter your delivery address")).toBeInTheDocument();
     expect(
-      screen.getByText("Please enter your city / district in Tamil Nadu")
+      screen.getByText("Please enter your city / district in Tamil Nadu, Kerala, or Bangalore")
     ).toBeInTheDocument();
     expect(screen.getByText("Enter a valid 6-digit pincode")).toBeInTheDocument();
 

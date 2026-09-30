@@ -10,17 +10,30 @@ export const COMPANY_DETAILS = {
   description:
     "Buy premium quality fireworks, sparklers, sky shots, rockets, and gift boxes at Nanban Crackers. Best wholesale prices with Sivakasi Direct Sale. Minimum order ₹3,000.",
   logo: "/images/logo.webp",
-  email: "Nanbancrackers0506@gmail.com",
-  phone: "+91 98765 43210",
-  phoneClean: "+919876543210",
-  whatsapp: "+91 98765 43210",
-  whatsappClean: "+919876543210",
-  whatsappUrl: "https://wa.me/919876543210",
+  email: process.env.NEXT_PUBLIC_COMPANY_EMAIL,
+  phone: process.env.NEXT_PUBLIC_COMPANY_PHONE,
+  phoneClean: process.env.NEXT_PUBLIC_COMPANY_PHONE?.trim(),
+  whatsappUrl: "https://wa.me/" + process.env.NEXT_PUBLIC_COMPANY_PHONE?.trim(),
   developer: {
     name: "MKK Creation",
     url: "https://mkkcreation.com",
   },
   siteUrl: "https://nanbancrackers.mkkcreation.com",
+  canonicalUrl: "https://nanbancrackers.mkkcreation.com/",
+  address: {
+    streetAddress: "Sivakasi Direct Dispatch Hub",
+    addressLocality: "Sivakasi",
+    addressRegion: "Tamil Nadu",
+    postalCode: "626123",
+    addressCountry: "IN",
+  },
+  geo: {
+    latitude: "9.4533",
+    longitude: "77.7972",
+  },
+  other: {
+    "revisit-after": "7 days",
+  },
 } as const;
 
 // Order and Delivery Configuration
@@ -36,7 +49,8 @@ export const ORDER_CONFIG = {
   freeDeliveryAbove: 0,
   freeDeliveryText: "Free delivery",
   // Transport delivery notice
-  deliveryRegionNotice: "Delivery is strictly within Tamil Nadu via Sivakasi transport hubs.",
+  deliveryRegionNotice:
+    "Delivery is strictly within Tamil Nadu, Kerala, and Bangalore via Sivakasi transport hubs.",
   dispatchHub: "Sivakasi Direct Dispatch",
 } as const;
 
@@ -112,7 +126,8 @@ export const BANNER_SLIDES = [
     id: 4,
     image: "/images/banners/banner4.webp",
     title: "Sivakasi Direct Sale Dispatch",
-    subtitle: "Free transport dispatch across Tamil Nadu • Minimum order ₹3,000",
+    subtitle:
+      "Free transport dispatch across Tamil Nadu, Kerala & Bangalore • Minimum order ₹3,000",
     cta: "Explore Catalog",
     ctaLink: "#products",
   },

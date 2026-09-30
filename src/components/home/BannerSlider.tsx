@@ -135,14 +135,25 @@ export const BannerSlider = memo(function BannerSlider() {
                       <span>Sivakasi Direct Sale</span>
                     </span>
                     {/* Main Headline */}
-                    <h2
-                      data-aos="fade-right"
-                      data-aos-delay="200"
-                      data-aos-duration="700"
-                      className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight drop-shadow-md"
-                    >
-                      {slide.title}
-                    </h2>
+                    {slide.id === 1 ? (
+                      <h1
+                        data-aos="fade-right"
+                        data-aos-delay="200"
+                        data-aos-duration="700"
+                        className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight drop-shadow-md"
+                      >
+                        {slide.title}
+                      </h1>
+                    ) : (
+                      <h2
+                        data-aos="fade-right"
+                        data-aos-delay="200"
+                        data-aos-duration="700"
+                        className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight drop-shadow-md"
+                      >
+                        {slide.title}
+                      </h2>
+                    )}
 
                     {/* Subtitle */}
                     <p

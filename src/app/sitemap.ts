@@ -9,12 +9,11 @@ export const dynamic = "force-static";
  * Cart page excluded — it has robots noindex set.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = COMPANY_DETAILS.siteUrl;
   const now = new Date();
 
   return [
     {
-      url: baseUrl,
+      url: COMPANY_DETAILS.canonicalUrl,
       lastModified: now,
       changeFrequency: "daily",
       priority: 1.0,

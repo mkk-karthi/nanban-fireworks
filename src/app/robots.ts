@@ -13,11 +13,14 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // Disallow cart page indexing — it has no static content
-        disallow: "/cart",
+        disallow: ["/cart", "/cart/"],
+      },
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+        disallow: ["/cart", "/cart/"],
       },
     ],
-    sitemap: `${COMPANY_DETAILS.siteUrl}/sitemap.xml`,
-    host: COMPANY_DETAILS.siteUrl,
+    sitemap: `${COMPANY_DETAILS.canonicalUrl}sitemap.xml`,
   };
 }

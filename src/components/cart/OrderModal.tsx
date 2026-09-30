@@ -111,7 +111,7 @@ export const OrderModal = memo(function OrderModal({
     // City: min 3, max 25 chars
     const trimmedCity = customer.city.trim();
     if (!trimmedCity) {
-      errs.city = "Please enter your city / district in Tamil Nadu";
+      errs.city = "Please enter your city / district in Tamil Nadu, Kerala, or Bangalore";
     } else if (trimmedCity.length < 3 || trimmedCity.length > 25) {
       errs.city = "City must be between 3 and 25 characters";
     }
@@ -304,7 +304,7 @@ export const OrderModal = memo(function OrderModal({
                     </p>
                     <p>
                       <strong>2. Secure Dispatch:</strong> Packed directly at Sivakasi and
-                      dispatched across Tamil Nadu.
+                      dispatched across Tamil Nadu, Kerala, and Bangalore.
                     </p>
                     <p>
                       <strong>3. Payment:</strong> Direct bank transfer, UPI, or cash on
@@ -363,8 +363,8 @@ export const OrderModal = memo(function OrderModal({
                       <span>Delivery Notice</span>
                     </p>
                     <p className="text-gray-700 leading-relaxed font-medium mt-0.5">
-                      We deliver <strong>only within Tamil Nadu</strong> via direct Sivakasi
-                      transport hubs. Orders outside Tamil Nadu cannot be processed.
+                      We deliver within <strong>Tamil Nadu, Kerala, and Bangalore</strong> via direct
+                      Sivakasi transport hubs. Orders outside these regions cannot be processed.
                     </p>
                   </div>
                 </div>
@@ -487,11 +487,10 @@ export const OrderModal = memo(function OrderModal({
                     )}
                   </div>
 
-                  {/* City / District (Tamil Nadu) */}
+                  {/* City / District */}
                   <div>
                     <label className="block text-xs font-bold text-gray-700 mb-1">
-                      <span>City / District (Tamil Nadu)</span>{" "}
-                      <span className="text-red-600">*</span>
+                      <span>City / District</span> <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"

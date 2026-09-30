@@ -5,29 +5,35 @@ import giftBoxesData from "@/data/giftBoxes.json";
 import { BannerSlider } from "@/components/home/BannerSlider";
 import { GiftBoxSection } from "@/components/home/GiftBoxSection";
 import { ProductGrid } from "@/components/home/ProductGrid";
+import { SeoContentSection } from "@/components/home/SeoContentSection";
 import { COMPANY_DETAILS } from "@/config/site";
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: `Shop Premium Crackers Online | ${COMPANY_DETAILS.name} Sivakasi`,
+  title: `Buy Sivakasi Crackers Online Wholesale & Retail | ${COMPANY_DETAILS.name}`,
   description:
-    "Browse 100+ premium fireworks products: sparklers, sky shots, rockets, bijili crackers, flower pots, gift boxes and more. Sivakasi Direct Sale pricing.",
+    "Buy 100+ premium Sivakasi crackers, sparklers, sky shots, rockets, and gift box combos online at flat 90% wholesale discount. Fast transport dispatch across Tamil Nadu, Kerala, and Bangalore. Minimum order ₹3,000.",
   keywords: [
     "buy crackers online",
-    "Diwali fireworks Sivakasi",
+    "Sivakasi crackers online purchase",
+    "Diwali fireworks Sivakasi 2026",
     "sparklers online",
     "sky shots buy",
     "gift box crackers",
     "bijili crackers wholesale",
     "flower pots Sivakasi",
+    "Tamil Nadu crackers delivery",
+    "Kerala crackers delivery",
+    "Bangalore crackers delivery",
   ],
   alternates: {
-    canonical: COMPANY_DETAILS.siteUrl,
+    canonical: COMPANY_DETAILS.canonicalUrl,
   },
   openGraph: {
-    url: COMPANY_DETAILS.siteUrl,
-    title: `Shop Premium Crackers Online | ${COMPANY_DETAILS.name} Sivakasi`,
-    description: "100+ fireworks products – sparklers, sky shots, rockets, gift boxes. Best prices with Sivakasi Direct Sale.",
+    url: COMPANY_DETAILS.canonicalUrl,
+    title: `Buy Sivakasi Crackers Online Wholesale & Retail | ${COMPANY_DETAILS.name}`,
+    description:
+      "100+ fireworks products – sparklers, sky shots, rockets, gift boxes. Best prices with Sivakasi Direct Sale. Delivery across Tamil Nadu, Kerala, and Bangalore.",
   },
 };
 
@@ -51,6 +57,9 @@ export default function HomePage() {
 
       {/* Main product grid with filters, sort, infinite scroll */}
       <ProductGrid products={products} />
+
+      {/* Sivakasi Wholesale Guide, ordering workflow & FAQ */}
+      <SeoContentSection />
     </>
   );
 }
